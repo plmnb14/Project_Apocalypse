@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class NumToString : MonoBehaviour
 {
+    public enum buildSetting { KOREA, GLOBAL };
     static readonly string[]    digitStringKR = { "해 ", "조 ", "억 ", "만 ", "" };
     static readonly string      digitComma = ",";
     static readonly long[]      digitNumberKR = { 10000000000000000, 1000000000000, 100000000, 10000, 1};
@@ -14,7 +15,7 @@ public class NumToString : MonoBehaviour
     public static readonly int  showNumberMax = 30;
     public static readonly int  digitCode = 0;
 
-    public static string GetNumberString(ref StringBuilder str, long value, int code = 0) =>
+    public static string GetNumberString(ref StringBuilder str, long value, buildSetting code = buildSetting.KOREA) =>
         code switch
         {
             0 => NumToStringKR(ref str, value),

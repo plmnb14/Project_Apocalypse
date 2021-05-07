@@ -10,7 +10,8 @@ public class UI_Coin : MonoBehaviour
     StringBuilder stringValue;
     private void UpdateValue(long value)
     {
-        stageCount.text = NumToString.GetNumberString(ref stringValue, value, 1);
+        stageCount.text = NumToString.GetNumberString(
+            ref stringValue, value, NumToString.buildSetting.GLOBAL);
     }
 
     private void Start()
