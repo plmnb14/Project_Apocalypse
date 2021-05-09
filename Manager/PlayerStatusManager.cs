@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum StatusIndex : int
+{
+    DMG, ATKSPD, HP, CRI, CRIDMG, ARMOR,
+    MORDMG, MINDMG, PIERCE, REGEN, DODGE,
+    BUFF, RESIST, DROP, RESGAIN, EXPGAIN, STATUS_END
+};
+
 public class PlayerStatusManager : MonoBehaviour
 {
     static public PlayerStatusManager instance
@@ -15,10 +22,22 @@ public class PlayerStatusManager : MonoBehaviour
     }
     private static PlayerStatusManager m_instance;
 
-    HeroData baseHeroStatus { get; set; }
-    HeroData goldHeroStatus { get; set; }
-    HeroData cashHeroStatus { get; set; }
-    HeroData finalHeroStatus { get; set; }
+    #region 플레이어 스탯정보 모음
+    public HeroData baseHeroStatus { get; set; }
+    public HeroData goldHeroStatus { get; set; }
+    public HeroData cashHeroStatus { get; set; }
+    public HeroData finalHeroStatus { get; set; }
+    #endregion
+
+    private UI_HeroInfo heroInfo;
+
+    public void UpdateValue(StatusIndex idx, double value)
+    {
+        goldHeroStatus.damage = (long)value;
+        finalHeroStatus.damage = baseHeroStatus.damage + goldHeroStatus.damage;
+
+        heroInfo.UpdateValue(idx, finalHeroStatus.damage);
+    }
 
     private void SetDefault()
     {
@@ -62,17 +81,28 @@ public class PlayerStatusManager : MonoBehaviour
         baseHeroStatus.debuffResist = 0.0f;
         baseHeroStatus.criticalDamage = 1.25f;
         baseHeroStatus.moreDamage = 0;
+
+        finalHeroStatus.damage = baseHeroStatus.damage + goldHeroStatus.damage;
     }
 
     private void SetUp()
     {
         goldHeroStatus = new HeroData();
         baseHeroStatus = new HeroData();
+        finalHeroStatus = new HeroData();
+
         SetDefault();
+    }
+
+    private void Start()
+    {
+        heroInfo = GameObject.Find("Canvas_Info").GetComponent<UI_HeroInfo>();
+
+        heroInfo.BeginSetUp(finalHeroStatus);
     }
 
     private void Awake()
     {
-        SetUp();   
+        SetUp();
     }
 }

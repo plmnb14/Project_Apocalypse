@@ -115,7 +115,7 @@ public class LivingData : BaseData
 {
     public int level;
     public int EXP;
-    public int damage;
+    public long damage;
     public int hitPoint;
     public int armor;
     public float attackSpeed;

@@ -18,8 +18,6 @@ public class UI_Coin : MonoBehaviour
     {
         ResourceManager.instance.updateCoin += UpdateValue;
         stringValue = new StringBuilder(NumToString.showNumberMax , NumToString.showNumberMax);
-
-        Debug.Log(stringValue.Length);
     }
 
     private void Awake()

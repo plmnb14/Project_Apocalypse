@@ -133,7 +133,7 @@ public class ResourceManager : MonoBehaviour
 
     private void SetUp()
     {
-        coin = 9999999999;
+        coin = 999999999;
         element = 0;
         crystalFree = 0;
         crystalCharged = 0;

@@ -61,6 +61,7 @@ public class NumToString : MonoBehaviour
         }
 
         int gap = (str.Length) % 3;
+        if (gap == 0 && str.Length > 3) gap = 3;
         for(int i = 0; i < count; i++)
         {
             str.Insert(i * 3 + i * 1 + gap, digitComma);

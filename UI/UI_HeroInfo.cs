@@ -6,15 +6,10 @@ using UnityEngine.UI;
 
 public class UI_HeroInfo : MonoBehaviour
 {
-    public enum StatusIndex : int
-    { DMG, ATKSPD, HP, CRI, CRIDMG, ARMOR,
-        MORDMG, MINDMG, PIERCE, REGEN, DODGE,
-        BUFF, RESIST, DROP, RESGAIN, EXPGAIN, STATUS_END};
-
     private Text[] statusText;
     private StringBuilder valueString;
 
-    public void UpdateValue(StatusIndex idx, float value)
+    public void UpdateValue(StatusIndex idx, double value)
     {
         valueString.Remove(0, valueString.Length);
 
@@ -151,6 +146,28 @@ public class UI_HeroInfo : MonoBehaviour
         }
     }
 
+    public void BeginSetUp(HeroData data)
+    {
+        UpdateValue(StatusIndex.DMG, data.damage);
+        UpdateValue(StatusIndex.ATKSPD, 1.0f);
+        UpdateValue(StatusIndex.HP, 1000);
+        UpdateValue(StatusIndex.CRI, 32.35f);
+        UpdateValue(StatusIndex.CRIDMG, 150);
+        UpdateValue(StatusIndex.ARMOR, 6);
+
+        UpdateValue(StatusIndex.MORDMG, 1235);
+        UpdateValue(StatusIndex.MINDMG, 0.75f);
+        UpdateValue(StatusIndex.PIERCE, 0.3f);
+        UpdateValue(StatusIndex.REGEN, 0.01f);
+        UpdateValue(StatusIndex.DODGE, 0.03f);
+
+        UpdateValue(StatusIndex.BUFF, 1.0f);
+        UpdateValue(StatusIndex.RESIST, 0.56f);
+        UpdateValue(StatusIndex.DROP, 25);
+        UpdateValue(StatusIndex.RESGAIN, 120);
+        UpdateValue(StatusIndex.EXPGAIN, 120);
+    }
+
     private void SetUp()
     {
         valueString = new StringBuilder(20,20);
@@ -178,27 +195,5 @@ public class UI_HeroInfo : MonoBehaviour
     private void Awake()
     {
         SetUp();
-    }
-
-    private void Start()
-    {
-        UpdateValue(StatusIndex.DMG, 1000);
-        UpdateValue(StatusIndex.ATKSPD, 1.0f);
-        UpdateValue(StatusIndex.HP, 1000);
-        UpdateValue(StatusIndex.CRI, 32.35f);
-        UpdateValue(StatusIndex.CRIDMG, 150);
-        UpdateValue(StatusIndex.ARMOR, 6);
-
-        UpdateValue(StatusIndex.MORDMG, 1235);
-        UpdateValue(StatusIndex.MINDMG, 0.75f);
-        UpdateValue(StatusIndex.PIERCE, 0.3f);
-        UpdateValue(StatusIndex.REGEN, 0.01f);
-        UpdateValue(StatusIndex.DODGE, 0.03f);
-
-        UpdateValue(StatusIndex.BUFF, 1.0f);
-        UpdateValue(StatusIndex.RESIST, 0.56f);
-        UpdateValue(StatusIndex.DROP, 25);
-        UpdateValue(StatusIndex.RESGAIN, 120);
-        UpdateValue(StatusIndex.EXPGAIN, 120);
     }
 }

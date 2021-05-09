@@ -42,7 +42,8 @@ public class Bullet : Projectile
 
         if (null != ColTarget && !ColTarget.dead)
         {
-            float finalDamage = damage + Random.Range(damage * -0.2f, damage * 0.2f);
+            damage = PlayerStatusManager.instance.finalHeroStatus.damage;
+            float finalDamage = Random.Range(damage * 0.7f, damage);
 
             Vector3 hitCorss = collision.ClosestPoint(transform.position);
             Vector3 hitNormal = transform.position - collision.transform.position;
