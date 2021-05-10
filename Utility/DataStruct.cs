@@ -120,6 +120,10 @@ public class LivingData : BaseData
     public int armor;
     public float attackSpeed;
     public float hitPointRegen;
+    public float dodge;
+    public float criticalDamage;
+    public float criticalChance;
+    public float debuffResist;
 
     public override BaseData DeepCopy(BaseData data = null)
     {
@@ -132,6 +136,10 @@ public class LivingData : BaseData
         copy.hitPointRegen = this.hitPointRegen;
         copy.level = this.level;
         copy.EXP = this.EXP;
+        copy.dodge = this.dodge;
+        copy.criticalChance = this.criticalChance;
+        copy.criticalDamage = this.criticalDamage;
+        copy.debuffResist = this.debuffResist;
 
         return copy;
     }
@@ -140,34 +148,72 @@ public class LivingData : BaseData
 [System.Serializable]
 public class HeroData : LivingData
 {
-    public float dodge;
-    public float criticalChance;
     public float armorPierce;
     public float buffDuration;
-    public float debuffResist;
-    public float criticalDamage;
-    public float minDamange;
+    public float minDamage;
     public int moreDamage;
-    public int gainItem;
-    public int gainEXP;
+    public int dropItem;
+    public int gainExp;
     public int gainGold;
 
     public override BaseData DeepCopy(BaseData data = null)
     {
         HeroData copy = data == null ? new HeroData() : (HeroData)data;
         base.DeepCopy(copy);
-        copy.gainItem = this.gainItem;
-        copy.gainEXP = this.gainEXP;
+        copy.dropItem = this.dropItem;
+        copy.gainExp = this.gainExp;
         copy.gainGold = this.gainGold;
-        copy.criticalChance = this.criticalChance;
-        copy.criticalDamage = this.criticalDamage;
         copy.moreDamage = this.moreDamage;
-        copy.minDamange = this.minDamange;
+        copy.minDamage = this.minDamage;
         copy.buffDuration = this.buffDuration;
-        copy.debuffResist = this.debuffResist;
         copy.armorPierce = this.armorPierce;
 
         return copy;
     }
 
+    public void AddData(ref HeroData data)
+    {
+        this.level += data.level;
+        this.EXP += data.EXP;
+        this.damage += data.damage;
+        this.hitPoint += data.hitPoint;
+        this.armor += data.armor;
+        this.attackSpeed += data.attackSpeed;
+        this.hitPointRegen += data.hitPointRegen;
+
+        this.dodge += data.dodge;
+        this.dropItem += data.dropItem;
+        this.gainExp += data.gainExp;
+        this.gainGold += data.gainGold;
+        this.criticalChance += data.criticalChance;
+        this.criticalDamage += data.criticalDamage;
+        this.armorPierce += data.armorPierce;
+        this.buffDuration += data.buffDuration;
+        this.moreDamage += data.moreDamage;
+        this.minDamage += data.minDamage;
+        this.debuffResist += data.debuffResist;
+    }
+
+    public void ReplaceData(ref HeroData data)
+    {
+        this.level = data.level;
+        this.EXP = data.EXP;
+        this.damage = data.damage;
+        this.hitPoint = data.hitPoint;
+        this.armor = data.armor;
+        this.attackSpeed = data.attackSpeed;
+        this.hitPointRegen = data.hitPointRegen;
+
+        this.dodge = data.dodge;
+        this.dropItem = data.dropItem;
+        this.gainExp = data.gainExp;
+        this.gainGold = data.gainGold;
+        this.criticalChance = data.criticalChance;
+        this.criticalDamage = data.criticalDamage;
+        this.armorPierce = data.armorPierce;
+        this.buffDuration = data.buffDuration;
+        this.moreDamage = data.moreDamage;
+        this.minDamage += data.minDamage;
+        this.debuffResist = data.debuffResist;
+    }
 }

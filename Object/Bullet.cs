@@ -42,13 +42,14 @@ public class Bullet : Projectile
 
         if (null != ColTarget && !ColTarget.dead)
         {
-            damage = PlayerStatusManager.instance.finalHeroStatus.damage;
+            LivingData data = PlayerStatusManager.instance.finalHeroStatus;
+            damage = DamageCalculator.DamageCaculating(ref data, out bool isCritical);
             float finalDamage = Random.Range(damage * 0.7f, damage);
 
-            Vector3 hitCorss = collision.ClosestPoint(transform.position);
+             Vector3 hitCorss = collision.ClosestPoint(transform.position);
             Vector3 hitNormal = transform.position - collision.transform.position;
 
-            ColTarget.OnDamage(hitCorss, hitNormal, finalDamage);
+            ColTarget.OnDamage(hitCorss, hitNormal, finalDamage, isCritical);
 
             VFX vfx = VFXManager.instance.GetVFX("VFX_Hit_01");
             vfx.transform.position = hitCorss;

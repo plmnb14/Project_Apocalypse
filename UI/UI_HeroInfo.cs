@@ -9,13 +9,13 @@ public class UI_HeroInfo : MonoBehaviour
     private Text[] statusText;
     private StringBuilder valueString;
 
-    public void UpdateValue(StatusIndex idx, double value)
+    public void UpdateValue(HeroStatusEnum idx, double value)
     {
         valueString.Remove(0, valueString.Length);
 
         switch (idx)
         {
-            case StatusIndex.DMG:
+            case HeroStatusEnum.Damage:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -23,14 +23,14 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.ATKSPD:
+            case HeroStatusEnum.AttackSpeed:
                 {
-                    valueString.Append(value.ToString("N2"));
+                    valueString.Append(value.ToString("N3"));
                     valueString.Append("    ");
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.HP:
+            case HeroStatusEnum.HitPoint:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -38,21 +38,21 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.CRI:
-                {
-                    valueString.Append(value.ToString("N2"));
-                    valueString.Append(" %");
-                    statusText[(int)idx].text = valueString.ToString();
-                    break;
-                }
-            case StatusIndex.CRIDMG:
+            case HeroStatusEnum.Critical:
                 {
                     valueString.Append(value.ToString("N2"));
                     valueString.Append(" %");
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.ARMOR:
+            case HeroStatusEnum.CriticalDamage:
+                {
+                    valueString.Append(value.ToString("N2"));
+                    valueString.Append(" %");
+                    statusText[(int)idx].text = valueString.ToString();
+                    break;
+                }
+            case HeroStatusEnum.Armor:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -60,7 +60,7 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.MORDMG:
+            case HeroStatusEnum.MoreDamage:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -68,7 +68,7 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.MINDMG:
+            case HeroStatusEnum.MinDamage:
                 {
                     value *= 100.0f;
                     valueString.Append(value.ToString("N1"));
@@ -76,7 +76,7 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.PIERCE:
+            case HeroStatusEnum.Pierce:
                 {
                     value *= 100.0f;
                     valueString.Append(value.ToString("N1"));
@@ -84,22 +84,14 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.REGEN:
+            case HeroStatusEnum.HPRegen:
                 {
-                    valueString.Append(value.ToString("N2"));
+                    valueString.Append(value.ToString("N3"));
                     valueString.Append(" %");
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.DODGE:
-                {
-                    value *= 100.0f;
-                    valueString.Append(value.ToString("N2"));
-                    valueString.Append(" %");
-                    statusText[(int)idx].text = valueString.ToString();
-                    break;
-                }
-            case StatusIndex.BUFF:
+            case HeroStatusEnum.Dodge:
                 {
                     value *= 100.0f;
                     valueString.Append(value.ToString("N2"));
@@ -107,15 +99,22 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.RESIST:
+            case HeroStatusEnum.BuffDuration:
                 {
                     value *= 100.0f;
+                    valueString.Append(value.ToString("N1"));
+                    valueString.Append(" %");
+                    statusText[(int)idx].text = valueString.ToString();
+                    break;
+                }
+            case HeroStatusEnum.DebuffResist:
+                {
                     valueString.Append(value.ToString("N2"));
                     valueString.Append(" %");
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.DROP:
+            case HeroStatusEnum.DropItem:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -123,7 +122,7 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.RESGAIN:
+            case HeroStatusEnum.GainGold:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -131,7 +130,7 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case StatusIndex.EXPGAIN:
+            case HeroStatusEnum.GainExp:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -146,32 +145,32 @@ public class UI_HeroInfo : MonoBehaviour
         }
     }
 
-    public void BeginSetUp(HeroData data)
+    public void BeginSetUp(ref HeroData data)
     {
-        UpdateValue(StatusIndex.DMG, data.damage);
-        UpdateValue(StatusIndex.ATKSPD, 1.0f);
-        UpdateValue(StatusIndex.HP, 1000);
-        UpdateValue(StatusIndex.CRI, 32.35f);
-        UpdateValue(StatusIndex.CRIDMG, 150);
-        UpdateValue(StatusIndex.ARMOR, 6);
+        UpdateValue(HeroStatusEnum.Damage, data.damage);
+        UpdateValue(HeroStatusEnum.AttackSpeed, data.attackSpeed);
+        UpdateValue(HeroStatusEnum.HitPoint, data.hitPoint);
+        UpdateValue(HeroStatusEnum.Critical, data.criticalChance);
+        UpdateValue(HeroStatusEnum.CriticalDamage, data.criticalDamage);
+        UpdateValue(HeroStatusEnum.Armor, data.armor);
 
-        UpdateValue(StatusIndex.MORDMG, 1235);
-        UpdateValue(StatusIndex.MINDMG, 0.75f);
-        UpdateValue(StatusIndex.PIERCE, 0.3f);
-        UpdateValue(StatusIndex.REGEN, 0.01f);
-        UpdateValue(StatusIndex.DODGE, 0.03f);
+        UpdateValue(HeroStatusEnum.MoreDamage, data.moreDamage);
+        UpdateValue(HeroStatusEnum.MinDamage, data.minDamage);
+        UpdateValue(HeroStatusEnum.Pierce, data.armorPierce);
+        UpdateValue(HeroStatusEnum.HPRegen, data.hitPointRegen);
+        UpdateValue(HeroStatusEnum.Dodge, data.dodge);
 
-        UpdateValue(StatusIndex.BUFF, 1.0f);
-        UpdateValue(StatusIndex.RESIST, 0.56f);
-        UpdateValue(StatusIndex.DROP, 25);
-        UpdateValue(StatusIndex.RESGAIN, 120);
-        UpdateValue(StatusIndex.EXPGAIN, 120);
+        UpdateValue(HeroStatusEnum.BuffDuration, data.buffDuration);
+        UpdateValue(HeroStatusEnum.DebuffResist, data.debuffResist);
+        UpdateValue(HeroStatusEnum.DropItem, data.dropItem);
+        UpdateValue(HeroStatusEnum.GainGold, data.gainGold);
+        UpdateValue(HeroStatusEnum.GainExp, data.gainExp);
     }
 
     private void SetUp()
     {
         valueString = new StringBuilder(20,20);
-        statusText = new Text[(int)StatusIndex.STATUS_END];
+        statusText = new Text[(int)HeroStatusEnum.Status_End];
 
         Transform targetTrans = transform.GetChild(1).transform.GetChild(1).gameObject.transform;
         for(int i  = 0; i < 6; i++)

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UI_DamageFont : UI_Object
 {
+    public enum fontUsedType { Default, Critical, Dot, Heal, Reduce }
+
     const int maxSize = 10;
     const float gap = 0.14f;
 
@@ -12,6 +14,15 @@ public class UI_DamageFont : UI_Object
     private float fontLifeTime;
     private SpriteRenderer[] fontChild = new SpriteRenderer[maxSize];
     private Sprite[] fontSprite = new Sprite[maxSize];
+
+    public void ChangeColor(fontUsedType types = fontUsedType.Default)
+    {
+        Color changeColor = (types == fontUsedType.Default ? Color.white : Color.red);
+        for (int i = 0; i < maxSize; i++)
+        {
+            fontChild[i].color = changeColor;
+        }
+    }
 
     public void SetNumber(float number, Vector3 position)
     {

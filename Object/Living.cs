@@ -22,7 +22,7 @@ public class Living : WorldObject
         base.OnDie();
     }
 
-    public virtual void OnDamage(Vector3 crossPoint, Vector3 hitNotmal, float damage)
+    public virtual void OnDamage(Vector3 crossPoint, Vector3 hitNotmal, float damage, bool isCritical = false)
     {
         hitPoint -= damage;
 

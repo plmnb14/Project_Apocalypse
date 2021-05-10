@@ -34,7 +34,7 @@ public class Monster : Living
         StageManager.instance.BackMonster(myName, this);
     }
 
-    public override void OnDamage(Vector3 crossPoint, Vector3 hitNotmal, float damage)
+    public override void OnDamage(Vector3 crossPoint, Vector3 hitNotmal, float damage, bool isCritical = false)
     {
         float finalDamage = damage;
 
@@ -42,6 +42,7 @@ public class Monster : Living
 
         UI_DamageFont font = Instantiate(Resources.Load<UI_DamageFont>("Prefab/DamageFont"));
         font.SetNumber(finalDamage, crossPoint);
+        font.ChangeColor(isCritical ? UI_DamageFont.fontUsedType.Critical : UI_DamageFont.fontUsedType.Default);
 
         base.OnDamage(crossPoint, hitNotmal, finalDamage);
     }
@@ -51,7 +52,7 @@ public class Monster : Living
         base.ResetStatus();
 
         curState = State.Idle;
-        hitPoint = 1000.0f;
+        hitPoint = 2000.0f;
     }
 
 
@@ -67,7 +68,7 @@ public class Monster : Living
     {
         base.SetUp();
 
-        hitPoint = 1000.0f;
+        hitPoint = 2000.0f;
         curState = State.Idle;
     }
 

@@ -22,7 +22,14 @@ public class NumToString : MonoBehaviour
             _ => NumToStringGL(ref str, value)
         };
 
-    static string NumToStringKR(ref StringBuilder str, long value)
+    public static string GetNumberString(ref StringBuilder str, long value, string word, buildSetting code = buildSetting.KOREA) =>
+    code switch
+    {
+        0 => NumToStringKR(ref str, value, word),
+        _ => NumToStringGL(ref str, value, word)
+    };
+
+    static string NumToStringKR(ref StringBuilder str, long value, string word = null)
     {
         str.Remove(0, str.Length);
 
@@ -45,9 +52,10 @@ public class NumToString : MonoBehaviour
         return str.ToString();
     }
 
-    static string NumToStringGL(ref StringBuilder str, long value)
+    static string NumToStringGL(ref StringBuilder str, long value, string word = null)
     {
         str.Remove(0, str.Length);
+        if (word != null) str.Append(word);
         str.Append(value.ToString());
 
         int count = 0;

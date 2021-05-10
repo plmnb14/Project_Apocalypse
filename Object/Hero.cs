@@ -27,6 +27,12 @@ public class Hero : Living
         curState = State.Run;
     }
 
+    public void UpdateAttackSpeed(float speed)
+    {
+        animator.SetFloat("AttackSpeed", speed);
+        weapon.SetAnimatorfloat("AttackSpeed", speed);
+    }
+
     protected override void Attack()
     {
 

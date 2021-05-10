@@ -26,7 +26,7 @@ public class StageManager : MonoBehaviour
 
     public int stageIndex { get; set; }
 
-    private Hero hero;
+    public Hero hero { get; set; }
 
     public Monster GetMonster(string name)
     {

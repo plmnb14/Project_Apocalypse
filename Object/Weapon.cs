@@ -21,6 +21,11 @@ public class Weapon : MonoBehaviour
         animator.SetBool(s, b);
     }
 
+    public virtual void SetAnimatorfloat(string s, float f)
+    {
+        animator.SetFloat(s, f);
+    }
+
     public virtual void Attack()
     {
 
