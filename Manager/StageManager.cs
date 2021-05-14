@@ -24,6 +24,8 @@ public class StageManager : MonoBehaviour
     private int createCount;
     private int summonCount;
 
+    private BackgroundScroll[] scrollBackground;
+
     public int stageIndex { get; set; }
 
     public Hero hero { get; set; }
@@ -70,6 +72,8 @@ public class StageManager : MonoBehaviour
 
     public void SummonMonster()
     {
+        scrollBackground[0].scrolled = false;
+        scrollBackground[1].scrolled = false;
         Monster mon = GetMonster("Slime");
         mon.transform.position = new Vector3(3.2f, 1.07f, 0.0f);
         float sqrtValue = (((stageIndex*0.1f) * (stageIndex*0.1f)) * 0.5f) + 1.0f; 
@@ -139,6 +143,16 @@ public class StageManager : MonoBehaviour
 
         hero = Instantiate(Resources.Load<Hero>("Prefab/Hero"));
         hero.transform.position = new Vector3(-1.64f, 1.07f, 0.0f);
+
+        scrollBackground = new BackgroundScroll[2];
+        scrollBackground[0] = transform.GetChild(0).GetComponent<BackgroundScroll>();
+        scrollBackground[1] = transform.GetChild(1).GetComponent<BackgroundScroll>();
+    }
+
+    public void ScrollingBackround()
+    {
+        StartCoroutine(scrollBackground[0].ScrollBackground());
+        StartCoroutine(scrollBackground[1].ScrollBackground());
     }
 
     private void MoveToNext()

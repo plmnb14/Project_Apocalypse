@@ -76,6 +76,8 @@ public class Hero : Living
         {
             animator.SetBool(animatorParam[(int)animatorEnum.IsRun], true);
             weapon.SetAnimatorBool(animatorParam[(int)animatorEnum.IsRun], true);
+
+            StageManager.instance.ScrollingBackround();
         }
 
         else
