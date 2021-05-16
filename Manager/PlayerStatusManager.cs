@@ -26,6 +26,7 @@ public class PlayerStatusManager : MonoBehaviour
     public HeroData baseHeroStatus;
     public HeroData goldHeroStatus;
     public HeroData cashHeroStatus;
+    public HeroData equipHeroStatus;
     public HeroData finalHeroStatus;
     #endregion
 
@@ -38,7 +39,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.Damage :
                 {
                     goldHeroStatus.damage = (long)value;
-                    finalHeroStatus.damage = baseHeroStatus.damage + goldHeroStatus.damage;
+                    finalHeroStatus.damage = baseHeroStatus.damage + goldHeroStatus.damage + equipHeroStatus.damage;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.damage);
                     break;
@@ -46,7 +47,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.AttackSpeed:
                 {
                     goldHeroStatus.attackSpeed = (float)value;
-                    finalHeroStatus.attackSpeed = baseHeroStatus.attackSpeed + goldHeroStatus.attackSpeed;
+                    finalHeroStatus.attackSpeed = baseHeroStatus.attackSpeed + goldHeroStatus.attackSpeed + equipHeroStatus.attackSpeed;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.attackSpeed);
                     StageManager.instance.hero.UpdateAttackSpeed(finalHeroStatus.attackSpeed);
@@ -55,7 +56,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.HitPoint:
                 {
                     goldHeroStatus.hitPoint = (int)value;
-                    finalHeroStatus.hitPoint = baseHeroStatus.hitPoint + goldHeroStatus.hitPoint;
+                    finalHeroStatus.hitPoint = baseHeroStatus.hitPoint + goldHeroStatus.hitPoint + equipHeroStatus.hitPoint;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.hitPoint);
                     break;
@@ -63,7 +64,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.Critical:
                 {
                     goldHeroStatus.criticalChance = (float)value;
-                    finalHeroStatus.criticalChance = baseHeroStatus.criticalChance + goldHeroStatus.criticalChance;
+                    finalHeroStatus.criticalChance = baseHeroStatus.criticalChance + goldHeroStatus.criticalChance + equipHeroStatus.criticalChance;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.criticalChance);
                     break;
@@ -71,7 +72,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.CriticalDamage:
                 {
                     goldHeroStatus.criticalDamage = (float)value;
-                    finalHeroStatus.criticalDamage = baseHeroStatus.criticalDamage + goldHeroStatus.criticalDamage;
+                    finalHeroStatus.criticalDamage = baseHeroStatus.criticalDamage + goldHeroStatus.criticalDamage + +equipHeroStatus.criticalDamage;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.criticalDamage);
                     break;
@@ -79,7 +80,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.Armor:
                 {
                     goldHeroStatus.armor = (int)value;
-                    finalHeroStatus.armor = baseHeroStatus.armor + goldHeroStatus.armor;
+                    finalHeroStatus.armor = baseHeroStatus.armor + goldHeroStatus.armor + +equipHeroStatus.armor;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.armor);
                     break;
@@ -87,7 +88,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.MoreDamage:
                 {
                     goldHeroStatus.moreDamage = (int)value;
-                    finalHeroStatus.moreDamage = baseHeroStatus.moreDamage + goldHeroStatus.moreDamage;
+                    finalHeroStatus.moreDamage = baseHeroStatus.moreDamage + goldHeroStatus.moreDamage + +equipHeroStatus.moreDamage;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.moreDamage);
                     break;
@@ -95,7 +96,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.MinDamage:
                 {
                     goldHeroStatus.minDamage = (float)value;
-                    finalHeroStatus.minDamage = baseHeroStatus.minDamage + goldHeroStatus.minDamage;
+                    finalHeroStatus.minDamage = baseHeroStatus.minDamage + goldHeroStatus.minDamage + +equipHeroStatus.minDamage;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.minDamage);
                     break;
@@ -103,7 +104,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.Pierce:
                 {
                     goldHeroStatus.armorPierce = (int)value;
-                    finalHeroStatus.armorPierce = baseHeroStatus.armorPierce + goldHeroStatus.armorPierce;
+                    finalHeroStatus.armorPierce = baseHeroStatus.armorPierce + goldHeroStatus.armorPierce + +equipHeroStatus.armorPierce;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.armorPierce);
                     break;
@@ -111,7 +112,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.HPRegen:
                 {
                     goldHeroStatus.hitPointRegen = (float)value;
-                    finalHeroStatus.hitPointRegen = baseHeroStatus.hitPointRegen + goldHeroStatus.hitPointRegen;
+                    finalHeroStatus.hitPointRegen = baseHeroStatus.hitPointRegen + goldHeroStatus.hitPointRegen + equipHeroStatus.hitPointRegen;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.hitPointRegen);
                     break;
@@ -119,7 +120,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.Dodge:
                 {
                     goldHeroStatus.dodge = (float)value;
-                    finalHeroStatus.dodge = baseHeroStatus.dodge + goldHeroStatus.dodge;
+                    finalHeroStatus.dodge = baseHeroStatus.dodge + goldHeroStatus.dodge + equipHeroStatus.dodge;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.dodge);
                     break;
@@ -127,7 +128,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.BuffDuration:
                 {
                     goldHeroStatus.buffDuration = (float)value;
-                    finalHeroStatus.buffDuration = baseHeroStatus.buffDuration + goldHeroStatus.buffDuration;
+                    finalHeroStatus.buffDuration = baseHeroStatus.buffDuration + goldHeroStatus.buffDuration + equipHeroStatus.buffDuration;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.buffDuration);
                     break;
@@ -135,7 +136,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.DebuffResist:
                 {
                     goldHeroStatus.debuffResist = (float)value;
-                    finalHeroStatus.debuffResist = baseHeroStatus.debuffResist + goldHeroStatus.debuffResist;
+                    finalHeroStatus.debuffResist = baseHeroStatus.debuffResist + goldHeroStatus.debuffResist + +equipHeroStatus.debuffResist;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.debuffResist);
                     break;
@@ -143,7 +144,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.DropItem:
                 {
                     goldHeroStatus.dropItem = (int)value;
-                    finalHeroStatus.dropItem = baseHeroStatus.dropItem + goldHeroStatus.dropItem;
+                    finalHeroStatus.dropItem = baseHeroStatus.dropItem + goldHeroStatus.dropItem + +equipHeroStatus.dropItem;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.dropItem);
                     break;
@@ -151,7 +152,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.GainGold:
                 {
                     goldHeroStatus.gainGold = (int)value;
-                    finalHeroStatus.gainGold = baseHeroStatus.gainGold + goldHeroStatus.gainGold;
+                    finalHeroStatus.gainGold = baseHeroStatus.gainGold + goldHeroStatus.gainGold + equipHeroStatus.gainGold;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.gainGold);
                     break;
@@ -159,7 +160,7 @@ public class PlayerStatusManager : MonoBehaviour
             case HeroStatusEnum.GainExp:
                 {
                     goldHeroStatus.gainExp = (int)value;
-                    finalHeroStatus.gainExp = baseHeroStatus.gainExp + goldHeroStatus.gainExp;
+                    finalHeroStatus.gainExp = baseHeroStatus.gainExp + goldHeroStatus.gainExp + +equipHeroStatus.gainExp;
 
                     heroInfo.UpdateValue(stat, finalHeroStatus.gainExp);
                     break;
@@ -193,9 +194,11 @@ public class PlayerStatusManager : MonoBehaviour
         goldHeroStatus.objectName = "goldHeroStatus";
         cashHeroStatus.objectName = "cashHeroStatus";
         finalHeroStatus.objectName = "finalHeroStatus";
+        equipHeroStatus.objectName = "equipHeroStatus";
         finalHeroStatus.AddData(ref baseHeroStatus);
         finalHeroStatus.AddData(ref goldHeroStatus);
         finalHeroStatus.AddData(ref cashHeroStatus);
+        finalHeroStatus.AddData(ref equipHeroStatus);
     }
 
     private void SetUp()
@@ -204,14 +207,15 @@ public class PlayerStatusManager : MonoBehaviour
         baseHeroStatus = new HeroData();
         finalHeroStatus = new HeroData();
         cashHeroStatus = new HeroData();
+        equipHeroStatus = new HeroData();
 
         SetDefault();
     }
 
     private void Start()
     {
-        heroInfo = GameObject.Find("Canvas_Info").GetComponent<UI_HeroInfo>();
-
+        heroInfo = UnderHudManager.instance.transform.GetChild(1).GetComponent<UI_HeroInfo>();
+        heroInfo.gameObject.SetActive(true);
         heroInfo.BeginSetUp(ref finalHeroStatus);
     }
 

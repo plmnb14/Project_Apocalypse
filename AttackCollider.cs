@@ -2,35 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : Projectile
+public class AttackCollider : MonoBehaviour
 {
-    public override void SetStatus(Vector3 dir)
-    {
-        direction = transform.right = (dir + new Vector3(0.0f, Random.Range(0.1f, 0.3f), 0.0f));
-    }
-
-    protected override void OnDie()
-    {
-        damage = 200.0f;
-        lifetime = 2.0f;
-        base.OnDie();
-    }
-
-    protected override void SetUp()
-    {
-        base.SetUp();
-        speed = 3.0f;
-    }
-
-    private void Update()
-    {
-        base.OnFly();
-        base.OnCycle();
-    }
+    public float damage { get; set; }
+    public LayerMask targetMask { get; set; }
+    private BoxCollider2D myCollider;
 
     private void Awake()
     {
-        SetUp();
+        damage = 0.0f;
+        myCollider = GetComponent<BoxCollider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -53,8 +34,6 @@ public class Bullet : Projectile
 
             VFX vfx = VFXManager.instance.GetVFX("VFX_Hit_01");
             vfx.transform.position = hitCorss;
-
-            OnDie();
         }
     }
 }

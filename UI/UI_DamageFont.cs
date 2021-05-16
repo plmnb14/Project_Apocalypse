@@ -6,6 +6,7 @@ public class UI_DamageFont : UI_Object
 {
     public enum fontUsedType { Default, Critical, Dot, Heal, Reduce }
 
+    const float lifeTime = 1.5f;
     const int maxSize = 10;
     const float gap = 0.14f;
 
@@ -67,8 +68,8 @@ public class UI_DamageFont : UI_Object
             else
             {
                 fontChild[i].transform.position += new Vector3(gap * j - count, 0.0f, 0.0f);
-                fontChild[i].gameObject.SetActive(true);
                 fontChild[i].sprite = fontSprite[num[i]];
+                fontChild[i].gameObject.SetActive(true);
                 j++;
             }
         }
@@ -96,18 +97,18 @@ public class UI_DamageFont : UI_Object
         foreach (var font in fontChild)
         {
             font.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            font.transform.localPosition = Vector3.zero;
             font.gameObject.SetActive(false);
         }
 
-        fontLifeTime = 0.0f;
-       // payback(this);
+        PoolManager.instance.BackObject(myName, this);
     }
 
     private void SetUp()
     {
         moveSpeed = 3.0f;
         //scaleSpeed = 8.0f;
-        fontLifeTime = 1.5f;
+        fontLifeTime = lifeTime;
 
         fontSprite = Resources.LoadAll<Sprite>("Sprite/UI/Num");
         fontChild = gameObject.GetComponentsInChildren<SpriteRenderer>();
@@ -116,6 +117,17 @@ public class UI_DamageFont : UI_Object
         {
             child.gameObject.SetActive(false);
         }
+    }
+
+    private void OnDisable()
+    {
+        fontLifeTime = 0.0f;
+    }
+
+    private void OnEnable()
+    {
+        moveSpeed = 3.0f;
+        fontLifeTime = lifeTime;
     }
 
     private void Awake()

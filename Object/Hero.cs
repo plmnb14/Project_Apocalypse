@@ -38,6 +38,17 @@ public class Hero : Living
 
     }
 
+    public override void OnDamage(Vector3 crossPoint, Vector3 hitNotmal, float damage, bool isCritical = false)
+    {
+        float finalDamage = damage;
+
+        UI_DamageFont font = PoolManager.instance.GetObject("DamageFont") as UI_DamageFont;
+        font.SetNumber(finalDamage, crossPoint);
+        font.ChangeColor(isCritical ? UI_DamageFont.fontUsedType.Critical : UI_DamageFont.fontUsedType.Default);
+
+        base.OnDamage(crossPoint, hitNotmal, finalDamage);
+    }
+
     private float atkTimeCur = 0.0f;
     protected override IEnumerator OnAttack()
     {
@@ -236,6 +247,7 @@ public class Hero : Living
 
     private void Awake()
     {
+        hitPoint = 10000000.0f;
         SetUp();
     }
 }

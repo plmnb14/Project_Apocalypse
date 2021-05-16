@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UnderHudManager : MonoBehaviour
 {
-    public enum UnderInfo { HEROINFO, STATUSUPGRADE, PET, EQUIP, ARTIFECT }
+    public enum UnderInfo { HEROINFO, STATUSUPGRADE, EQUIP, PET, ARTIFECT, UnderInfo_end}
     private UnderInfo curInfo;
     GameObject[] childCanvas;
     ButtonUnderHud[] childButton;
@@ -24,6 +24,11 @@ public class UnderHudManager : MonoBehaviour
     {
         if (curInfo == info) return;
 
+        if(curInfo == UnderInfo.EQUIP)
+        {
+            PopUpManager.instance.ClearAllPopUp();
+        }
+
         ActiveCanvas(false);
         curInfo = info;
         ActiveCanvas(true);
@@ -37,13 +42,12 @@ public class UnderHudManager : MonoBehaviour
 
     private void SetUp()
     {
-        childCanvas = new GameObject[5];
-        childCanvas[0] = transform.GetChild(1).gameObject;
-        childCanvas[1] = transform.GetChild(2).gameObject;
-
-        childButton = new ButtonUnderHud[5];
-        for(int i = 0; i < 2; i++)
+        childCanvas = new GameObject[(int)UnderInfo.UnderInfo_end];
+        childButton = new ButtonUnderHud[(int)UnderInfo.UnderInfo_end];
+        for(int i = 0; i < (int)UnderInfo.UnderInfo_end; i++)
         {
+            childCanvas[i] = transform.GetChild(i+1).gameObject;
+
             childButton[i] = transform.GetChild(0).
                 transform.GetChild(i).gameObject.GetComponent<ButtonUnderHud>();
         }
@@ -55,10 +59,23 @@ public class UnderHudManager : MonoBehaviour
     {
         childCanvas[0].SetActive(true);
         childButton[0].ChangeActivate(true);
+
+        for(int i = 1; i < (int)UnderInfo.UnderInfo_end; i++)
+        {
+            childCanvas[i].SetActive(false);
+            childButton[i].ChangeActivate(false);
+        }
+
+        childCanvas[2].SetActive(true);
     }
 
     private void Awake()
     {
         SetUp();
+
+        for (int i = 0; i < (int)UnderInfo.UnderInfo_end; i++)
+        {
+            childCanvas[i].SetActive(true);
+        }
     }
 }

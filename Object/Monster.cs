@@ -12,6 +12,11 @@ public class Monster : Living
     private UI_HPBar hpBar;
     private float deadTime;
     protected GameObject targetHero;
+    protected SpriteRenderer spriteRenderer;
+    protected AttackCollider attackCollider;
+
+    protected float attackRange;
+    protected bool canAttack;
 
     protected override IEnumerator OnDead()
     {
@@ -40,11 +45,28 @@ public class Monster : Living
 
         if (null != hpBar) hpBar.ChangeHealth(hitPoint - finalDamage);
 
-        UI_DamageFont font = Instantiate(Resources.Load<UI_DamageFont>("Prefab/DamageFont"));
+        UI_DamageFont font = PoolManager.instance.GetObject("DamageFont") as UI_DamageFont;
         font.SetNumber(finalDamage, crossPoint);
         font.ChangeColor(isCritical ? UI_DamageFont.fontUsedType.Critical : UI_DamageFont.fontUsedType.Default);
 
         base.OnDamage(crossPoint, hitNotmal, finalDamage);
+        StartCoroutine(ChangeColor());
+    }
+
+    private float colorTime;
+    private WaitForEndOfFrame colorWait = new WaitForEndOfFrame(); 
+    private IEnumerator ChangeColor()
+    {
+        colorTime = 0.05f;
+        spriteRenderer.material.color = Color.red;
+        while (colorTime > 0.0f)
+        {
+            colorTime -= Time.deltaTime;
+            yield return colorWait;
+        }
+        spriteRenderer.material.color = Color.white;
+
+        yield break;
     }
 
     public override void ResetStatus(Transform parent = null)
@@ -53,23 +75,69 @@ public class Monster : Living
 
         curState = State.Idle;
         hitPoint = 2000.0f;
+        attackRange = 0.75f;
+        canAttack = false;
     }
-
 
     protected void OnRun()
     {
         if (dead)
             return;
 
-        transform.position += Vector3.left * Time.deltaTime * 1.0f;
+        if(attackRange < Vector3.Distance(transform.position, StageManager.instance.hero.transform.position))
+        {
+            transform.position += Vector3.left * Time.deltaTime;
+        }
+        else
+        {
+            curState = State.Attack;
+        }
     }
 
-    protected override void SetUp()
+    private float atkTimeCur = 0.0f;
+    protected override IEnumerator OnAttack()
     {
-        base.SetUp();
+        if (canAttack)
+        {
+            animator.SetTrigger(animatorParam[(int)animatorEnum.OnAttack]);
+            canAttack = false;
 
-        hitPoint = 2000.0f;
-        curState = State.Idle;
+            yield return new WaitForEndOfFrame();
+
+            atkTimeCur = animator.GetCurrentAnimatorStateInfo(0).length;
+        }
+
+        else
+        {
+            if (atkTimeCur > 0.0f)
+            {
+                atkTimeCur -= Time.deltaTime;
+            }
+
+            else
+            {
+                atkTimeCur = 0.0f;
+                curState = State.Idle;
+            }
+        }
+    }
+
+    private float atkCooltimeCur = 0.0f;
+    private float atkCooltimeMax = 0.1f;
+    private void AttackCooltime()
+    {
+        if (curState == State.Attack || canAttack) return;
+
+        if (atkCooltimeCur < atkCooltimeMax)
+        {
+            atkCooltimeCur += Time.deltaTime;
+        }
+
+        else
+        {
+            atkCooltimeCur = 0.0f;
+            canAttack = true;
+        }
     }
 
     protected override void StateCheck()
@@ -77,10 +145,6 @@ public class Monster : Living
         switch (curState)
         {
             case State.Idle:
-                {
-                    break;
-                }
-
             case State.Run:
                 {
                     OnRun();
@@ -89,7 +153,7 @@ public class Monster : Living
 
             case State.Attack:
                 {
-                    OnAttack();
+                    StartCoroutine(OnAttack());
                     break;
                 }
 
@@ -102,7 +166,23 @@ public class Monster : Living
 
     private void Update()
     {
-        OnRun();
+        StateCheck();
+        AttackCooltime();
+    }
+
+    protected override void SetUp()
+    {
+        base.SetUp();
+
+        hitPoint = 2000.0f;
+        curState = State.Run;
+        attackRange = 0.75f;
+        canAttack = true;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        attackCollider = transform.GetChild(0).GetComponent<AttackCollider>();
+        attackCollider.damage = 10.0f;
+        attackCollider.targetMask = LayerMask.NameToLayer("Player");
     }
 
     private void Awake()
