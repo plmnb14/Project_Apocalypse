@@ -150,7 +150,7 @@ public class ResourceManager : MonoBehaviour
     {
         updateCrystal(crystalFree + crystalCharged);
         updateCoin(coin);
-        updateElement(element);
+        //updateElement(element);
 
         Camera tmpCam = Camera.main;
 

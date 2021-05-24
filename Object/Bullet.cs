@@ -11,6 +11,7 @@ public class Bullet : Projectile
 
     protected override void OnDie()
     {
+        dead = true;
         damage = 200.0f;
         lifetime = 2.0f;
         base.OnDie();
@@ -28,6 +29,11 @@ public class Bullet : Projectile
         base.OnCycle();
     }
 
+    private void OnEnable()
+    {
+        dead = false;
+    }
+
     private void Awake()
     {
         SetUp();
@@ -35,7 +41,7 @@ public class Bullet : Projectile
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer != targetMask)
+        if (collision.gameObject.layer != targetMask || dead)
             return;
 
         Living ColTarget = collision.GetComponent<Living>();

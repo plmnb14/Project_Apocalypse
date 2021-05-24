@@ -67,7 +67,7 @@ public class Equipment : MonoBehaviour, IPointerClickHandler
         lockScreen.gameObject.SetActive(!unlockEquipment);
     }
 
-    private void UpdateHeldCount()
+    public void UpdateHeldCount()
     {
         countStringBuilder.Remove(0, countStringBuilder.Length);
         countStringBuilder.Append(heldCount);
@@ -97,7 +97,7 @@ public class Equipment : MonoBehaviour, IPointerClickHandler
         EquipmentManager.instance.UpdateDamage();
     }
 
-    private void UpdateSliderValue()
+    public void UpdateSliderValue()
     {
         equipmentSlider.value = heldCount;
     }
@@ -110,11 +110,6 @@ public class Equipment : MonoBehaviour, IPointerClickHandler
         levelText = transform.GetChild(0).GetChild(2).GetComponent<Text>();
         equipmentName = transform.GetChild(3).GetComponent<Text>();
         lockScreen = transform.GetChild(4).gameObject;
-    }
-
-    private void Start()
-    {
-        //UpdateDamage();
     }
 
     private void InitializeMember()

@@ -33,12 +33,6 @@ public class EquipmentDetail : MonoBehaviour
         myEquipment.UpdateCopy(ref targetEquipment);
     }
 
-
-    private void UpdateStatusValue()
-    {
-
-    }
-
     private void AwakeSetUp()
     {
         equipmentTitleName = transform.GetChild(1).GetChild(0).GetComponent<Text>();

@@ -17,7 +17,6 @@ public class Projectile : WorldObject
 
     protected override void OnDie()
     {
-        base.OnDie();
         ProjectileManager.instance.BackProjtile(myName, this);
     }
 

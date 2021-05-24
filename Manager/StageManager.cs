@@ -74,24 +74,30 @@ public class StageManager : MonoBehaviour
     {
         scrollBackground[0].scrolled = false;
         scrollBackground[1].scrolled = false;
-        Monster mon = GetMonster("Slime");
-        mon.transform.position = new Vector3(3.2f, 1.07f, 0.0f);
-        float sqrtValue = (((stageIndex*0.1f) * (stageIndex*0.1f)) * 0.5f) + 1.0f; 
-        mon.hitPoint *= sqrtValue;
-        mon.HpBar.SetUpHealth(mon.hitPoint);
-        monList.Add(mon);
 
-        if(stageIndex > 0 && stageIndex % 10 == 0)
+
+        for(int i = 0; i < 3; i++)
         {
-            mon.transform.localScale = Vector3.one * 1.5f;
+            Monster mon = GetMonster("Slime");
+            mon.transform.position = new Vector3(3.2f + i * 1.0f, 1.07f, 0.0f);
+            float sqrtValue = (((stageIndex * 0.1f) * (stageIndex * 0.1f)) * 0.5f) + 1.0f;
+            mon.hitPoint *= sqrtValue;
+            mon.HpBar.SetUpHealth(mon.hitPoint);
+            monList.Add(mon);
+
+            summonCount++;
+            if (stageIndex > 0 && stageIndex % 10 == 0)
+            {
+                mon.transform.localScale = Vector3.one * 1.5f;
+                break;
+            }
+
+            else
+            {
+                mon.transform.localScale = Vector3.one * 1.0f;
+            }
         }
 
-        else
-        {
-            mon.transform.localScale = Vector3.one * 1.0f;
-        }
-
-        summonCount++;
         stageIndex++;
     }
 

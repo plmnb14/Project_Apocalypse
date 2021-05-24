@@ -54,7 +54,10 @@ public class EquipmentManager : MonoBehaviour
             }
         }
 
-        
+        for (int i = 0; i < equipmentChildCount; i++)
+        {
+            arrayEquipment[i].equipmentName.text = DataManger.instance.playerEquipmentItemDataList[i].itemName;
+        }
     }
 
     private void Start()

@@ -15,6 +15,7 @@ public class Monster : Living
     protected SpriteRenderer spriteRenderer;
     protected AttackCollider attackCollider;
 
+    private Color myColor;
     protected float attackRange;
     protected bool canAttack;
 
@@ -64,7 +65,7 @@ public class Monster : Living
             colorTime -= Time.deltaTime;
             yield return colorWait;
         }
-        spriteRenderer.material.color = Color.white;
+        spriteRenderer.material.color = myColor;
 
         yield break;
     }
@@ -170,19 +171,37 @@ public class Monster : Living
         AttackCooltime();
     }
 
+    private Color GetColor(int colorNumber) => colorNumber switch
+    {
+        0 => Color.red,
+        1 => new Color(1.0f, 0.4f, 0.6f, 1.0f),
+        2 => Color.yellow,
+        3 => Color.blue,
+        4 => Color.black,
+        _ => Color.white
+    };
+
+    private void OnEnable()
+    {
+        spriteRenderer.material.color = myColor;
+    }
+
     protected override void SetUp()
     {
         base.SetUp();
 
         hitPoint = 2000.0f;
         curState = State.Run;
-        attackRange = 0.75f;
+        attackRange = Random.Range(0.5f, 0.9f);
         canAttack = true;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         attackCollider = transform.GetChild(0).GetComponent<AttackCollider>();
         attackCollider.damage = 10.0f;
         attackCollider.targetMask = LayerMask.NameToLayer("Player");
+
+        int rand = Random.Range(0, 5);
+        myColor = GetColor(rand);
     }
 
     private void Awake()

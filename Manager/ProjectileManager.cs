@@ -30,13 +30,13 @@ public class ProjectileManager : MonoBehaviour
         return proj;
     }
 
-    public void BackProjtile(string name, Projectile proj)
+    public void BackProjtile(string projName, Projectile proj)
     {
         if (null != proj)
         {
             proj.ResetStatus(this.transform);
             proj.gameObject.SetActive(false);
-            projDictionary[name].Enqueue(proj);
+            projDictionary[projName].Enqueue(proj);
         }
     }
 
@@ -75,7 +75,7 @@ public class ProjectileManager : MonoBehaviour
 
     private void SetUp()
     {
-        createCount = 10;
+        createCount = 100;
 
         projDictionary = new Dictionary<string, Queue<Projectile>>();
         prefabDictionary = new Dictionary<string, Projectile>();

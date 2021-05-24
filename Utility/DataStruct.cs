@@ -4,6 +4,40 @@ using UnityEngine;
 using System.IO;
 using System;
 
+public struct EquipmentGachaData
+{
+    public float gachaChance;
+    public int inhenceGachaChance;
+    public int accumulateGachaChance;
+    public int itemCode;
+}
+
+public struct BaseEquipmentItemData
+{
+    public int itemCode;
+    public string itemName;
+    public byte grade;
+    public byte tier;
+}
+
+public struct PlayerEquipmentItemData
+{
+    public int itemCode;
+    public string itemName;
+    public int grade;
+    public int tier;
+    public int equipDamagePercent;
+    public int equipDamageAdd;
+    public float equipCriticalChance;
+    public int equipCriticalDamage;
+    public int heldStatusType_0;
+    public int heldStatusType_1;
+    public int heldStatusType_2;
+    public float heldStatusValue_0;
+    public float heldStatusValue_1;
+    public float heldStatusValue_2;
+}
+
 public class DataStruct : MonoBehaviour
 {
     static public void SaveData<T>(T singleData, string jsonDataName)
