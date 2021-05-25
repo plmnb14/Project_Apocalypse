@@ -18,22 +18,28 @@ public class DataManger : MonoBehaviour
     #endregion
 
     #region ÇÊµå
-    public List<EquipmentGachaData> equipmentGachaDataList { get; set; }
-    public List<PlayerEquipmentItemData> playerEquipmentItemDataList { get; set; }
+    public List<GachaChanceData> weaponGachaChanceList { get; set; }
+    public List<WeaponStatsForDatabase> weaponStatForDataList { get; set; }
+    public Dictionary<int, WeaponStatsForDatabase> weaponStatForDataDictionary { get; set; }
     #endregion
 
     private void LoadCSVData()
     {
-        CSVReader.GetEquipmentGachaListOnCSVFile(out List<EquipmentGachaData> gachaList, "EquipmentGachaChanceData.csv");
-        equipmentGachaDataList = gachaList;
-        CSVReader.GetEquipmentStatusListOnCSVFile(out List<PlayerEquipmentItemData> statusList, "EquipmentStatusData.csv");
-        playerEquipmentItemDataList = statusList;
+        CSVReader.GetGachaChanceDataListOnCSVFile(out List<GachaChanceData> gachaList, "WeaponGachaChanceData.csv");
+        weaponGachaChanceList = gachaList;
+
+        CSVReader.GetWeaponStatsForDataBaseListOnCSVFile(out List<WeaponStatsForDatabase> statusList, "WeaponStatusBaseData.csv");
+        weaponStatForDataList = statusList;
+
+        CSVReader.GetWeaponStatsForDataBaseDictionaryOnCSVFile(out Dictionary<int, WeaponStatsForDatabase> statusDictionary, "weaponStatusBaseData.csv");
+        weaponStatForDataDictionary = statusDictionary;
     }
 
     private void SetUpField()
     {
-        equipmentGachaDataList = new List<EquipmentGachaData>();
-        playerEquipmentItemDataList = new List<PlayerEquipmentItemData>();
+        weaponGachaChanceList = new List<GachaChanceData>();
+        weaponStatForDataList = new List<WeaponStatsForDatabase>();
+        weaponStatForDataDictionary = new Dictionary<int, WeaponStatsForDatabase>();
     }
 
     private void Awake()

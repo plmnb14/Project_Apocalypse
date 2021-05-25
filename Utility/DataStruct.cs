@@ -4,32 +4,15 @@ using UnityEngine;
 using System.IO;
 using System;
 
-public struct EquipmentGachaData
-{
-    public float gachaChance;
-    public int inhenceGachaChance;
-    public int accumulateGachaChance;
-    public int itemCode;
-}
-
-public struct BaseEquipmentItemData
+public struct GachaChanceData
 {
     public int itemCode;
-    public string itemName;
-    public byte grade;
-    public byte tier;
+    public int accumulateChance;
+    public float independenceChance;
 }
 
 public struct PlayerEquipmentItemData
 {
-    public int itemCode;
-    public string itemName;
-    public int grade;
-    public int tier;
-    public int equipDamagePercent;
-    public int equipDamageAdd;
-    public float equipCriticalChance;
-    public int equipCriticalDamage;
     public int heldStatusType_0;
     public int heldStatusType_1;
     public int heldStatusType_2;

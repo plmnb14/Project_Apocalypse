@@ -52,6 +52,11 @@ public class FixedMenuManager : MonoBehaviour
         gachaResultPopUp.gachaCount = gachaCount;
     }
 
+    public void GachaResultQueue(ref Queue<int> resultQueue)
+    {
+        gachaResultPopUp.gachaItemCode = resultQueue;
+    }
+
     public void GachaEvent()
     {
         StartCoroutine(gachaResultPopUp.ShowGachaResult());

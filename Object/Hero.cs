@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Hero : Living
 {
-    private Weapon weapon;
+    private MountedWeapon weapon;
     private bool canAttack;
     private Monster target;
 
@@ -172,7 +172,7 @@ public class Hero : Living
         base.SetUp();
 
         curState = State.Idle;
-        weapon = transform.GetChild(0).GetComponent<Weapon>();
+        weapon = transform.GetChild(0).GetComponent<MountedWeapon>();
         canAttack = true;
     }
 

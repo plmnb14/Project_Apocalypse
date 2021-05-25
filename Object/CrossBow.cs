@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrossBow : Weapon
+public class CrossBow : MountedWeapon
 {
     private GameObject aimPoint;
 
