@@ -8,7 +8,7 @@ public class DamageCalculator : MonoBehaviour
     const float calibrationMinusValue = 0.01f;
     static public long DamageCaculating(ref LivingData data, out bool isCritical)
     {
-        long finalDamage = data.damage;
+        long finalDamage = data.damageFinal;
         isCritical = false;
 
         if (ChanceCaculating(data.criticalChance * calibrationMinusValue))
@@ -22,7 +22,7 @@ public class DamageCalculator : MonoBehaviour
 
     static public long DefenseCaculating(ref LivingData data, long damage)
     {
-        long finalDamage = data.damage;
+        long finalDamage = data.damageFinal;
         if (ChanceCaculating(data.dodge * calibrationPlusValue))
         {
             finalDamage = 0;

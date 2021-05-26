@@ -5,8 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public enum EnchantType { Damage, CriticalChance, CriticalDamage, EnchantType_End }
-public enum HeldStatType { None = -1, DamageFixed, DamagePercent, CriticalChance, HeldType_End }
+public enum HeldStatType { None = -1, DamageFixed, DamagePercent, CriticalChance, CriticalDamage, HeldType_End }
 
 public enum WeaponStatType { DamageFixed, DamagePercent, CriticalChance, CriticalDamage, WeaponStatType_End };
 
@@ -15,7 +14,8 @@ public struct WeaponStatsForSave
     public int itemCode;
     public int reinforcelevel;
     public int heldCount;
-    public EnchantType enchantType;
+    public EnchantStat enchantType;
+    public int enchantGrade;
     public bool isMounted;
     public bool isUnlock;
 }
@@ -70,6 +70,7 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
     private Text heldCountText;
     private Text levelText;
     private GameObject lockScreen;
+    private GameObject mountedFrame;
 
     public Text equipmentName { get; set; }
     public Text tierText { get; set; }
@@ -79,6 +80,7 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
 
     public void DeepCopy(ref Weapon weapon)
     {
+        weapon.SetLocalStatFromDataBase();
         statForSave = weapon.statForSave;
         statForLocal = weapon.statForLocal;
         equipIndex = weapon.equipIndex;
@@ -112,18 +114,25 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
     public void OnMount(bool isMount)
     {
         statForSave.isMounted = isMount;
+        ActiveMountedFrame(isMount);
         SetLocalStatsToManager(isMount);
+    }
+
+    public void ActiveMountedFrame(bool isActive)
+    {
+        mountedFrame.gameObject.SetActive(isActive);
     }
 
     public void SetLocalStatsToManager(bool isMount)
     {
-        weaponManager.allWeaponsStats.damageFixed += isMount ? statForLocal.damageFixed : -statForLocal.damageFixed;
-        weaponManager.allWeaponsStats.damagePercent += isMount ? statForLocal.damagePercent : -statForLocal.damagePercent;
-        weaponManager.allWeaponsStats.criticalChance += isMount ? statForLocal.criticalChance : -statForLocal.criticalChance;
-        weaponManager.allWeaponsStats.criticalDamage += isMount ? statForLocal.criticalDamage : -statForLocal.criticalDamage;
+        int loopCount = (int)WeaponStatType.WeaponStatType_End;
+        for (int i = 0; i < loopCount; i++)
+        {
+            AddStatsOnWeaponManager((WeaponStatType)i, !isMount);
+        }
     }
 
-    private void SetLocalStatFromDataBase()
+    public void SetLocalStatFromDataBase()
     {
         SetReinforceCost();
         SetDamageFixed();
@@ -133,7 +142,7 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
         for (int i = 0; i < 3; i++) SetHeldStat(i);
     }
 
-    #region Local Stats Update
+    #region Local Stats Set
     private void SetReinforceCost()
     {
         statForLocal.reinforceCost = DataManger.instance.weaponStatForDataDictionary[statForSave.itemCode].reinforceCostOrigin * statForSave.reinforcelevel;
@@ -180,27 +189,162 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
     }
     #endregion
 
-    public void OnMount()
+    #region Local Stats Update
+    private void AddStatsOnWeaponManager(WeaponStatType weaponType, bool isDecrease = false)
     {
-        statForSave.isMounted = true;
-        weaponManager.damage += statForSave.reinforcelevel; // 여기 DB 공격력 넣어줘야함.
-        // 여기 공격력 이외에 나머지 능력치
-        weaponManager.UpdateDamage();
+        switch(weaponType)
+        {
+            case WeaponStatType.DamagePercent:
+                {
+                    weaponManager.allWeaponsStats.damagePercent += 
+                        isDecrease ? -statForLocal.damagePercent : statForLocal.damagePercent;
+                    break;
+                }
+            case WeaponStatType.DamageFixed:
+                {
+                    weaponManager.allWeaponsStats.damageFixed += 
+                        isDecrease ? -statForLocal.damageFixed : statForLocal.damageFixed;
+                    break;
+                }
+            case WeaponStatType.CriticalChance:
+                {
+                    weaponManager.allWeaponsStats.criticalChance += 
+                        isDecrease ? -statForLocal.criticalChance : statForLocal.criticalChance;
+                    break;
+                }
+            case WeaponStatType.CriticalDamage:
+                {
+                    weaponManager.allWeaponsStats.criticalDamage += 
+                        isDecrease ? -statForLocal.criticalDamage : statForLocal.criticalDamage;
+                    break;
+                }
+        }
+
+        weaponManager.UpdateWeaponStatsToPlayer(weaponType);
     }
 
-    public void OnDismount()
+    public void AddEnchantStatOnWeaponManager(float statValue, bool isDecrease = false)
     {
-        statForSave.isMounted = false;
-        weaponManager.damage -= statForSave.reinforcelevel;
-        weaponManager.UpdateDamage();
+        WeaponStatType weaponStatType = WeaponStatType.WeaponStatType_End;
+        switch (statForSave.enchantType)
+        {
+            case EnchantStat.DamageFixed:
+                {
+                    weaponStatType = WeaponStatType.DamageFixed;
+                    weaponManager.allWeaponsStats.damageFixed +=
+                        isDecrease ? -(int)statValue : (int)statValue;
+                    break;
+                }
+            case EnchantStat.DamagePercent:
+                {
+                    weaponStatType = WeaponStatType.DamagePercent;
+                    weaponManager.allWeaponsStats.damagePercent +=
+                        isDecrease ? -statValue : statValue;
+                    break;
+                }
+            case EnchantStat.CriticalChance:
+                {
+                    weaponStatType = WeaponStatType.CriticalChance;
+                    weaponManager.allWeaponsStats.criticalChance +=
+                        isDecrease ? -statValue : statValue;
+                    break;
+                }
+            case EnchantStat.CriticalDamage:
+                {
+                    weaponStatType = WeaponStatType.CriticalDamage;
+                    weaponManager.allWeaponsStats.criticalDamage +=
+                         isDecrease ? -(int)statValue : (int)statValue;
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
+
+        weaponManager.UpdateWeaponStatsToPlayer(weaponStatType);
     }
+
+    private void AddHeldStatOnWeaponManager(bool isDecrease = false)
+    {
+        HeldStatType heldType;
+        if (statForLocal.heldStatusValue_0 <= 0) return;
+
+        else
+        {
+            heldType = DataManger.instance.weaponStatForDataList[equipIndex].heldStatusType_0;
+            FindHeldStatType(heldType, statForLocal.heldStatusValue_0, isDecrease);
+        }
+
+        if (statForLocal.heldStatusValue_1 <= 0) return;
+
+        else
+        {
+            heldType = DataManger.instance.weaponStatForDataList[equipIndex].heldStatusType_1;
+            FindHeldStatType(heldType, statForLocal.heldStatusValue_1, isDecrease);
+        }
+
+        if (statForLocal.heldStatusValue_2 <= 0) return;
+
+        else
+        {
+            heldType = DataManger.instance.weaponStatForDataList[equipIndex].heldStatusType_2;
+            FindHeldStatType(heldType, statForLocal.heldStatusValue_1, isDecrease);
+        }
+    }
+
+    private void FindHeldStatType(HeldStatType heldType, float statValue, bool isDecrease = false)
+    {
+        WeaponStatType weaponStatType = WeaponStatType.DamageFixed;
+        switch(heldType)
+        {
+            case HeldStatType.DamageFixed:
+                {
+                    weaponStatType = WeaponStatType.DamageFixed;
+                    weaponManager.allWeaponsStats.damageFixed +=
+                        isDecrease ? -(int)statValue : (int)statValue;
+                    break;
+                }
+            case HeldStatType.DamagePercent:
+                {
+                    weaponStatType = WeaponStatType.DamagePercent;
+                    weaponManager.allWeaponsStats.damagePercent +=
+                        isDecrease ? -statValue : statValue;
+                    break;
+                }
+            case HeldStatType.CriticalChance:
+                {
+                    weaponStatType = WeaponStatType.CriticalChance;
+                    weaponManager.allWeaponsStats.criticalChance +=
+                        isDecrease ? -statValue : statValue;
+                    break;
+                }
+            case HeldStatType.CriticalDamage:
+                {
+                    weaponStatType = WeaponStatType.CriticalDamage;
+                    weaponManager.allWeaponsStats.criticalDamage +=
+                         isDecrease ? -(int)statValue : (int)statValue;
+                    break;
+                }
+        }
+
+        weaponManager.UpdateWeaponStatsToPlayer(weaponStatType);
+    }
+    #endregion
 
     public bool OnReinforce()
     {
         bool isReinforceSucceed = false;
-        if(statForLocal.reinforceCost >= ResourceManager.instance.Coin)
+        if(statForLocal.reinforceCost <= ResourceManager.instance.Coin)
         {
+            ResourceManager.instance.Coin -= statForLocal.reinforceCost;
+
+            SetLocalStatsToManager(false);
+            AddHeldStatOnWeaponManager(true);
             UpdateLevel();
+            SetLocalStatFromDataBase();
+            AddHeldStatOnWeaponManager(false);
+            SetLocalStatsToManager(true);
             isReinforceSucceed = true;
         }
 
@@ -227,7 +371,7 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
         weaponManager.DetailPopUp(equipIndex);
     }
 
-    public void UnLockUpdate(bool value)
+    public void UnLockUpdate(bool value, bool isUpdateStat = false)
     {
         statForSave.isUnlock = value;
 
@@ -237,10 +381,8 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
 
         lockScreen.gameObject.SetActive(!statForSave.isUnlock);
 
-        if(value)
-        {
-            UpdateDamage(true);
-        }
+        if(isUpdateStat)
+            AddHeldStatOnWeaponManager(false);
     }
 
     public void AddHeldCount(int addCount = 1)
@@ -266,27 +408,14 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
         if(!onlyUpdate)
         {
             statForSave.reinforcelevel += value;
-            UpdateDamage();
+            statForLocal.reinforceCost =
+                DataManger.instance.weaponStatForDataList[equipIndex].reinforceCostOrigin * statForSave.reinforcelevel;
         }
 
         levelStringBuilder.Remove(0, levelStringBuilder.Length);
         levelStringBuilder.Append("+");
         levelStringBuilder.Append(statForSave.reinforcelevel);
         levelText.text = levelStringBuilder.ToString();
-    }
-
-    private void UpdateDamagePercent(bool isNew = false)
-    {
-        if (!isNew) weaponManager.allWeaponsStats.damagePercent -= statForLocal.damagePercent;
-        SetDamagePercent();
-        weaponManager.UpdateWeaponStats(WeaponStatType.DamagePercent);
-    }
-
-    private void UpdateDamageFixed(bool isNew = false)
-    {
-        if(!isNew) weaponManager.allWeaponsStats.damageFixed -= statForLocal.damageFixed;
-        SetDamageFixed();
-        weaponManager.UpdateWeaponStats(WeaponStatType.DamageFixed);
     }
 
     public void UpdateHeldSliderValue()
@@ -302,12 +431,14 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
         levelText = transform.GetChild(0).GetChild(2).GetComponent<Text>();
         equipmentName = transform.GetChild(3).GetComponent<Text>();
         lockScreen = transform.GetChild(4).gameObject;
+        mountedFrame = transform.GetChild(5).gameObject;
     }
 
     private void InitializeMember()
     {
         statForSave = new WeaponStatsForSave();
         statForSave.reinforcelevel = 1;
+        statForSave.enchantType = EnchantStat.EnchantStat_End;
         statForLocal = new WeaponStatsForLocal();
 
         countStringBuilder = new StringBuilder(10, 10);

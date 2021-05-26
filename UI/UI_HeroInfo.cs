@@ -9,13 +9,13 @@ public class UI_HeroInfo : MonoBehaviour
     private Text[] statusText;
     private StringBuilder valueString;
 
-    public void UpdateValue(HeroStatusEnum idx, double value)
+    public void UpdateValue(HeroStatsEnum idx, double value)
     {
         valueString.Remove(0, valueString.Length);
 
         switch (idx)
         {
-            case HeroStatusEnum.Damage:
+            case HeroStatsEnum.DamageFinal:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -23,14 +23,14 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.AttackSpeed:
+            case HeroStatsEnum.AttackSpeed:
                 {
                     valueString.Append(value.ToString("N3"));
                     valueString.Append("    ");
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.HitPoint:
+            case HeroStatsEnum.HitPoint:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -38,21 +38,21 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.Critical:
+            case HeroStatsEnum.Critical:
                 {
                     valueString.Append(value.ToString("N2"));
                     valueString.Append(" %");
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.CriticalDamage:
+            case HeroStatsEnum.CriticalDamage:
                 {
                     valueString.Append(value.ToString("N2"));
                     valueString.Append(" %");
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.Armor:
+            case HeroStatsEnum.Armor:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -60,7 +60,7 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.MoreDamage:
+            case HeroStatsEnum.MoreDamage:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -68,7 +68,7 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.MinDamage:
+            case HeroStatsEnum.MinDamage:
                 {
                     value *= 100.0f;
                     valueString.Append(value.ToString("N1"));
@@ -76,7 +76,7 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.Pierce:
+            case HeroStatsEnum.Pierce:
                 {
                     value *= 100.0f;
                     valueString.Append(value.ToString("N1"));
@@ -84,14 +84,14 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.HPRegen:
+            case HeroStatsEnum.HPRegen:
                 {
                     valueString.Append(value.ToString("N3"));
                     valueString.Append(" %");
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.Dodge:
+            case HeroStatsEnum.Dodge:
                 {
                     value *= 100.0f;
                     valueString.Append(value.ToString("N2"));
@@ -99,7 +99,7 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.BuffDuration:
+            case HeroStatsEnum.BuffDuration:
                 {
                     value *= 100.0f;
                     valueString.Append(value.ToString("N1"));
@@ -107,14 +107,14 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.DebuffResist:
+            case HeroStatsEnum.DebuffResist:
                 {
                     valueString.Append(value.ToString("N2"));
                     valueString.Append(" %");
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.DropItem:
+            case HeroStatsEnum.DropItem:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -122,7 +122,7 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.GainGold:
+            case HeroStatsEnum.GainGold:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -130,7 +130,7 @@ public class UI_HeroInfo : MonoBehaviour
                     statusText[(int)idx].text = valueString.ToString();
                     break;
                 }
-            case HeroStatusEnum.GainExp:
+            case HeroStatsEnum.GainExp:
                 {
                     NumToString.GetNumberString(
                         ref valueString, (long)value, NumToString.buildSetting.GLOBAL);
@@ -147,30 +147,30 @@ public class UI_HeroInfo : MonoBehaviour
 
     public void BeginSetUp(ref HeroData data)
     {
-        UpdateValue(HeroStatusEnum.Damage, data.damage);
-        UpdateValue(HeroStatusEnum.AttackSpeed, data.attackSpeed);
-        UpdateValue(HeroStatusEnum.HitPoint, data.hitPoint);
-        UpdateValue(HeroStatusEnum.Critical, data.criticalChance);
-        UpdateValue(HeroStatusEnum.CriticalDamage, data.criticalDamage);
-        UpdateValue(HeroStatusEnum.Armor, data.armor);
+        UpdateValue(HeroStatsEnum.DamageFinal, data.damageFinal);
+        UpdateValue(HeroStatsEnum.AttackSpeed, data.attackSpeed);
+        UpdateValue(HeroStatsEnum.HitPoint, data.hitPoint);
+        UpdateValue(HeroStatsEnum.Critical, data.criticalChance);
+        UpdateValue(HeroStatsEnum.CriticalDamage, data.criticalDamage);
+        UpdateValue(HeroStatsEnum.Armor, data.armor);
 
-        UpdateValue(HeroStatusEnum.MoreDamage, data.moreDamage);
-        UpdateValue(HeroStatusEnum.MinDamage, data.minDamage);
-        UpdateValue(HeroStatusEnum.Pierce, data.armorPierce);
-        UpdateValue(HeroStatusEnum.HPRegen, data.hitPointRegen);
-        UpdateValue(HeroStatusEnum.Dodge, data.dodge);
+        UpdateValue(HeroStatsEnum.MoreDamage, data.moreDamage);
+        UpdateValue(HeroStatsEnum.MinDamage, data.minDamage);
+        UpdateValue(HeroStatsEnum.Pierce, data.armorPierce);
+        UpdateValue(HeroStatsEnum.HPRegen, data.hitPointRegen);
+        UpdateValue(HeroStatsEnum.Dodge, data.dodge);
 
-        UpdateValue(HeroStatusEnum.BuffDuration, data.buffDuration);
-        UpdateValue(HeroStatusEnum.DebuffResist, data.debuffResist);
-        UpdateValue(HeroStatusEnum.DropItem, data.dropItem);
-        UpdateValue(HeroStatusEnum.GainGold, data.gainGold);
-        UpdateValue(HeroStatusEnum.GainExp, data.gainExp);
+        UpdateValue(HeroStatsEnum.BuffDuration, data.buffDuration);
+        UpdateValue(HeroStatsEnum.DebuffResist, data.debuffResist);
+        UpdateValue(HeroStatsEnum.DropItem, data.dropItem);
+        UpdateValue(HeroStatsEnum.GainGold, data.gainGold);
+        UpdateValue(HeroStatsEnum.GainExp, data.gainExp);
     }
 
     private void SetUp()
     {
         valueString = new StringBuilder(20,20);
-        statusText = new Text[(int)HeroStatusEnum.Status_End];
+        statusText = new Text[(int)HeroStatsEnum.Stats_End];
 
         Transform targetTrans = transform.GetChild(1).transform.GetChild(1).gameObject.transform;
         for(int i  = 0; i < 6; i++)

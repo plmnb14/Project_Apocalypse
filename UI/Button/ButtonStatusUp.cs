@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class ButtonStatusUp : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public HeroStatusEnum statEnum;
+    public HeroStatsEnum statEnum;
     public double baseValue;
 
     private float goldIncreaseValue;
@@ -108,9 +108,9 @@ public class ButtonStatusUp : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     {
         switch (statEnum)
         {
-            case HeroStatusEnum.Damage:
-            case HeroStatusEnum.Armor:
-            case HeroStatusEnum.HitPoint:
+            case HeroStatsEnum.DamageFixed:
+            case HeroStatsEnum.Armor:
+            case HeroStatsEnum.HitPoint:
                 {
                     goldIncreaseValue = 1.03f;
                     break;

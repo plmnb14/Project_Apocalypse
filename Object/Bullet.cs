@@ -48,7 +48,7 @@ public class Bullet : Projectile
 
         if (null != ColTarget && !ColTarget.dead)
         {
-            LivingData data = PlayerStatusManager.instance.finalHeroStatus;
+            LivingData data = PlayerStatusManager.instance.finalHeroStats;
             damage = DamageCalculator.DamageCaculating(ref data, out bool isCritical);
             float finalDamage = Random.Range(damage * 0.7f, damage);
 

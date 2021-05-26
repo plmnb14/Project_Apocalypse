@@ -98,6 +98,34 @@ public class CSVReader : MonoBehaviour
         dataList = statusList;
     }
 
+    public static void GetWeaponEnchantTableListOnCSVFile(out List<WeaponEnchantTable> dataList, string fileName)
+    {
+        string filePath = "Assets/Resources/Database/" + fileName;
+        List<WeaponEnchantTable> statsList = new List<WeaponEnchantTable>();
+        var datas = File.ReadAllLines(filePath);
+        int dataLength = datas.Length;
+        for (int i = 1; i < dataLength; i++)
+        {
+            var parts = datas[i].Split(',');
+            WeaponEnchantTable statusData = new WeaponEnchantTable
+            {
+                grade = int.Parse(parts[0]),
+                chance = float.Parse(parts[1]),
+                accumulateChance = int.Parse(parts[2]),
+                damageFixed = int.Parse(parts[3]),
+                damagePercent = float.Parse(parts[4]),
+                criticalChance = float.Parse(parts[5]),
+                criticalDamage = float.Parse(parts[6]),
+                hitPoint = float.Parse(parts[7]),
+                armor = float.Parse(parts[8])
+            };
+
+            statsList.Add(statusData);
+        }
+
+        dataList = statsList;
+    }
+
     #region 바이너리 CSV
     //public static List<EquipmentGachaData> GetEquipmentGachaListOnCSVFile(string fileName)
     //{

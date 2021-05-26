@@ -132,7 +132,9 @@ public class LivingData : BaseData
 {
     public int level;
     public int EXP;
-    public long damage;
+    public long damageFinal;
+    public long damageFixed;
+    public float damagePercent;
     public int hitPoint;
     public int armor;
     public float attackSpeed;
@@ -146,7 +148,9 @@ public class LivingData : BaseData
     {
         LivingData copy = data == null ? new LivingData() : (LivingData)data;
         base.DeepCopy(copy);
-        copy.damage = this.damage;
+        copy.damageFinal = this.damageFinal;
+        copy.damagePercent = this.damagePercent;
+        copy.damageFixed = this.damageFixed;
         copy.hitPoint = this.hitPoint;
         copy.armor = this.armor;
         copy.attackSpeed = this.attackSpeed;
@@ -192,7 +196,9 @@ public class HeroData : LivingData
     {
         this.level += data.level;
         this.EXP += data.EXP;
-        this.damage += data.damage;
+        this.damageFinal += this.damageFinal;
+        this.damageFixed += data.damageFixed;
+        this.damagePercent += data.damagePercent;
         this.hitPoint += data.hitPoint;
         this.armor += data.armor;
         this.attackSpeed += data.attackSpeed;
@@ -215,7 +221,9 @@ public class HeroData : LivingData
     {
         this.level = data.level;
         this.EXP = data.EXP;
-        this.damage = data.damage;
+        this.damageFinal += this.damageFinal;
+        this.damageFixed += data.damageFixed;
+        this.damagePercent += data.damagePercent;
         this.hitPoint = data.hitPoint;
         this.armor = data.armor;
         this.attackSpeed = data.attackSpeed;

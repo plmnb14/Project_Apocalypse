@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum HeroStatusEnum
+public enum HeroStatsEnum
 {
-    Damage, AttackSpeed, HitPoint, Critical , CriticalDamage, Armor,
+    DamageFinal, AttackSpeed, HitPoint, Critical , CriticalDamage, Armor,
     MoreDamage, MinDamage, Pierce, HPRegen, Dodge,
-    BuffDuration, DebuffResist, DropItem, GainGold, GainExp, Status_End
+    BuffDuration, DebuffResist, DropItem, GainGold, GainExp, DamageFixed, DamagePercent, Stats_End
 };
 
 public class PlayerStatusManager : MonoBehaviour
@@ -23,191 +23,203 @@ public class PlayerStatusManager : MonoBehaviour
     private static PlayerStatusManager m_instance;
 
     #region 플레이어 스탯정보 모음
-    public HeroData baseHeroStatus;
-    public HeroData goldHeroStatus;
-    public HeroData cashHeroStatus;
-    public HeroData equipHeroStatus;
-    public HeroData finalHeroStatus;
+    public HeroData baseHeroStats;
+    public HeroData goldHeroStats;
+    public HeroData cashHeroStats;
+    public HeroData weaponHeroStats;
+    public HeroData finalHeroStats;
     #endregion
 
     private UI_HeroInfo heroInfo;
 
-    public void UpdateValue(HeroStatusEnum stat, double value)
+    private void CalculatePlayerDamage()
     {
+        long finalDamage = (long)Mathf.Round(finalHeroStats.damageFixed * (1 + finalHeroStats.damagePercent * 0.01f));
+        finalHeroStats.damageFinal = finalDamage;
+    }
+
+    public void UpdateValue(HeroStatsEnum stat, double value)
+    {
+        double finalValue = 0;
         switch(stat)
         {
-            case HeroStatusEnum.Damage :
+            case HeroStatsEnum.DamageFinal:
                 {
-                    goldHeroStatus.damage = (long)value;
-                    finalHeroStatus.damage = baseHeroStatus.damage + goldHeroStatus.damage + equipHeroStatus.damage;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.damage);
+                    CalculatePlayerDamage();
+                    finalValue = (double)finalHeroStats.damageFinal;
                     break;
                 }
-            case HeroStatusEnum.AttackSpeed:
+            case HeroStatsEnum.DamageFixed:
                 {
-                    goldHeroStatus.attackSpeed = (float)value;
-                    finalHeroStatus.attackSpeed = baseHeroStatus.attackSpeed + goldHeroStatus.attackSpeed + equipHeroStatus.attackSpeed;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.attackSpeed);
-                    StageManager.instance.hero.UpdateAttackSpeed(finalHeroStatus.attackSpeed);
+                    goldHeroStats.damageFixed = (long)value;
+                    finalHeroStats.damageFixed = baseHeroStats.damageFixed + goldHeroStats.damageFixed + weaponHeroStats.damageFixed;
+                    CalculatePlayerDamage();
+                    stat = HeroStatsEnum.DamageFinal;
+                    finalValue = (double)finalHeroStats.damageFinal;
                     break;
                 }
-            case HeroStatusEnum.HitPoint:
+            case HeroStatsEnum.DamagePercent:
                 {
-                    goldHeroStatus.hitPoint = (int)value;
-                    finalHeroStatus.hitPoint = baseHeroStatus.hitPoint + goldHeroStatus.hitPoint + equipHeroStatus.hitPoint;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.hitPoint);
+                    goldHeroStats.damagePercent = (float)value;
+                    finalHeroStats.damagePercent = baseHeroStats.damagePercent + goldHeroStats.damagePercent + weaponHeroStats.damagePercent;
+                    CalculatePlayerDamage();
+                    stat = HeroStatsEnum.DamageFinal;
+                    finalValue = (double)finalHeroStats.damageFinal;
                     break;
                 }
-            case HeroStatusEnum.Critical:
+            case HeroStatsEnum.AttackSpeed:
                 {
-                    goldHeroStatus.criticalChance = (float)value;
-                    finalHeroStatus.criticalChance = baseHeroStatus.criticalChance + goldHeroStatus.criticalChance + equipHeroStatus.criticalChance;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.criticalChance);
+                    goldHeroStats.attackSpeed = (float)value;
+                    finalHeroStats.attackSpeed = baseHeroStats.attackSpeed + goldHeroStats.attackSpeed + weaponHeroStats.attackSpeed;
+                    finalValue = (double)finalHeroStats.attackSpeed;
+                    StageManager.instance.hero.UpdateAttackSpeed(finalHeroStats.attackSpeed);
                     break;
                 }
-            case HeroStatusEnum.CriticalDamage:
+            case HeroStatsEnum.HitPoint:
                 {
-                    goldHeroStatus.criticalDamage = (float)value;
-                    finalHeroStatus.criticalDamage = baseHeroStatus.criticalDamage + goldHeroStatus.criticalDamage + +equipHeroStatus.criticalDamage;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.criticalDamage);
+                    goldHeroStats.hitPoint = (int)value;
+                    finalHeroStats.hitPoint = baseHeroStats.hitPoint + goldHeroStats.hitPoint + weaponHeroStats.hitPoint;
+                    finalValue = (double)finalHeroStats.attackSpeed;
                     break;
                 }
-            case HeroStatusEnum.Armor:
+            case HeroStatsEnum.Critical:
                 {
-                    goldHeroStatus.armor = (int)value;
-                    finalHeroStatus.armor = baseHeroStatus.armor + goldHeroStatus.armor + +equipHeroStatus.armor;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.armor);
+                    goldHeroStats.criticalChance = (float)value;
+                    finalHeroStats.criticalChance = baseHeroStats.criticalChance + goldHeroStats.criticalChance + weaponHeroStats.criticalChance;
+                    finalValue = (double)finalHeroStats.criticalChance;
                     break;
                 }
-            case HeroStatusEnum.MoreDamage:
+            case HeroStatsEnum.CriticalDamage:
                 {
-                    goldHeroStatus.moreDamage = (int)value;
-                    finalHeroStatus.moreDamage = baseHeroStatus.moreDamage + goldHeroStatus.moreDamage + +equipHeroStatus.moreDamage;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.moreDamage);
+                    goldHeroStats.criticalDamage = (float)value;
+                    finalHeroStats.criticalDamage = baseHeroStats.criticalDamage + goldHeroStats.criticalDamage + +weaponHeroStats.criticalDamage;
+                    finalValue = (double)finalHeroStats.criticalDamage;
                     break;
                 }
-            case HeroStatusEnum.MinDamage:
+            case HeroStatsEnum.Armor:
                 {
-                    goldHeroStatus.minDamage = (float)value;
-                    finalHeroStatus.minDamage = baseHeroStatus.minDamage + goldHeroStatus.minDamage + +equipHeroStatus.minDamage;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.minDamage);
+                    goldHeroStats.armor = (int)value;
+                    finalHeroStats.armor = baseHeroStats.armor + goldHeroStats.armor + +weaponHeroStats.armor;
+                    finalValue = (double)finalHeroStats.armor;
                     break;
                 }
-            case HeroStatusEnum.Pierce:
+            case HeroStatsEnum.MoreDamage:
                 {
-                    goldHeroStatus.armorPierce = (int)value;
-                    finalHeroStatus.armorPierce = baseHeroStatus.armorPierce + goldHeroStatus.armorPierce + +equipHeroStatus.armorPierce;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.armorPierce);
+                    goldHeroStats.moreDamage = (int)value;
+                    finalHeroStats.moreDamage = baseHeroStats.moreDamage + goldHeroStats.moreDamage + +weaponHeroStats.moreDamage;
+                    finalValue = (double)finalHeroStats.moreDamage;
                     break;
                 }
-            case HeroStatusEnum.HPRegen:
+            case HeroStatsEnum.MinDamage:
                 {
-                    goldHeroStatus.hitPointRegen = (float)value;
-                    finalHeroStatus.hitPointRegen = baseHeroStatus.hitPointRegen + goldHeroStatus.hitPointRegen + equipHeroStatus.hitPointRegen;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.hitPointRegen);
+                    goldHeroStats.minDamage = (float)value;
+                    finalHeroStats.minDamage = baseHeroStats.minDamage + goldHeroStats.minDamage + +weaponHeroStats.minDamage;
+                    finalValue = (double)finalHeroStats.minDamage;
                     break;
                 }
-            case HeroStatusEnum.Dodge:
+            case HeroStatsEnum.Pierce:
                 {
-                    goldHeroStatus.dodge = (float)value;
-                    finalHeroStatus.dodge = baseHeroStatus.dodge + goldHeroStatus.dodge + equipHeroStatus.dodge;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.dodge);
+                    goldHeroStats.armorPierce = (int)value;
+                    finalHeroStats.armorPierce = baseHeroStats.armorPierce + goldHeroStats.armorPierce + +weaponHeroStats.armorPierce;
+                    finalValue = (double)finalHeroStats.armorPierce;
                     break;
                 }
-            case HeroStatusEnum.BuffDuration:
+            case HeroStatsEnum.HPRegen:
                 {
-                    goldHeroStatus.buffDuration = (float)value;
-                    finalHeroStatus.buffDuration = baseHeroStatus.buffDuration + goldHeroStatus.buffDuration + equipHeroStatus.buffDuration;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.buffDuration);
+                    goldHeroStats.hitPointRegen = (float)value;
+                    finalHeroStats.hitPointRegen = baseHeroStats.hitPointRegen + goldHeroStats.hitPointRegen + weaponHeroStats.hitPointRegen;
+                    finalValue = (double)finalHeroStats.hitPointRegen;
                     break;
                 }
-            case HeroStatusEnum.DebuffResist:
+            case HeroStatsEnum.Dodge:
                 {
-                    goldHeroStatus.debuffResist = (float)value;
-                    finalHeroStatus.debuffResist = baseHeroStatus.debuffResist + goldHeroStatus.debuffResist + +equipHeroStatus.debuffResist;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.debuffResist);
+                    goldHeroStats.dodge = (float)value;
+                    finalHeroStats.dodge = baseHeroStats.dodge + goldHeroStats.dodge + weaponHeroStats.dodge;
+                    finalValue = (double)finalHeroStats.attackSpeed;
                     break;
                 }
-            case HeroStatusEnum.DropItem:
+            case HeroStatsEnum.BuffDuration:
                 {
-                    goldHeroStatus.dropItem = (int)value;
-                    finalHeroStatus.dropItem = baseHeroStatus.dropItem + goldHeroStatus.dropItem + +equipHeroStatus.dropItem;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.dropItem);
+                    goldHeroStats.buffDuration = (float)value;
+                    finalHeroStats.buffDuration = baseHeroStats.buffDuration + goldHeroStats.buffDuration + weaponHeroStats.buffDuration;
+                    finalValue = (double)finalHeroStats.buffDuration;
                     break;
                 }
-            case HeroStatusEnum.GainGold:
+            case HeroStatsEnum.DebuffResist:
                 {
-                    goldHeroStatus.gainGold = (int)value;
-                    finalHeroStatus.gainGold = baseHeroStatus.gainGold + goldHeroStatus.gainGold + equipHeroStatus.gainGold;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.gainGold);
+                    goldHeroStats.debuffResist = (float)value;
+                    finalHeroStats.debuffResist = baseHeroStats.debuffResist + goldHeroStats.debuffResist + +weaponHeroStats.debuffResist;
+                    finalValue = (double)finalHeroStats.debuffResist;
                     break;
                 }
-            case HeroStatusEnum.GainExp:
+            case HeroStatsEnum.DropItem:
                 {
-                    goldHeroStatus.gainExp = (int)value;
-                    finalHeroStatus.gainExp = baseHeroStatus.gainExp + goldHeroStatus.gainExp + +equipHeroStatus.gainExp;
-
-                    heroInfo.UpdateValue(stat, finalHeroStatus.gainExp);
+                    goldHeroStats.dropItem = (int)value;
+                    finalHeroStats.dropItem = baseHeroStats.dropItem + goldHeroStats.dropItem + +weaponHeroStats.dropItem;
+                    finalValue = (double)finalHeroStats.dropItem;
+                    break;
+                }
+            case HeroStatsEnum.GainGold:
+                {
+                    goldHeroStats.gainGold = (int)value;
+                    finalHeroStats.gainGold = baseHeroStats.gainGold + goldHeroStats.gainGold + weaponHeroStats.gainGold;
+                    finalValue = (double)finalHeroStats.gainGold;
+                    break;
+                }
+            case HeroStatsEnum.GainExp:
+                {
+                    goldHeroStats.gainExp = (int)value;
+                    finalHeroStats.gainExp = baseHeroStats.gainExp + goldHeroStats.gainExp + +weaponHeroStats.gainExp;
+                    finalValue = (double)finalHeroStats.EXP;
                     break;
                 }
         }
+
+        heroInfo.UpdateValue(stat, finalValue);
+
     }
 
     private void SetDefault()
     {
-        baseHeroStatus.objectName = "baseHeroStatus";
-        baseHeroStatus.level = 1;
-        baseHeroStatus.EXP = 0;
-        baseHeroStatus.damage = 100;
-        baseHeroStatus.hitPoint = 1000;
-        baseHeroStatus.armor = 0;
-        baseHeroStatus.attackSpeed = 1.0f;
-        baseHeroStatus.hitPointRegen = 0.01f;
+        baseHeroStats.objectName = "baseHeroStats";
+        baseHeroStats.level = 1;
+        baseHeroStats.EXP = 0;
+        baseHeroStats.damageFixed = 100;
+        baseHeroStats.damagePercent = 0.0f;
+        baseHeroStats.hitPoint = 1000;
+        baseHeroStats.armor = 0;
+        baseHeroStats.attackSpeed = 1.0f;
+        baseHeroStats.hitPointRegen = 0.01f;
 
-        baseHeroStatus.dodge = 0.05f;
-        baseHeroStatus.dropItem = 0;
-        baseHeroStatus.gainExp = 100;
-        baseHeroStatus.gainGold = 100;
-        baseHeroStatus.criticalChance = 10.0f;
-        baseHeroStatus.armorPierce = 0.0f;
-        baseHeroStatus.buffDuration = 1.0f;
-        baseHeroStatus.debuffResist = 0.0f;
-        baseHeroStatus.criticalDamage = 530.0f;
-        baseHeroStatus.minDamage = 0.7f;
-        baseHeroStatus.moreDamage = 0;
+        baseHeroStats.dodge = 0.05f;
+        baseHeroStats.dropItem = 0;
+        baseHeroStats.gainExp = 100;
+        baseHeroStats.gainGold = 100;
+        baseHeroStats.criticalChance = 10.0f;
+        baseHeroStats.armorPierce = 0.0f;
+        baseHeroStats.buffDuration = 1.0f;
+        baseHeroStats.debuffResist = 0.0f;
+        baseHeroStats.criticalDamage = 530.0f;
+        baseHeroStats.minDamage = 0.7f;
+        baseHeroStats.moreDamage = 0;
 
-        goldHeroStatus.objectName = "goldHeroStatus";
-        cashHeroStatus.objectName = "cashHeroStatus";
-        finalHeroStatus.objectName = "finalHeroStatus";
-        equipHeroStatus.objectName = "equipHeroStatus";
-        finalHeroStatus.AddData(ref baseHeroStatus);
-        finalHeroStatus.AddData(ref goldHeroStatus);
-        finalHeroStatus.AddData(ref cashHeroStatus);
-        finalHeroStatus.AddData(ref equipHeroStatus);
+        goldHeroStats.objectName = "goldHeroStats";
+        cashHeroStats.objectName = "cashHeroStats";
+        finalHeroStats.objectName = "finalHeroStats";
+        weaponHeroStats.objectName = "weaponHeroStats";
+        finalHeroStats.AddData(ref baseHeroStats);
+        finalHeroStats.AddData(ref goldHeroStats);
+        finalHeroStats.AddData(ref cashHeroStats);
+        finalHeroStats.AddData(ref weaponHeroStats);
     }
 
     private void SetUp()
     {
-        goldHeroStatus = new HeroData();
-        baseHeroStatus = new HeroData();
-        finalHeroStatus = new HeroData();
-        cashHeroStatus = new HeroData();
-        equipHeroStatus = new HeroData();
+        goldHeroStats = new HeroData();
+        baseHeroStats = new HeroData();
+        finalHeroStats = new HeroData();
+        cashHeroStats = new HeroData();
+        weaponHeroStats = new HeroData();
 
         SetDefault();
     }
@@ -216,7 +228,7 @@ public class PlayerStatusManager : MonoBehaviour
     {
         heroInfo = UnderHudManager.instance.transform.GetChild(1).GetComponent<UI_HeroInfo>();
         heroInfo.gameObject.SetActive(true);
-        heroInfo.BeginSetUp(ref finalHeroStatus);
+        heroInfo.BeginSetUp(ref finalHeroStats);
     }
 
     private void Awake()

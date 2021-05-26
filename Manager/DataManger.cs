@@ -21,6 +21,7 @@ public class DataManger : MonoBehaviour
     public List<GachaChanceData> weaponGachaChanceList { get; set; }
     public List<WeaponStatsForDatabase> weaponStatForDataList { get; set; }
     public Dictionary<int, WeaponStatsForDatabase> weaponStatForDataDictionary { get; set; }
+    public List<WeaponEnchantTable> weaponEnchantTableList { get; set; }
     #endregion
 
     private void LoadCSVData()
@@ -33,6 +34,9 @@ public class DataManger : MonoBehaviour
 
         CSVReader.GetWeaponStatsForDataBaseDictionaryOnCSVFile(out Dictionary<int, WeaponStatsForDatabase> statusDictionary, "weaponStatusBaseData.csv");
         weaponStatForDataDictionary = statusDictionary;
+
+        CSVReader.GetWeaponEnchantTableListOnCSVFile(out List<WeaponEnchantTable> enchantList, "WeaponEnchantData.csv");
+        weaponEnchantTableList = enchantList;
     }
 
     private void SetUpField()
@@ -40,6 +44,7 @@ public class DataManger : MonoBehaviour
         weaponGachaChanceList = new List<GachaChanceData>();
         weaponStatForDataList = new List<WeaponStatsForDatabase>();
         weaponStatForDataDictionary = new Dictionary<int, WeaponStatsForDatabase>();
+        weaponEnchantTableList = new List<WeaponEnchantTable>();
     }
 
     private void Awake()

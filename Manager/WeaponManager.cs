@@ -30,11 +30,40 @@ public class WeaponManager : MonoBehaviour
     private PopUpUI weaponDetailPopUp;
 
     public int mountedIndex { get; set; }
-    public long damage { get; set; }
 
-    public void UpdateWeaponStats(WeaponStatType statType)
+    public void UpdateWeaponStatsToPlayer(WeaponStatType statType)
     {
-        PlayerStatusManager.instance.UpdateValue(HeroStatusEnum.Damage, (double)damage);
+        HeroStatsEnum heroStat = HeroStatsEnum.DamageFixed;
+        double updateValue = 0;
+        switch (statType)
+        {
+            case WeaponStatType.DamageFixed:
+                {
+                    heroStat = HeroStatsEnum.DamageFixed;
+                    updateValue = (double)allWeaponsStats.damageFixed;
+                    break;
+                }
+            case WeaponStatType.DamagePercent:
+                {
+                    heroStat = HeroStatsEnum.DamagePercent;
+                    updateValue = (double)allWeaponsStats.damagePercent;
+                    break;
+                }
+            case WeaponStatType.CriticalChance:
+                {
+                    heroStat = HeroStatsEnum.Critical;
+                    updateValue = (double)allWeaponsStats.criticalChance;
+                    break;
+                }
+            case WeaponStatType.CriticalDamage:
+                {
+                    heroStat = HeroStatsEnum.CriticalDamage;
+                    updateValue = (double)allWeaponsStats.criticalDamage;
+                    break;
+                }
+        }
+
+        PlayerStatusManager.instance.UpdateValue(heroStat, updateValue);
     }
 
     public void UpdateCount(int itemCode)
@@ -42,7 +71,7 @@ public class WeaponManager : MonoBehaviour
         int equipmentIndex = FindEquipmentIndex(itemCode);
         if (!arrayEquipment[equipmentIndex].CheckUnlocked())
         {
-            arrayEquipment[equipmentIndex].UnLockUpdate(true);
+            arrayEquipment[equipmentIndex].UnLockUpdate(true, true);
             arrayEquipment[equipmentIndex].SetHeldCount(0);
         }
 
@@ -65,7 +94,7 @@ public class WeaponManager : MonoBehaviour
 
         if (!arrayEquipment[index].CheckUnlocked())
         {
-            arrayEquipment[index].UnLockUpdate(true);
+            arrayEquipment[index].UnLockUpdate(true, true);
         }
 
         else
@@ -91,9 +120,9 @@ public class WeaponManager : MonoBehaviour
 
     public void ChangeMountedEquipment(int equipmentIndex)
     {
-        arrayEquipment[mountedIndex].OnDismount();
+        arrayEquipment[mountedIndex].OnMount(false);
         mountedIndex = equipmentIndex;
-        arrayEquipment[mountedIndex].OnMount();
+        arrayEquipment[mountedIndex].OnMount(true);
     }
 
     public void DetailPopUp(int equipIndex)
@@ -105,20 +134,24 @@ public class WeaponManager : MonoBehaviour
 
     private void StartSetUp()
     {
-        arrayEquipment[0].UnLockUpdate(true);
-        arrayEquipment[0].OnMount(true);
-
         for (int i = 0; i < weaponChildCount; i++)
         {
             arrayEquipment[i].SetStatsFromDataBase();
+        }
+
+        arrayEquipment[0].OnMount(true);
+        arrayEquipment[0].UnLockUpdate(true, true);
+
+        int loopCount = (int)WeaponStatType.WeaponStatType_End;
+        for (int i = 0; i < loopCount; i++)
+        {
+            UpdateWeaponStatsToPlayer((WeaponStatType)i);
         }
     }
 
     private void Start()
     {
         StartSetUp();
-        UpdateDamage();
-
         gameObject.SetActive(false);
     }
 
