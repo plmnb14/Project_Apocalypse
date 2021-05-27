@@ -78,6 +78,11 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
     public Image rarityIcon { get; set; }
     public Image equipmentIcon { get; set; }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        weaponManager.DetailPopUp(equipIndex);
+    }
+
     public void DeepCopy(ref Weapon weapon)
     {
         weapon.SetLocalStatFromDataBase();
@@ -364,11 +369,6 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
         }
 
         return promoteCount;
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        weaponManager.DetailPopUp(equipIndex);
     }
 
     public void UnLockUpdate(bool value, bool isUpdateStat = false)
