@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GachaResultPopUp : MonoBehaviour
+public class GachaResultPopUp : PopUpUI
 {
     public GameObject gachaGrid;
     public GameObject okButton;

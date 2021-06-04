@@ -32,7 +32,7 @@ public class Monster : Living
 
         yield return new WaitForEndOfFrame();
 
-        curState = State.Die;
+        stateCurrent = LivingState.Die;
         deadTime = animator.GetCurrentAnimatorStateInfo(0).length;
 
         yield return new WaitForSeconds(deadTime);
@@ -74,7 +74,7 @@ public class Monster : Living
     {
         base.ResetStatus();
 
-        curState = State.Idle;
+        stateCurrent = LivingState.Idle;
         hitPoint = 2000.0f;
         attackRange = 0.75f;
         canAttack = false;
@@ -91,7 +91,7 @@ public class Monster : Living
         }
         else
         {
-            curState = State.Attack;
+            stateCurrent = LivingState.Attack;
         }
     }
 
@@ -118,7 +118,7 @@ public class Monster : Living
             else
             {
                 atkTimeCur = 0.0f;
-                curState = State.Idle;
+                stateCurrent = LivingState.Idle;
             }
         }
     }
@@ -127,7 +127,7 @@ public class Monster : Living
     private float atkCooltimeMax = 0.1f;
     private void AttackCooltime()
     {
-        if (curState == State.Attack || canAttack) return;
+        if (stateCurrent == LivingState.Attack || canAttack) return;
 
         if (atkCooltimeCur < atkCooltimeMax)
         {
@@ -143,22 +143,22 @@ public class Monster : Living
 
     protected override void StateCheck()
     {
-        switch (curState)
+        switch (stateCurrent)
         {
-            case State.Idle:
-            case State.Run:
+            case LivingState.Idle:
+            case LivingState.Run:
                 {
                     OnRun();
                     break;
                 }
 
-            case State.Attack:
+            case LivingState.Attack:
                 {
                     StartCoroutine(OnAttack());
                     break;
                 }
 
-            case State.Die:
+            case LivingState.Die:
                 {
                     break;
                 }
@@ -181,17 +181,23 @@ public class Monster : Living
         _ => Color.white
     };
 
+    private void OnDisable()
+    {
+        GetComponent<Collider2D>().enabled = false;
+    }
+
     private void OnEnable()
     {
+        GetComponent<Collider2D>().enabled = true;
         spriteRenderer.material.color = myColor;
     }
 
-    protected override void SetUp()
+    protected override void AwakeSetUp()
     {
-        base.SetUp();
+        base.AwakeSetUp();
 
         hitPoint = 2000.0f;
-        curState = State.Run;
+        stateCurrent = LivingState.Run;
         attackRange = Random.Range(0.5f, 0.9f);
         canAttack = true;
 
@@ -206,6 +212,6 @@ public class Monster : Living
 
     private void Awake()
     {
-        SetUp();
+        AwakeSetUp();
     }
 }

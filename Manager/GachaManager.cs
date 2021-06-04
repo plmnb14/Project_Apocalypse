@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class GachaManager : MonoBehaviour
 {
-    public GameObject gachaGrid;
-
-    public int gachaCount { get; set; }
-
-    #region 인스턴스
+    #region Instance
     static public GachaManager instance
     {
         get
@@ -24,8 +20,36 @@ public class GachaManager : MonoBehaviour
     static private GachaManager _instance;
     #endregion
 
+    #region Public Fields
+    public GachaResultPopUp gachaResultPopUp;
+    #endregion
+
+    #region Awake Fields
     private void Awake()
     {
         if (instance != this) Destroy(gameObject);
     }
+    #endregion
+
+    #region Events
+    public void PopUpGachaResult()
+    {
+        PopUpManager.instance.AddPopUp(gachaResultPopUp);
+    }
+
+    public void GachaCount(int gachaCount)
+    {
+        gachaResultPopUp.gachaCount = gachaCount;
+    }
+
+    public void GachaResultQueue(ref Queue<int> resultQueue)
+    {
+        gachaResultPopUp.gachaItemCode = resultQueue;
+    }
+
+    public void GachaEvent()
+    {
+        StartCoroutine(gachaResultPopUp.ShowGachaResult());
+    }
+    #endregion
 }

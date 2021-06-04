@@ -19,7 +19,7 @@ public class WorldObject : MonoBehaviour
 
     public virtual void ResetStatus(Transform parent = null)
     {
-        dead = false;
+        //dead = false;
         transform.position = Vector3.zero;
         transform.localPosition = Vector3.zero;
 

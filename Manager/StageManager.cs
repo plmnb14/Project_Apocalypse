@@ -76,10 +76,10 @@ public class StageManager : MonoBehaviour
         scrollBackground[1].scrolled = false;
 
 
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 2; i++)
         {
             Monster mon = GetMonster("Slime");
-            mon.transform.position = new Vector3(3.2f + i * 1.0f, 1.07f, 0.0f);
+            mon.transform.position = new Vector3(3.2f + i * 2.0f, 1.07f, 0.0f);
             float sqrtValue = (((stageIndex * 0.1f) * (stageIndex * 0.1f)) * 0.5f) + 1.0f;
             mon.hitPoint *= sqrtValue;
             mon.HpBar.SetUpHealth(mon.hitPoint);

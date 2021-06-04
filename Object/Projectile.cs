@@ -15,6 +15,11 @@ public class Projectile : WorldObject
 
     }
 
+    public virtual void SetStatus(Vector3 dir, Vector3 shotPosition)
+    {
+
+    }
+
     protected override void OnDie()
     {
         ProjectileManager.instance.BackProjtile(myName, this);

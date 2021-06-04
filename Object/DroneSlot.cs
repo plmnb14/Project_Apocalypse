@@ -7,11 +7,11 @@ using UnityEngine.UI;
 public class DroneSlot : MonoBehaviour, IPointerClickHandler
 {
     #region Private Field
-    private DroneCard mountedDrone;
     private GameObject dismountImage;
     #endregion
 
     #region Property Field
+    public DroneCard mountedDrone { get; set; }
     public bool isDroneMounted { get; set; }
     public Image mountedImage { get; set; }
     public int slotIndex { get; set; }
@@ -48,6 +48,7 @@ public class DroneSlot : MonoBehaviour, IPointerClickHandler
     {
         mountedDrone = mountDrone;
         mountedDrone.SetOnTeam(true);
+        mountDrone.mountedSlotIndex = slotIndex;
         isDroneMounted = true;
         ChangeMountIcon(isDroneMounted);
     }

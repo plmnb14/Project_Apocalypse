@@ -11,7 +11,7 @@ public class Hero : Living
     WaitForSeconds waitSecond = new WaitForSeconds(0.5f);
     public IEnumerator BeginStage()
     {
-        curState = State.Idle;
+        stateCurrent = LivingState.Idle;
         animator.SetTrigger(animatorParam[(int)animatorEnum.OnReset]);
         animator.SetBool(animatorParam[(int)animatorEnum.IsArmed], false);
         animator.SetBool(animatorParam[(int)animatorEnum.IsBattle], false);
@@ -24,7 +24,7 @@ public class Hero : Living
 
         yield return waitSecond;
 
-        curState = State.Run;
+        stateCurrent = LivingState.Run;
     }
 
     public void UpdateAttackSpeed(float speed)
@@ -74,7 +74,7 @@ public class Hero : Living
             else
             {
                 atkTimeCur = 0.0f;
-                curState = State.Armed_Idle;
+                stateCurrent = LivingState.Armed_Idle;
             }
         }
     }
@@ -89,6 +89,7 @@ public class Hero : Living
             weapon.SetAnimatorBool(animatorParam[(int)animatorEnum.IsRun], true);
 
             StageManager.instance.ScrollingBackround();
+            DroneManager.instance.MoveDrones(true);
         }
 
         else
@@ -98,12 +99,13 @@ public class Hero : Living
             else
             {
                 runTimeCur = 0.0f;
-                curState = State.Armed;
+                stateCurrent = LivingState.Armed;
 
                 animator.SetBool(animatorParam[(int)animatorEnum.IsRun], false);
                 weapon.SetAnimatorBool(animatorParam[(int)animatorEnum.IsRun], false);
 
                 StageManager.instance.SummonMonster();
+                DroneManager.instance.MoveDrones(false);
             }
         }
     }
@@ -113,20 +115,25 @@ public class Hero : Living
         Vector3 vec = new Vector3(2.0f, transform.position.y * 0.5f);
         Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + vec, new Vector2(3.4f, 3.0f), 0.0f, 1 << LayerMask.NameToLayer("Monster"));
 
+        Monster targetMonster = null;
+        float _distance = Mathf.Infinity;
         for(int i = 0; i < colliders.Length; i++)
         {
-            target = colliders[i].gameObject.GetComponent<Monster>();
+            var tmpMonster = colliders[i].gameObject.GetComponent<Monster>();
+            if (tmpMonster.dead) continue;
 
-            if(target.dead)
+            float currentDistance = Vector3.Distance(transform.position, tmpMonster.transform.position);
+            if(_distance > currentDistance)
             {
-                target = null;
+                targetMonster = tmpMonster;
+                _distance = currentDistance;
             }
+        }
 
-            else
-            {
-                curState = State.Attack;
-                break;
-            }
+        target = targetMonster;
+        if (null != target)
+        {
+            stateCurrent = LivingState.Attack;
         }
     }
 
@@ -151,7 +158,7 @@ public class Hero : Living
             else
             {
                 armedTimeCur = 0.0f;
-                curState = State.Armed_Idle;
+                stateCurrent = LivingState.Armed_Idle;
 
                 animator.SetBool(animatorParam[(int)animatorEnum.IsArmed], false);
                 weapon.SetAnimatorBool(animatorParam[(int)animatorEnum.IsArmed], false);
@@ -167,54 +174,54 @@ public class Hero : Living
         base.OnHit();
     }
 
-    protected override void SetUp()
+    protected override void AwakeSetUp()
     {
-        base.SetUp();
+        base.AwakeSetUp();
 
-        curState = State.Idle;
+        stateCurrent = LivingState.Idle;
         weapon = transform.GetChild(0).GetComponent<MountedWeapon>();
         canAttack = true;
     }
 
     protected override void StateCheck()
     {
-        switch(curState)
+        switch(stateCurrent)
         {
-            case State.Idle:
+            case LivingState.Idle:
                 {
                     break;
                 }
 
-            case State.Run:
+            case LivingState.Run:
                 {
                     OnRun();
                     break;
                 }
 
-            case State.Armed:
+            case LivingState.Armed:
                 {
                     StartCoroutine(OnArmed());
                     break;
                 }
 
-            case State.Armed_Idle:
+            case LivingState.Armed_Idle:
                 {
                     OnArmedIdle();
                     break;
                 }
 
-            case State.Attack:
+            case LivingState.Attack:
                 {
                     StartCoroutine(OnAttack());
                     break;
                 }
 
-            case State.Hit:
+            case LivingState.Hit:
                 {
                     break;
                 }
 
-            case State.Die:
+            case LivingState.Die:
                 {
                     break;
                 }
@@ -225,7 +232,7 @@ public class Hero : Living
     private float atkCooltimeMax = 0.1f;
     private void AttackCooltime()
     {
-        if (curState == State.Attack || canAttack) return;
+        if (stateCurrent == LivingState.Attack || canAttack) return;
 
         if(atkCooltimeCur < atkCooltimeMax)
         {
@@ -248,6 +255,6 @@ public class Hero : Living
     private void Awake()
     {
         hitPoint = 10000000.0f;
-        SetUp();
+        AwakeSetUp();
     }
 }

@@ -40,7 +40,8 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
     public DroneStatusForSave droneStatusForSave { get; set; }
     public bool isUnlock { get; set; }
     public bool isOnTeam { get; set; }
-    public int slotIndex { get; set; }
+    public int cardIndex { get; set; }
+    public int mountedSlotIndex { get; set; }
     #endregion
 
     #region Click Event
@@ -49,7 +50,7 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
         DroneManager droneManager = DroneManager.instance;
         if (!DroneManager.instance.isPickMode)
         {
-            droneManager.PopUpDetailUI(slotIndex);
+            droneManager.PopUpDetailUI(cardIndex);
         }
         else
         {
@@ -68,14 +69,15 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
     public void SetOnTeam(bool isOn)
     {
         isOnTeam = isOn;
+        mountedSlotIndex = -1;
         mountedFrame.gameObject.SetActive(isOnTeam);
     }
 
     public void SetPickOnTeam()
     {
         DroneManager droneManager = DroneManager.instance;
-        droneManager.PickedDrone(slotIndex);
-        droneManager.SummonDrone(true, slotIndex);
+        droneManager.PickedDrone(cardIndex);
+        droneManager.SummonDrone(true, cardIndex);
         droneManager.SetPickMode(false);
     }
     #endregion
@@ -93,10 +95,10 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
     public void SetStatsFromDataBase()
     {
         DataManger dataManager = DataManger.instance;
-        droneStatusForSave.uniqueNumber = dataManager.droneStatusDBList[slotIndex].uniqueNumber;
-        droneStatusForLocal.damagePercent = dataManager.droneStatusDBList[slotIndex].damagePercent;
-        droneStatusForLocal.attackSpeed = dataManager.droneStatusDBList[slotIndex].attackSpeed;
-        droneStatusForLocal.myName = dataManager.droneStatusDBList[slotIndex].myName;
+        droneStatusForSave.uniqueNumber = dataManager.droneStatusDBList[cardIndex].uniqueNumber;
+        droneStatusForLocal.damagePercent = dataManager.droneStatusDBList[cardIndex].damagePercent;
+        droneStatusForLocal.attackSpeed = dataManager.droneStatusDBList[cardIndex].attackSpeed;
+        droneStatusForLocal.myName = dataManager.droneStatusDBList[cardIndex].myName;
     }
     #endregion
 
@@ -133,6 +135,7 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
 
     private void AwakeSetUp()
     {
+        mountedSlotIndex = -1;
         isUnlock = false;
         isOnTeam = false;
         droneStatusForLocal = new DroneStatusForLocal();

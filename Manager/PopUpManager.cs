@@ -32,11 +32,11 @@ public class PopUpManager : MonoBehaviour
         AddPopUp(notificationCanvas);
     }
 
-    public void RemovePopUp()
+    public void RemovePopUp(bool isRemoveOnlyNew = false)
     {
         popUpCur.Pop().gameObject.SetActive(false);
 
-        if (0 != popUpOld.Count)
+        if (0 != popUpOld.Count && !isRemoveOnlyNew)
         {
             popUpCur.Push(popUpOld.Pop());
             popUpCur.Peek().gameObject.SetActive(true);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UnderHudManager : MonoBehaviour
 {
-    public enum UnderInfo { HEROINFO, STATUSUPGRADE, EQUIP, PET, ARTIFECT, UnderInfo_end}
+    public enum UnderInfo { HEROINFO, STATUSUPGRADE, EQUIP, Drone, ARTIFECT, UnderInfo_end}
     private UnderInfo curInfo;
     GameObject[] childCanvas;
     ButtonUnderHud[] childButton;
@@ -24,7 +24,7 @@ public class UnderHudManager : MonoBehaviour
     {
         if (curInfo == info) return;
 
-        if(curInfo == UnderInfo.EQUIP)
+        if(curInfo == UnderInfo.EQUIP || curInfo == UnderInfo.Drone)
         {
             PopUpManager.instance.ClearAllPopUp();
         }

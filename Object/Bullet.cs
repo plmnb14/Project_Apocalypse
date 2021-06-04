@@ -6,7 +6,15 @@ public class Bullet : Projectile
 {
     public override void SetStatus(Vector3 dir)
     {
-        direction = transform.right = (dir + new Vector3(0.0f, Random.Range(0.1f, 0.3f), 0.0f));
+        Vector3 rightVector = Vector3.Normalize((dir + new Vector3(0.0f, Random.Range(0.1f, 0.3f), 0.0f)));
+        direction = transform.right = rightVector;
+    }
+
+    public override void SetStatus(Vector3 dir, Vector3 shotPosition)
+    {
+        transform.position = shotPosition;
+        Vector3 rightVector = dir;
+        direction = transform.right = rightVector;
     }
 
     protected override void OnDie()

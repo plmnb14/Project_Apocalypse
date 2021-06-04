@@ -7,7 +7,7 @@ public class GachaResultSkip : MonoBehaviour, IPointerClickHandler
 {
     public void OnPointerClick(PointerEventData eventData)
     {
-        FixedMenuManager.instance.gachaResultPopUp.SkipGachaResult();
+        GachaManager.instance.gachaResultPopUp.SkipGachaResult();
         this.gameObject.SetActive(false);
     }
 }

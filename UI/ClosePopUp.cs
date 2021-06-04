@@ -5,9 +5,10 @@ using UnityEngine.EventSystems;
 
 public class ClosePopUp : MonoBehaviour, IPointerClickHandler
 {
+    public bool isCloseOnlyNew;
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("ÆË¾÷ ´ÝÈû");
-        PopUpManager.instance.RemovePopUp();
+        PopUpManager.instance.RemovePopUp(isCloseOnlyNew);
     }
 }

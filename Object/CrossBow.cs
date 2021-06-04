@@ -9,8 +9,8 @@ public class CrossBow : MountedWeapon
     public override void Attack()
     {
         Projectile proj = ProjectileManager.instance.GetProjectile("Bullet");
-        proj.transform.position = aimPoint.transform.position;
-        proj.SetStatus(targetTranstorm - aimPoint.transform.position);
+        Vector3 direction = Vector3.Normalize(targetTranstorm - aimPoint.transform.position);
+        proj.SetStatus(direction, aimPoint.transform.position);
 
         VFX vfx = VFXManager.instance.GetVFX("VFX_Shot_00");
         vfx.transform.position = aimPoint.transform.position;

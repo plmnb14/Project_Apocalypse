@@ -10,8 +10,8 @@ public class Living : WorldObject
     protected string[] animatorParam = 
         { "IsArmed", "OnAttack", "OnDie", "IsRun", "IsBattle", "OnReset" };
 
-    public enum State { Idle, Run, Armed, Armed_Idle, Attack, Hit, Die, Status_End };
-    public State curState { get; set; }
+    public enum LivingState { Idle, Run, Armed, Armed_Idle, Attack, Hit, Die, Status_End };
+    public LivingState stateCurrent { get; set; }
 
     public float hitPoint { get; set; } = 1000.0f;
 
@@ -50,7 +50,7 @@ public class Living : WorldObject
     protected virtual IEnumerator OnDead() { dead = true; yield return new WaitForEndOfFrame(); }
     public virtual void OnHit() { }
 
-    protected virtual void SetUp()
+    protected virtual void AwakeSetUp()
     {
         animator = GetComponent<Animator>();
     }
