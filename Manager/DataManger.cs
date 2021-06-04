@@ -22,6 +22,9 @@ public class DataManger : MonoBehaviour
     public List<WeaponStatsForDatabase> weaponStatForDataList { get; set; }
     public Dictionary<int, WeaponStatsForDatabase> weaponStatForDataDictionary { get; set; }
     public List<WeaponEnchantTable> weaponEnchantTableList { get; set; }
+    public List<DroneStatusForDB> droneStatusDBList { get; set; }
+    public Dictionary<int, DroneStatusForDB> droneStatusDictionary { get; set; }
+    public Dictionary<string, string> scriptsDictionary { get; set; }
     #endregion
 
     private void LoadCSVData()
@@ -37,6 +40,12 @@ public class DataManger : MonoBehaviour
 
         CSVReader.GetWeaponEnchantTableListOnCSVFile(out List<WeaponEnchantTable> enchantList, "WeaponEnchantData.csv");
         weaponEnchantTableList = enchantList;
+
+        CSVReader.GetDroneStatusListOnCSV(out List<DroneStatusForDB> droneStatusList, "DroneStatusData.csv");
+        droneStatusDBList = droneStatusList;
+
+        CSVReader.GetScriptsDictionaryOnCSV(out Dictionary<string, string> dataDictionary, "NotificationScriptsData.csv");
+        scriptsDictionary = dataDictionary;
     }
 
     private void SetUpField()
@@ -45,6 +54,8 @@ public class DataManger : MonoBehaviour
         weaponStatForDataList = new List<WeaponStatsForDatabase>();
         weaponStatForDataDictionary = new Dictionary<int, WeaponStatsForDatabase>();
         weaponEnchantTableList = new List<WeaponEnchantTable>();
+        droneStatusDBList = new List<DroneStatusForDB>();
+        scriptsDictionary = new Dictionary<string, string>();
     }
 
     private void Awake()

@@ -22,6 +22,16 @@ public class PopUpManager : MonoBehaviour
     private static PopUpManager m_instance;
     #endregion
 
+    #region Public Field
+    public NotificationPopUp notificationCanvas;
+    #endregion
+
+    public void ShowNotificationPopUp(string scriptsCode)
+    {
+        notificationCanvas.SetScripts(scriptsCode);
+        AddPopUp(notificationCanvas);
+    }
+
     public void RemovePopUp()
     {
         popUpCur.Pop().gameObject.SetActive(false);
@@ -63,6 +73,8 @@ public class PopUpManager : MonoBehaviour
     {
         popUpCur = new Stack<PopUpUI>();
         popUpOld = new Stack<PopUpUI>();
+
+        notificationCanvas.gameObject.SetActive(true);
     }
 
     private void Awake()

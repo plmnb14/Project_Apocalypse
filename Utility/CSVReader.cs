@@ -126,6 +126,45 @@ public class CSVReader : MonoBehaviour
         dataList = statsList;
     }
 
+    public static void GetDroneStatusListOnCSV(out List<DroneStatusForDB> dataList, string fileName)
+    {
+        string filePath = "Assets/Resources/Database/" + fileName;
+        List<DroneStatusForDB> statusList = new List<DroneStatusForDB>();
+        var datas = File.ReadAllLines(filePath);
+        int dataLength = datas.Length;
+        for (int i = 1; i < dataLength; i++)
+        {
+            var parts = datas[i].Split(',');
+            DroneStatusForDB statusData = new DroneStatusForDB();
+            statusData.uniqueNumber = int.Parse(parts[0]);
+            statusData.myName = parts[1];
+            statusData.damagePercent = float.Parse(parts[2]);
+            statusData.growthDamagePercent = float.Parse(parts[3]);
+            statusData.attackSpeed = float.Parse(parts[4]);
+            statusData.growthAttackSpeed = float.Parse(parts[5]);
+
+            statusList.Add(statusData);
+        }
+
+        dataList = statusList;
+    }
+
+    public static void GetScriptsDictionaryOnCSV(out Dictionary<string, string> dataDictionary, string fileName)
+    {
+        string filePath = "Assets/Resources/Database/" + fileName;
+
+        Dictionary<string, string> dictionary = new Dictionary<string, string>();
+        var datas = File.ReadAllLines(filePath);
+        int dataLength = datas.Length;
+        for (int i = 1; i < dataLength; i++)
+        {
+            var parts = datas[i].Split(',');
+            dictionary.Add(parts[0], parts[1]);
+        }
+
+        dataDictionary = dictionary;
+    }
+
     #region 바이너리 CSV
     //public static List<EquipmentGachaData> GetEquipmentGachaListOnCSVFile(string fileName)
     //{

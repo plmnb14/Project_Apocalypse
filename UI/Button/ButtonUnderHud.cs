@@ -20,6 +20,11 @@ public class ButtonUnderHud : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public void OnClickButton()
+    {
+        Debug.Log("´­¸²");
+    }
+
     public void ChangeActivate(bool value)
     {
         childButton[0].SetActive(!value);
