@@ -14,9 +14,18 @@ public class Drone : Living
     private float attackCoolTimeCurrent;
     #endregion
 
+    #region Property
+    public DroneStatusForLocal droneStatusForLocal { get; set; }
+    #endregion
+
     #region Awake Event
+    private void OnDisable()
+    {
+        ResetMemberFields();
+    }
     private void OnEnable()
     {
+        ResetMemberFields();
         StartCoroutine(OnAttackCoolTime());
     }
 

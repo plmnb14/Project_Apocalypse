@@ -83,6 +83,18 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
     #endregion
 
     #region Event
+    public void UpdateStatus()
+    {
+        DataManger dataManager = DataManger.instance;
+        float finalDamage = dataManager.droneStatusDBList[cardIndex].damagePercent + 
+            dataManager.droneStatusDBList[cardIndex].growthDamagePercent * droneStatusForSave.tier;
+        float finalAttackSpeed = dataManager.droneStatusDBList[cardIndex].attackSpeed + 
+            dataManager.droneStatusDBList[cardIndex].growthAttackSpeed * droneStatusForSave.tier;
+
+        droneStatusForLocal.damagePercent = finalDamage;
+        droneStatusForLocal.attackSpeed = finalAttackSpeed;
+    }
+
     public void DeepCopy(ref DroneCard droneCard)
     {
         SetUnlock(droneCard.isUnlock);
@@ -90,6 +102,10 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
         {
             dronePortrait.sprite = droneCard.dronePortrait.sprite;
         }
+
+        Debug.Log(droneCard.droneStatusForLocal.damagePercent);
+        droneStatusForLocal = droneCard.droneStatusForLocal;
+        droneStatusForSave = droneCard.droneStatusForSave;
     }
 
     public void SetStatsFromDataBase()
@@ -117,6 +133,11 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
     #endregion
 
     #region Awake
+    private void Start()
+    {
+        SetStatsFromDataBase();
+    }
+
     private void DebugStatusSetUp()
     {
         droneStatusForSave.uniqueNumber = 1000;

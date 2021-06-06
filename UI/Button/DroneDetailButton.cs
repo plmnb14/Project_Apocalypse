@@ -20,7 +20,7 @@ public class DroneDetailButton : MonoBehaviour, IPointerClickHandler
                 }
             case DroneDetailPopUpOption.Upgrade:
                 {
-                    PopUpManager.instance.ShowNotificationPopUp("N_1001");
+                    DroneManager.instance.UpgradeDrone();
                     break;
                 }
             case DroneDetailPopUpOption.SkillCore:

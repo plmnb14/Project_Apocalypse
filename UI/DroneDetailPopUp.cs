@@ -11,7 +11,7 @@ public class DroneDetailPopUp : PopUpUI
 
     #region Private Field
     private const int maxStatCount = 2;
-    private const int maxStarCount = 5;
+    private const int maxStarCount = 10;
     private DroneCard targetDrone;
     private DroneCard droneClone;
     private Text titleName;
@@ -39,7 +39,7 @@ public class DroneDetailPopUp : PopUpUI
         droneClone.dronePortrait.sprite = targetDrone.dronePortrait.sprite;
     }
 
-    private void ChangeTierStar()
+    public void ChangeTierStar()
     {
         int currentTier = targetDrone.droneStatusForSave.tier;
         for(int i = 0; i < maxStarCount; i++)
@@ -55,16 +55,33 @@ public class DroneDetailPopUp : PopUpUI
         }
     }
 
-    private void ChangeCurrentStatsText()
+    public void UpgradeDroneEvent()
+    {
+        ChangeTierStar();
+        ChangeCurrentStatsText();
+        ChangeNextStatsText();
+    }
+
+    public void ChangeCurrentStatsText()
     {
         currentStat[(int)DroneDetailStats.Damage].text = targetDrone.droneStatusForLocal.damagePercent.ToString();
         currentStat[(int)DroneDetailStats.AttackSpeed].text = targetDrone.droneStatusForLocal.attackSpeed.ToString();
     }
 
-    private void ChangeNextStatsText()
+
+    public void ChangeNextStatsText()
     {
-        nextStat[(int)DroneDetailStats.Damage].text = targetDrone.droneStatusForLocal.damagePercent.ToString();
-        nextStat[(int)DroneDetailStats.AttackSpeed].text = targetDrone.droneStatusForLocal.attackSpeed.ToString();
+        int currentTier =
+            targetDrone.droneStatusForSave.tier > 10 ? 10 : targetDrone.droneStatusForSave.tier;
+
+        DataManger dataManager = DataManger.instance;
+        float addDamage = dataManager.droneStatusDBList[targetDrone.cardIndex].growthDamagePercent * currentTier
+            + dataManager.droneStatusDBList[targetDrone.cardIndex].damagePercent;
+        float addAttackSpeed = dataManager.droneStatusDBList[targetDrone.cardIndex].growthAttackSpeed * currentTier
+            + dataManager.droneStatusDBList[targetDrone.cardIndex].attackSpeed;
+
+        nextStat[(int)DroneDetailStats.Damage].text = addDamage.ToString();
+        nextStat[(int)DroneDetailStats.AttackSpeed].text = addAttackSpeed.ToString();
     }
 
     private void ChangeName()

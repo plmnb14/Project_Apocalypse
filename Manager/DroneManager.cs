@@ -24,12 +24,20 @@ public class DroneManager : MonoBehaviour
     public DroneDetailPopUp droneDetailPopUp;
     #endregion
 
+    // 드론 프리팹들
+    // 미리 소환된 드론들
+    // 드론이 소환될 위치 4개
+
     #region Private Field
     private readonly int maxDroneCardCount = 15;
     private readonly int maxDroneSlotCount = 4;
 
+    private Vector3[] droneSpawnVector;
     private DroneCard[] droneCards;
     private DroneSlot[] droneSlots;
+    private Drone[] dronePrefabs;
+    private Drone[] droneSummoned;
+    private bool isHeroRunning;
     #endregion
 
     #region Property
@@ -39,7 +47,7 @@ public class DroneManager : MonoBehaviour
     #endregion
 
     #region Public Field
-    public Drone[] summonDrones { get; set; }
+    //public Drone[] summonDrones { get; set; }
     #endregion
 
     #region Click Event
@@ -55,13 +63,16 @@ public class DroneManager : MonoBehaviour
     #endregion
 
     #region Event
+
     public void MoveDrones(bool isMove)
     {
-        for(int i = 0; i < maxDroneSlotCount; i++)
+        isHeroRunning = isMove;
+        for (int i = 0; i < maxDroneSlotCount; i++)
         {
             if(droneSlots[i].isDroneMounted)
             {
-                summonDrones[i].SetMoveAnimation(isMove);
+                int cardIndex = droneSlots[i].mountedDrone.cardIndex;
+                droneSummoned[cardIndex].SetMoveAnimation(isMove);
             }
         }
     }
@@ -78,11 +89,18 @@ public class DroneManager : MonoBehaviour
 
     public void SummonDrone(bool isSummon, int slotIndex = 0)
     {
-        summonDrones[pickSlotIndex].gameObject.SetActive(isSummon);
+        int cardIndex = droneSlots[pickSlotIndex].mountedDrone.cardIndex;
+        droneSummoned[cardIndex].gameObject.SetActive(isSummon);
+
         if(isSummon)
         {
+            droneSummoned[cardIndex].transform.position = droneSpawnVector[pickSlotIndex];
             droneSlots[pickSlotIndex].mountedImage.sprite = droneCards[slotIndex].dronePortrait.sprite;
             // 드론 스프라이트 변경하기
+            if(isHeroRunning)
+            {
+                droneSummoned[cardIndex].SetMoveAnimation(isHeroRunning);
+            }
         }
     }
 
@@ -113,13 +131,35 @@ public class DroneManager : MonoBehaviour
             else
             {
                 int droneMountedSlotIndex = droneCards[currentPopUpIndex].mountedSlotIndex;
-                DroneManager droneManager = DroneManager.instance;
-                droneManager.pickSlotIndex = droneMountedSlotIndex;
-                droneManager.SummonDrone(false);
+                pickSlotIndex = droneMountedSlotIndex;
+                SummonDrone(false);
                 droneSlots[droneMountedSlotIndex].DismountDrone();
                 droneDetailPopUp.CopyOriginDrone(ref droneCards[currentPopUpIndex]);
             }
         }
+        else
+        {
+            PopUpManager.instance.ShowNotificationPopUp("N_1000");
+        }
+    }
+
+    public void UpgradeDrone()
+    {
+        if(droneCards[currentPopUpIndex].isUnlock)
+        {
+            if (droneCards[currentPopUpIndex].droneStatusForSave.tier < 10)
+            {
+                droneCards[currentPopUpIndex].droneStatusForSave.tier += 1;
+                droneCards[currentPopUpIndex].UpdateStatus();
+                droneDetailPopUp.UpgradeDroneEvent();
+            }
+
+            else
+            {
+                PopUpManager.instance.ShowNotificationPopUp("N_1001");
+            }
+        }
+
         else
         {
             PopUpManager.instance.ShowNotificationPopUp("N_1000");
@@ -147,6 +187,31 @@ public class DroneManager : MonoBehaviour
     #endregion
 
     #region Awake Event
+    private void DroneInit(ref Drone drone)
+    {
+        drone.transform.position = Vector3.zero;
+        drone.transform.parent = this.transform;
+    }
+    private void DroneInstnasiate(int slotIndex)
+    {
+        droneSummoned[slotIndex] =  Instantiate(dronePrefabs[slotIndex]);
+        DroneInit(ref droneSummoned[slotIndex]);
+        droneSummoned[slotIndex].gameObject.SetActive(false);
+    }
+
+    private void LoadPrefab(int slotIndex, string path)
+    {
+        dronePrefabs[slotIndex] = Resources.Load<Drone>(path);
+    }
+
+    private void LoadResources()
+    {
+        LoadPrefab(0, "Prefab/Drone0");
+        LoadPrefab(1, "Prefab/Drone1");
+        DroneInstnasiate(0);
+        DroneInstnasiate(1);
+    }
+
     private void LoadChildDrone()
     {
         GameObject droneGreed = droneCanvas.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
@@ -161,14 +226,16 @@ public class DroneManager : MonoBehaviour
         {
             droneSlots[i] = droneSlotGreed.transform.GetChild(i).GetComponent<DroneSlot>();
             droneSlots[i].slotIndex = i;
-            summonDrones[i] = transform.GetChild(i).GetComponent<Drone>();
+            droneSpawnVector[i] = transform.GetChild(i).transform.position;
         }
     }
     private void AwakeSetUp()
     {
         droneCards = new DroneCard[maxDroneCardCount];
+        dronePrefabs = new Drone[maxDroneCardCount];
+        droneSummoned = new Drone[maxDroneCardCount];
         droneSlots = new DroneSlot[maxDroneSlotCount];
-        summonDrones = new Drone[maxDroneSlotCount];
+        droneSpawnVector = new Vector3[maxDroneSlotCount];
         pickSlotIndex = 0;
         isPickMode = false;
     }
@@ -176,6 +243,7 @@ public class DroneManager : MonoBehaviour
     private void Awake()
     {
         AwakeSetUp();
+        LoadResources();
         LoadChildDrone();
     }
     #endregion
