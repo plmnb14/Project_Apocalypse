@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DroneDetailPopUp : PopUpUI
+public class DroneDetailUI : PopUpUI
 {
     #region Enum
     private enum DroneDetailStats { Damage, AttackSpeed, End };
@@ -18,6 +18,10 @@ public class DroneDetailPopUp : PopUpUI
     private Text[] currentStat;
     private Text[] nextStat;
     private GameObject[] tierStarImages;
+    #endregion
+
+    #region Property Fields
+    public int currentCardIndex { get; set; }
     #endregion
 
     #region Update Event
@@ -68,7 +72,6 @@ public class DroneDetailPopUp : PopUpUI
         currentStat[(int)DroneDetailStats.AttackSpeed].text = targetDrone.droneStatusForLocal.attackSpeed.ToString();
     }
 
-
     public void ChangeNextStatsText()
     {
         int currentTier =
@@ -93,6 +96,7 @@ public class DroneDetailPopUp : PopUpUI
     #region Awake Event
     private void AwakeSetUp()
     {
+        isOpenOldPopUp = true;
         droneClone = transform.GetChild(2).GetComponent<DroneCard>();
         titleName = transform.GetChild(1).GetChild(0).GetComponent<Text>();
         currentStat = new Text[maxStatCount];

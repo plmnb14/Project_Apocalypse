@@ -20,14 +20,15 @@ public class WeaponManager : MonoBehaviour
     static private WeaponManager _instance;
     #endregion
 
-    #region ¿Â∫Ò
+    #region Private Fields
     private int weaponChildCount;
     private Weapon[] arrayEquipment;
     #endregion
 
+    #region Public Fields
+    public WeaponMenuUI weaponMenuUI;
     public WeaponStatsForLocal allWeaponsStats;
-    public WeaponDetailInfo weaponDetail { get; set; }
-    private PopUpUI weaponDetailPopUp;
+    #endregion
 
     public int mountedIndex { get; set; }
 
@@ -125,11 +126,9 @@ public class WeaponManager : MonoBehaviour
         arrayEquipment[mountedIndex].OnMount(true);
     }
 
-    public void DetailPopUp(int equipIndex)
+    public void WeaponInfoPopUp(int weaponIndex)
     {
-        PopUpManager.instance.AddPopUp(this.GetComponent<PopUpUI>());
-        PopUpManager.instance.AddPopUp(weaponDetailPopUp, true);
-        weaponDetail.UpdateDetailInfo(ref arrayEquipment[equipIndex]);
+        weaponMenuUI.WeaponInfoPopUp(ref arrayEquipment[weaponIndex]);
     }
 
     private void StartSetUp()
@@ -152,7 +151,6 @@ public class WeaponManager : MonoBehaviour
     private void Start()
     {
         StartSetUp();
-        gameObject.SetActive(false);
     }
 
     private void AwakeSetUp()
@@ -160,7 +158,7 @@ public class WeaponManager : MonoBehaviour
         allWeaponsStats = new WeaponStatsForLocal();
 
         mountedIndex = 0;
-        GameObject equip = transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+        GameObject equip = weaponMenuUI.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
         weaponChildCount = equip.transform.childCount;
         arrayEquipment = new Weapon[weaponChildCount];
         for (int i = 0; i < weaponChildCount; i++)
@@ -168,9 +166,6 @@ public class WeaponManager : MonoBehaviour
             arrayEquipment[i] = equip.transform.GetChild(i).GetComponent<Weapon>();
             arrayEquipment[i].equipIndex = i;
         }
-
-        weaponDetail = transform.parent.GetChild(6).GetComponent<WeaponDetailInfo>();
-        weaponDetailPopUp = transform.parent.GetChild(6).GetComponent<PopUpUI>();
     }
 
     private void Awake()

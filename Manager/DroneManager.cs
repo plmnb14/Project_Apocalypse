@@ -20,13 +20,8 @@ public class DroneManager : MonoBehaviour
     #endregion
 
     #region Public Field
-    public PopUpUI droneCanvas;
-    public DroneDetailPopUp droneDetailPopUp;
+    public DroneContentsMenu droneContentsMenu;
     #endregion
-
-    // 드론 프리팹들
-    // 미리 소환된 드론들
-    // 드론이 소환될 위치 4개
 
     #region Private Field
     private readonly int maxDroneCardCount = 15;
@@ -46,19 +41,11 @@ public class DroneManager : MonoBehaviour
     public int currentPopUpIndex { get; set; }
     #endregion
 
-    #region Public Field
-    //public Drone[] summonDrones { get; set; }
-    #endregion
-
     #region Click Event
     public void PopUpDetailUI(int slotIndex)
     {
         currentPopUpIndex = slotIndex;
-
-        PopUpManager popUpManager = PopUpManager.instance;
-        popUpManager.AddPopUp(droneCanvas);
-        popUpManager.AddPopUp(droneDetailPopUp, true);
-        droneDetailPopUp.CopyOriginDrone(ref droneCards[slotIndex]);
+        droneContentsMenu.PopUpDetailUI(ref droneCards[slotIndex]);
     }
     #endregion
 
@@ -106,6 +93,8 @@ public class DroneManager : MonoBehaviour
 
     public void MountDrone()
     {
+        Debug.Log("here");
+
         if(droneCards[currentPopUpIndex].isUnlock)
         {
             if (!droneCards[currentPopUpIndex].isOnTeam)
@@ -124,7 +113,7 @@ public class DroneManager : MonoBehaviour
                 if (isNotFull)
                 {
                     droneCards[currentPopUpIndex].SetPickOnTeam();
-                    droneDetailPopUp.CopyOriginDrone(ref droneCards[currentPopUpIndex]);
+                    droneContentsMenu.CopyDroneToDetail(ref droneCards[currentPopUpIndex]);
                 }
             }
 
@@ -134,7 +123,7 @@ public class DroneManager : MonoBehaviour
                 pickSlotIndex = droneMountedSlotIndex;
                 SummonDrone(false);
                 droneSlots[droneMountedSlotIndex].DismountDrone();
-                droneDetailPopUp.CopyOriginDrone(ref droneCards[currentPopUpIndex]);
+                droneContentsMenu.CopyDroneToDetail(ref droneCards[currentPopUpIndex]);
             }
         }
         else
@@ -151,7 +140,7 @@ public class DroneManager : MonoBehaviour
             {
                 droneCards[currentPopUpIndex].droneStatusForSave.tier += 1;
                 droneCards[currentPopUpIndex].UpdateStatus();
-                droneDetailPopUp.UpgradeDroneEvent();
+                droneContentsMenu.UpdateDroneInfo();
             }
 
             else
@@ -165,10 +154,6 @@ public class DroneManager : MonoBehaviour
             PopUpManager.instance.ShowNotificationPopUp("N_1000");
         }
     }
-    #endregion
-
-    #region Pick Event
-    //public void 
     #endregion
 
     #region Start Event
@@ -208,20 +193,24 @@ public class DroneManager : MonoBehaviour
     {
         LoadPrefab(0, "Prefab/Drone0");
         LoadPrefab(1, "Prefab/Drone1");
+        LoadPrefab(2, "Prefab/Drone0");
+        LoadPrefab(3, "Prefab/Drone1");
         DroneInstnasiate(0);
         DroneInstnasiate(1);
+        DroneInstnasiate(2);
+        DroneInstnasiate(3);
     }
 
     private void LoadChildDrone()
     {
-        GameObject droneGreed = droneCanvas.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+        GameObject droneGreed = droneContentsMenu.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject;
         for (int i = 0; i < maxDroneCardCount; i++)
         {
             droneCards[i] = droneGreed.transform.GetChild(i).GetComponent<DroneCard>();
             droneCards[i].cardIndex = i;
         }
 
-        GameObject droneSlotGreed = droneCanvas.transform.GetChild(1).GetChild(1).gameObject;
+        GameObject droneSlotGreed = droneContentsMenu.transform.GetChild(0).GetChild(1).GetChild(1).gameObject;
         for(int i = 0; i < maxDroneSlotCount; i++)
         {
             droneSlots[i] = droneSlotGreed.transform.GetChild(i).GetComponent<DroneSlot>();

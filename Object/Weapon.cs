@@ -80,7 +80,7 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        weaponManager.DetailPopUp(equipIndex);
+        weaponManager.WeaponInfoPopUp(equipIndex);
     }
 
     public void DeepCopy(ref Weapon weapon)

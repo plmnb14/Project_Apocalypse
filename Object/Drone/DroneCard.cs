@@ -102,8 +102,6 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
         {
             dronePortrait.sprite = droneCard.dronePortrait.sprite;
         }
-
-        Debug.Log(droneCard.droneStatusForLocal.damagePercent);
         droneStatusForLocal = droneCard.droneStatusForLocal;
         droneStatusForSave = droneCard.droneStatusForSave;
     }

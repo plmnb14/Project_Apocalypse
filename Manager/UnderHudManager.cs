@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class UnderHudManager : MonoBehaviour
 {
-    public enum UnderInfo { HEROINFO, STATUSUPGRADE, EQUIP, Drone, ARTIFECT, UnderInfo_end}
+    public enum UnderInfo { HeroInfo, Status, Weapon, Arms, Drone, End}
     private UnderInfo curInfo;
-    GameObject[] childCanvas;
+    private ContentsMenu[] contentsMenuChild;
     ButtonUnderHud[] childButton;
 
     static public UnderHudManager instance
@@ -24,7 +24,7 @@ public class UnderHudManager : MonoBehaviour
     {
         if (curInfo == info) return;
 
-        if(curInfo == UnderInfo.EQUIP || curInfo == UnderInfo.Drone)
+        if(curInfo != UnderInfo.Status || curInfo != UnderInfo.HeroInfo)
         {
             PopUpManager.instance.ClearAllPopUp();
         }
@@ -32,50 +32,49 @@ public class UnderHudManager : MonoBehaviour
         ActiveCanvas(false);
         curInfo = info;
         ActiveCanvas(true);
+        contentsMenuChild[(int)curInfo].ResetOnEnable();
     }
 
     private void ActiveCanvas(bool value)
     {
-        childCanvas[(int)curInfo].SetActive(value);
+        contentsMenuChild[(int)curInfo].gameObject.SetActive(value);
         childButton[(int)curInfo].ChangeActivate(value);
     }
 
     private void SetUp()
     {
-        childCanvas = new GameObject[(int)UnderInfo.UnderInfo_end];
-        childButton = new ButtonUnderHud[(int)UnderInfo.UnderInfo_end];
-        for(int i = 0; i < (int)UnderInfo.UnderInfo_end; i++)
+        contentsMenuChild = new ContentsMenu[(int)UnderInfo.End];
+        childButton = new ButtonUnderHud[(int)UnderInfo.End];
+        for(int i = 0; i < (int)UnderInfo.End; i++)
         {
-            childCanvas[i] = transform.GetChild(i+1).gameObject;
+            contentsMenuChild[i] = transform.GetChild(i+1).GetComponent<ContentsMenu>();
 
             childButton[i] = transform.GetChild(0).
                 transform.GetChild(i).gameObject.GetComponent<ButtonUnderHud>();
         }
 
-        curInfo = UnderInfo.HEROINFO;
+        curInfo = UnderInfo.HeroInfo;
     }
 
     private void Start()
     {
-        childCanvas[0].SetActive(true);
+        contentsMenuChild[0].gameObject.SetActive(true);
         childButton[0].ChangeActivate(true);
 
-        for(int i = 1; i < (int)UnderInfo.UnderInfo_end; i++)
+        for(int i = 1; i < (int)UnderInfo.End; i++)
         {
-            childCanvas[i].SetActive(false);
+            contentsMenuChild[i].gameObject.SetActive(false);
             childButton[i].ChangeActivate(false);
         }
-
-        childCanvas[2].SetActive(true);
     }
 
     private void Awake()
     {
         SetUp();
 
-        for (int i = 0; i < (int)UnderInfo.UnderInfo_end; i++)
+        for (int i = 0; i < (int)UnderInfo.End; i++)
         {
-            childCanvas[i].SetActive(true);
+            contentsMenuChild[i].gameObject.SetActive(true);
         }
     }
 }

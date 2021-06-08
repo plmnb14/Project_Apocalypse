@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 
 public class WeaponDetailInfoButton : MonoBehaviour, IPointerClickHandler
 {
-    public WeaponDetailInfo.FunctionIndex fuctionIndex;
-    private WeaponDetailInfo weaponDetailInfo;
+    public WeaponInfoUI.FunctionIndex fuctionIndex;
+    private WeaponInfoUI weaponDetailInfo;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -15,6 +15,6 @@ public class WeaponDetailInfoButton : MonoBehaviour, IPointerClickHandler
 
     private void Start()
     {
-        weaponDetailInfo = WeaponManager.instance.weaponDetail;
+        //weaponDetailInfo = WeaponManager.instance.weapon;
     }
 }

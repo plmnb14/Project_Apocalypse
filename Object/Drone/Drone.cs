@@ -121,7 +121,6 @@ public class Drone : Living
         }
         else
         {
-            Debug.Log("대상이 살아 있음");
             stateCurrent = LivingState.Attack;
         }
     }

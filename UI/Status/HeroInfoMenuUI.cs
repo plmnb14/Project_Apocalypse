@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_HeroInfo : MonoBehaviour
+public class HeroInfoMenuUI : ContentsMenu
 {
     private Text[] statusText;
     private StringBuilder valueString;

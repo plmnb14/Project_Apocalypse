@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ClosePopUp : MonoBehaviour, IPointerClickHandler
+public class ClosePopUp : MonoBehaviour
 {
-    public bool isCloseOnlyNew;
-
-    public void OnPointerClick(PointerEventData eventData)
+    public void ClosePopUpUI()
     {
-        PopUpManager.instance.RemovePopUp(isCloseOnlyNew);
+        PopUpManager.instance.RemovePopUp();
     }
 }

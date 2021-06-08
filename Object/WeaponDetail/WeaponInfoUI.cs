@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponDetailInfo : MonoBehaviour
+public class WeaponInfoUI : PopUpUI
 {
     public enum FunctionIndex { Equip, Reinforce, Promote, Enchant, FunctionIndex_End }
 
@@ -38,7 +38,7 @@ public class WeaponDetailInfo : MonoBehaviour
     private GameObject reinforceButton;
     #endregion
 
-    public void UpdateDetailInfo(ref Weapon weaponOrigin)
+    public void CopyWeaponInfo(ref Weapon weaponOrigin)
     {
         targetEquipment = weaponOrigin;
         equipmentTitleName.text = weaponOrigin.equipmentName.text;

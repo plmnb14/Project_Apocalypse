@@ -30,7 +30,7 @@ public class PlayerStatusManager : MonoBehaviour
     public HeroData finalHeroStats;
     #endregion
 
-    private UI_HeroInfo heroInfo;
+    public HeroInfoMenuUI heroInfoMenuUI;
 
     private void CalculatePlayerDamage()
     {
@@ -175,8 +175,7 @@ public class PlayerStatusManager : MonoBehaviour
                 }
         }
 
-        heroInfo.UpdateValue(stat, finalValue);
-
+        heroInfoMenuUI.UpdateValue(stat, finalValue);
     }
 
     private void SetDefault()
@@ -226,9 +225,7 @@ public class PlayerStatusManager : MonoBehaviour
 
     private void Start()
     {
-        heroInfo = UnderHudManager.instance.transform.GetChild(1).GetComponent<UI_HeroInfo>();
-        heroInfo.gameObject.SetActive(true);
-        heroInfo.BeginSetUp(ref finalHeroStats);
+        heroInfoMenuUI.BeginSetUp(ref finalHeroStats);
     }
 
     private void Awake()
