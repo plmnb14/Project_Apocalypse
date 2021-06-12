@@ -9,6 +9,7 @@ public class ArmsManagement : PopUpUI
     private const int maxSlotsCount = 18;
     private ArmsType currentPopUpArms;
     private Text currentArmsName;
+    private Text currentArmsExplain;
     private Slider currentArmsHeldSlider;
     private PopUpUI dismountPanel;
     private ArmsSlot mountArmsSlot;
@@ -26,9 +27,9 @@ public class ArmsManagement : PopUpUI
         currentPopUpArms = armsType;
     }
 
-    public void ChangeArmsMenu()
+    public void ChangeArmsMenu(ref ArmsSlot armsSlot)
     {
-
+        mountArmsSlot.CopySlots(ref armsSlot);
     }
 
     public void PopUpDismountPanel()
@@ -41,7 +42,7 @@ public class ArmsManagement : PopUpUI
     private void LoadChilds()
     {
         dismountPanel = transform.GetChild(3).GetComponent<PopUpUI>();
-        mountArmsSlot = transform.GetChild(0).GetComponent<ArmsSlot>();
+        mountArmsSlot = transform.GetChild(1).GetChild(0).GetComponent<ArmsSlot>();
 
         var greedObject = transform.GetChild(2).GetChild(0).GetChild(0).gameObject;
         for(int i = 0; i < maxSlotsCount; i++)
@@ -49,6 +50,9 @@ public class ArmsManagement : PopUpUI
             armsSlotArray[i] = greedObject.transform.GetChild(i).GetComponent<ArmsSlot>();
             armsArray[i] = greedObject.transform.GetChild(i).GetComponent<Arms>();
         }
+
+        currentArmsName = transform.GetChild(1).GetChild(1).GetComponent<Text>();
+        currentArmsExplain = transform.GetChild(1).GetChild(3).GetChild(0).GetComponent<Text>();
     }
     private void AwakeSetUp()
     {
@@ -57,6 +61,12 @@ public class ArmsManagement : PopUpUI
 
         armsSlotArray = new ArmsSlot[maxSlotsCount];
         armsArray = new Arms[maxSlotsCount];
+    }
+
+    private void Start()
+    {
+        currentArmsName.text = DataManger.instance.armsDBDic[2001].itemName;
+        currentArmsExplain.text = DataManger.instance.armsDBDic[2001].explain;
     }
 
     private void Awake()

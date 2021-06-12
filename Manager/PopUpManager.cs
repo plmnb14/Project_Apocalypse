@@ -35,7 +35,7 @@ public class PopUpManager : MonoBehaviour
     public void RemovePopUp()
     {
         bool isOpenOldPopUp = popUpCur.Peek().isOpenOldPopUp;
-        popUpCur.Pop().gameObject.SetActive(false);
+        popUpCur.Pop().RemoveEvents();
 
         if (0 != popUpOld.Count && isOpenOldPopUp)
         {

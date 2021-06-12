@@ -19,22 +19,68 @@ public class ArmsSlot : MonoBehaviour, IPointerClickHandler
     private Image newAlert;
     private TierStar tierStar;
     private GameObject lockScreen;
+    private Arms mountedArms;
+    #endregion
+
+    #region Property
+    public int slotIndex { get; set; }
     #endregion
 
     #region Click Events
     public void OnPointerClick(PointerEventData eventData)
     {
-        ArmsManager.Instance.PopUpArmsManagement(armsType);
+        ArmsManager.Instance.PopUpArmsManagement(armsType, slotIndex);
     }
     #endregion
 
     #region Events
+    public void MountArms(ref Arms arms)
+    {
+        mountedArms = arms;
+        mountIcon.sprite = mountedArms.spriteIcon;
+
+        tierStar.gameObject.SetActive(true);
+        mountIcon.gameObject.SetActive(true);
+        dismountIcon.gameObject.SetActive(false);
+    }
+
+    public void DismountArms()
+    {
+        mountedArms = null;
+        mountIcon.sprite = null;
+
+        tierStar.gameObject.SetActive(false);
+        mountIcon.gameObject.SetActive(false);
+        dismountIcon.gameObject.SetActive(true);
+    }
+
+    public void CopySlots(ref ArmsSlot armsSlot)
+    {
+        UnlockArms(armsSlot.isUnlock);
+        CopyArms(ref armsSlot);
+    }
+
+    private void CopyArms(ref ArmsSlot armsSlot)
+    {
+        if(null != armsSlot.mountedArms)
+        {
+            isEmpty = false;
+            MountArms(ref armsSlot.mountedArms);
+        }
+        else
+        {
+            isEmpty = true;
+            tierStar.gameObject.SetActive(false);
+            mountIcon.gameObject.SetActive(false);
+        }
+
+        tierStar.gameObject.SetActive(!isEmpty);
+    }
+
     public void UnlockArms(bool unlock)
     {
         isUnlock = unlock;
         dismountIcon.gameObject.SetActive(isUnlock);
-        newAlert.gameObject.SetActive(isUnlock);
-        tierStar.gameObject.SetActive(isUnlock);
         lockScreen.gameObject.SetActive(!isUnlock);
     }
 
@@ -53,6 +99,8 @@ public class ArmsSlot : MonoBehaviour, IPointerClickHandler
     {
         isUnlock = false;
         isNewEvent = false;
+        isEmpty = true;
+        mountedArms = null;
     }
     private void Awake()
     {

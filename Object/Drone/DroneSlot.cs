@@ -20,7 +20,7 @@ public class DroneSlot : MonoBehaviour, IPointerClickHandler
     #region Click Event
     public void OnPointerClick(PointerEventData eventData)
     {
-        DroneManager droneManager = DroneManager.instance;
+        DroneManager droneManager = DroneManager.Instance;
         if (isDroneMounted)
         {
             droneManager.pickSlotIndex = slotIndex;

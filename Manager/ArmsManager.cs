@@ -4,23 +4,8 @@ using UnityEngine;
 
 public enum ArmsType { Head, Heart, Spine, Leg, Implant, BattleCore, End }
 
-public class ArmsManager : MonoBehaviour
+public class ArmsManager : Singleton<ArmsManager>
 {
-    #region Instance
-    static public ArmsManager Instance
-    {
-        get
-        {
-            if(null == instance)
-            {
-                instance = FindObjectOfType<ArmsManager>();
-            }
-            return instance;
-        }
-    }
-    static private ArmsManager instance;
-    #endregion
-
     #region Public Fields
     public ArmsContentsMenu armsContentsMenu;
     #endregion
@@ -30,9 +15,9 @@ public class ArmsManager : MonoBehaviour
     #endregion
 
     #region Events
-    public void PopUpArmsManagement(ArmsType armsType)
+    public void PopUpArmsManagement(ArmsType armsType, int slotIndex)
     {
-        armsContentsMenu.PopUpArmsManagement(armsType);
+        armsContentsMenu.PopUpArmsManagement(armsType, slotIndex);
     }
 
     public void PopUpArmsMount()
@@ -51,9 +36,16 @@ public class ArmsManager : MonoBehaviour
         }
     }
 
+    private void CreateArms()
+    {
+        Arms arms = Instantiate(Resources.Load<Arms>("Prefab/Arms"));
+        armsList[0].Add(arms);
+    }
+
     private void Awake()
     {
         AwakeSetUp();
+        CreateArms();
     }
     #endregion
 }

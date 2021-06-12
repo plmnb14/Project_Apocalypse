@@ -2,23 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnderHudManager : MonoBehaviour
+public class AdventureManager : MonoBehaviour
 {
-    public enum UnderInfo { HeroInfo, Status, Weapon, Arms, Drone, End}
+    public enum UnderInfo { HeroInfo, Status, Weapon, Arms, Skill, Drone, End}
+
+    #region Private Fields
     private UnderInfo curInfo;
     private ContentsMenu[] contentsMenuChild;
-    ButtonUnderHud[] childButton;
+    private ButtonUnderHud[] childButton;
+    #endregion
 
-    static public UnderHudManager instance
+    #region Public Fields
+    public GameObject adventureCavnas;
+    #endregion
+
+    #region Instance
+    static public AdventureManager Instance
     {
         get
         {
-            if (m_instance == null) m_instance = FindObjectOfType<UnderHudManager>();
+            if (instance == null) instance = FindObjectOfType<AdventureManager>();
 
-            return m_instance;
+            return instance;
         }
     }
-    private static UnderHudManager m_instance;
+    private static AdventureManager instance;
+    #endregion
 
     public void ChangeCanvas(UnderInfo info)
     {
@@ -47,10 +56,10 @@ public class UnderHudManager : MonoBehaviour
         childButton = new ButtonUnderHud[(int)UnderInfo.End];
         for(int i = 0; i < (int)UnderInfo.End; i++)
         {
-            contentsMenuChild[i] = transform.GetChild(i+1).GetComponent<ContentsMenu>();
+            contentsMenuChild[i] = adventureCavnas.transform.GetChild(i).GetComponent<ContentsMenu>();
 
-            childButton[i] = transform.GetChild(0).
-                transform.GetChild(i).gameObject.GetComponent<ButtonUnderHud>();
+            childButton[i] = adventureCavnas.transform.GetChild(6).
+                GetChild(i).gameObject.GetComponent<ButtonUnderHud>();
         }
 
         curInfo = UnderInfo.HeroInfo;

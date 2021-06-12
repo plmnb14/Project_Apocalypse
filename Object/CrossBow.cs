@@ -6,6 +6,11 @@ public class CrossBow : MountedWeapon
 {
     private GameObject aimPoint;
 
+    public void OnSkill()
+    {
+
+    }
+
     public override void Attack()
     {
         Projectile proj = ProjectileManager.instance.GetProjectile("Bullet");

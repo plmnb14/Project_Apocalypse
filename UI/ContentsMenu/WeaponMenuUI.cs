@@ -40,7 +40,7 @@ public class WeaponMenuUI : ContentsMenu
     private void Awake()
     {
         LoadChilds();
-        ResetPopUpActive(false);
+        //ResetPopUpActive(false);
     }
     #endregion
 }

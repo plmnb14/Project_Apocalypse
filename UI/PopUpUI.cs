@@ -11,4 +11,9 @@ public class PopUpUI : MonoBehaviour
     {
         PopUpManager.instance.AddPopUp(this, closeBefore);
     }
+
+    public virtual void RemoveEvents()
+    {
+        gameObject.SetActive(false);
+    }
 }

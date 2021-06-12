@@ -9,6 +9,23 @@ public enum HeroStatsEnum
     BuffDuration, DebuffResist, DropItem, GainGold, GainExp, DamageFixed, DamagePercent, Stats_End
 };
 
+public class HiddenStatus
+{
+    public float moreDmgChance;
+    public float moreProjChance;
+    public float moreAtkChance;
+    public float igniteChance;
+    public float stunChance;
+    public float shockChance;
+     
+    public float moreDmgValue;
+    public float moreProjValue;
+    public float moreAtkValue;
+    public float igniteValue;
+    public float stunValue;
+    public float shockValue;
+}
+
 public class PlayerStatusManager : MonoBehaviour
 {
     static public PlayerStatusManager instance

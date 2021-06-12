@@ -2,23 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DroneManager : MonoBehaviour
+public class DroneManager : Singleton<DroneManager>
 {
-    #region Instnace Field
-    static public DroneManager instance
-    {
-        get
-        {
-            if(m_instance == null)
-            {
-                m_instance = FindObjectOfType<DroneManager>();
-            }
-            return m_instance;
-        }
-    }
-    static private DroneManager m_instance;
-    #endregion
-
     #region Public Field
     public DroneContentsMenu droneContentsMenu;
     #endregion
@@ -44,6 +29,8 @@ public class DroneManager : MonoBehaviour
     #region Click Event
     public void PopUpDetailUI(int slotIndex)
     {
+        isPickMode = false;
+
         currentPopUpIndex = slotIndex;
         droneContentsMenu.PopUpDetailUI(ref droneCards[slotIndex]);
     }

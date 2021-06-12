@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class Living : WorldObject
 {
-    protected enum animatorEnum 
+    public MountedWeapon weapon { get; set; }
+
+    public enum animatorEnum 
         { IsArmed, OnAttack, OnDie, IsRun, IsBattle, OnReset };
 
-    protected string[] animatorParam = 
+    public string[] animatorParam = 
         { "IsArmed", "OnAttack", "OnDie", "IsRun", "IsBattle", "OnReset" };
 
-    public enum LivingState { Idle, Run, Armed, Armed_Idle, Attack, Hit, Die, Status_End };
+    public enum LivingState { Idle, Run, Armed, Armed_Idle, Attack, Hit, Die, Skill, Status_End };
     public LivingState stateCurrent { get; set; }
 
     public float hitPoint { get; set; } = 1000.0f;
 
-    protected Animator animator;
+    public Animator animator { get; set; }
 
     protected override void OnDie()
     {
@@ -31,6 +33,20 @@ public class Living : WorldObject
             StartCoroutine(OnDead());
         }
     }
+
+    #region Action Events
+    public virtual void OnSkillEffect()
+    {
+        Debug.Log("here~~");
+    }
+
+    public virtual void OnSkill(string aniParam)
+    {
+        animator.SetTrigger(aniParam);
+        weapon.SetAnimatorTrigger(aniParam);
+    }
+
+    #endregion
 
     public override void ResetStatus(Transform parent = null)
     {

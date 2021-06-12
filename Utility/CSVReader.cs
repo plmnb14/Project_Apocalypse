@@ -165,6 +165,68 @@ public class CSVReader : MonoBehaviour
         dataDictionary = dictionary;
     }
 
+    public static void GetArmsDBOnCSV(out Dictionary<int, ArmsStatusForDB> dataDic, string fileName)
+    {
+        string filePath = "Assets/Resources/Database/" + fileName;
+
+        Dictionary<int, ArmsStatusForDB> statusDic = new Dictionary<int, ArmsStatusForDB>();
+        var datas = File.ReadAllLines(filePath);
+        int dataLength = datas.Length;
+        for (int i = 1; i < dataLength; i++)
+        {
+            var parts = datas[i].Split(',');
+            ArmsStatusForDB statusData = new ArmsStatusForDB()
+            {
+                itemCode = int.Parse(parts[0]),
+                armsType = int.Parse(parts[1]),
+                itemName = parts[2],
+                baseValue = float.Parse(parts[3]),
+                growthValue = float.Parse(parts[4]),
+                duration = float.Parse(parts[5]),
+                explain = parts[6]
+            };
+
+            statusDic.Add(int.Parse(parts[0]), statusData);
+        }
+
+        dataDic = statusDic;
+    }
+
+    public static void GetSkillDBOnCSV(out Dictionary<int, SkillStatusDB> dataDic, string fileName)
+    {
+        string filePath = "Assets/Resources/Database/" + fileName;
+
+        Dictionary<int, SkillStatusDB> statusDic = new Dictionary<int, SkillStatusDB>();
+        var datas = File.ReadAllLines(filePath);
+        int dataLength = datas.Length;
+        for (int i = 1; i < dataLength; i++)
+        {
+            var parts = datas[i].Split(',');
+            SkillStatusDB statusData = new SkillStatusDB()
+            {
+                skillID = int.Parse(parts[0]),
+                skillName = parts[1],
+                duration = float.Parse(parts[2]),
+                growthDuration = float.Parse(parts[3]),
+                activeCount = float.Parse(parts[4]),
+                growthActiveCount = float.Parse(parts[5]),
+                percent = float.Parse(parts[6]),
+                growthPercent = float.Parse(parts[7]),
+                coolTime = float.Parse(parts[8]),
+                growthCoolTime = float.Parse(parts[9]),
+                cost = float.Parse(parts[10]),
+                growthCost = float.Parse(parts[11]),
+                costType = (skillCostType)int.Parse(parts[12]),
+                isActiveSkill = int.Parse(parts[13]) > 0 ? true : false,
+                explain = parts[14]
+            };
+
+            statusDic.Add(statusData.skillID, statusData);
+        }
+
+        dataDic = statusDic;
+    }
+
     #region 바이너리 CSV
     //public static List<EquipmentGachaData> GetEquipmentGachaListOnCSVFile(string fileName)
     //{

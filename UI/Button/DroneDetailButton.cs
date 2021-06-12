@@ -15,12 +15,12 @@ public class DroneDetailButton : MonoBehaviour, IPointerClickHandler
         {
             case DroneDetailPopUpOption.Mount:
                 {
-                    DroneManager.instance.MountDrone();
+                    DroneManager.Instance.MountDrone();
                     break;
                 }
             case DroneDetailPopUpOption.Upgrade:
                 {
-                    DroneManager.instance.UpgradeDrone();
+                    DroneManager.Instance.UpgradeDrone();
                     break;
                 }
             case DroneDetailPopUpOption.SkillCore:

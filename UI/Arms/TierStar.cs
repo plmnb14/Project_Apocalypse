@@ -30,11 +30,18 @@ public class TierStar : MonoBehaviour
     {
         for(int i = 0; i < maxStarCount; i++)
         {
-            stars[i] = transform.GetComponent<Image>();
+            stars[i] = transform.GetChild(i).GetComponent<Image>();
         }
     }
+    
+    private void AwakeSetUp()
+    {
+        stars = new Image[maxStarCount];
+    }
+
     private void Awake()
     {
+        AwakeSetUp();
         LoadChilds();
     }
     #endregion

@@ -7,7 +7,7 @@ public class ButtonUnderHud : MonoBehaviour, IPointerClickHandler
 {
     private const int buttonCount = 2;
 
-    public UnderHudManager.UnderInfo infoType;
+    public AdventureManager.UnderInfo infoType;
     protected GameObject[] childButton;
     public bool buttonActive { get; set; }
 
@@ -16,13 +16,8 @@ public class ButtonUnderHud : MonoBehaviour, IPointerClickHandler
         if (!buttonActive)
         {
             buttonActive = true;
-            UnderHudManager.instance.ChangeCanvas(infoType);
+            AdventureManager.Instance.ChangeCanvas(infoType);
         }
-    }
-
-    public void OnClickButton()
-    {
-        Debug.Log("´­¸²");
     }
 
     public void ChangeActivate(bool value)

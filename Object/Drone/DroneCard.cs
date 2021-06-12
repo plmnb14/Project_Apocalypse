@@ -47,8 +47,8 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
     #region Click Event
     public void OnPointerClick(PointerEventData eventData)
     {
-        DroneManager droneManager = DroneManager.instance;
-        if (!DroneManager.instance.isPickMode)
+        DroneManager droneManager = DroneManager.Instance;
+        if (!DroneManager.Instance.isPickMode)
         {
             droneManager.PopUpDetailUI(cardIndex);
         }
@@ -75,7 +75,7 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
 
     public void SetPickOnTeam()
     {
-        DroneManager droneManager = DroneManager.instance;
+        DroneManager droneManager = DroneManager.Instance;
         droneManager.PickedDrone(cardIndex);
         droneManager.SummonDrone(true, cardIndex);
         droneManager.SetPickMode(false);

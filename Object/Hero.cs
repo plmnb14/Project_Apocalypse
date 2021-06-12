@@ -4,9 +4,60 @@ using UnityEngine;
 
 public class Hero : Living
 {
-    private MountedWeapon weapon;
+    #region Private Fields
     private bool canAttack;
+    private bool canSkill = true;
     private Monster target;
+    private readonly int maxSkillCount = 2;
+    private SkillDB[] playerSkill;
+    private SkillStatusLocal[] playerSkillStatus;
+    #endregion
+
+    #region Awake Events
+    private void Awake()
+    {
+        AwakeSetUp();
+        LoadChilds();
+    }
+
+    protected override void AwakeSetUp()
+    {
+        base.AwakeSetUp();
+
+        playerSkill = new SkillDB[maxSkillCount];
+        playerSkillStatus = new SkillStatusLocal[maxSkillCount];
+        hitPoint = 10000000.0f;
+        stateCurrent = LivingState.Idle;
+        canAttack = true;
+    }
+
+    private void LoadChilds()
+    {
+        weapon = transform.GetChild(0).GetComponent<MountedWeapon>();
+    }
+    #endregion
+
+    #region Start Events
+    private void Start()
+    {
+        playerSkill[0] = SkillManager.Instance.skillDBDic[1001];
+        //playerSkillStatus[0].CopySkillDB(ref playerSkill[0]);
+    }
+    #endregion
+
+    #region Action Events
+    private void SetUpSkill()
+    {
+        Debug.Log("SetUpSkill");
+        playerSkill[0].ActiveSkill(this);
+        // 스킬 사용이 Action으로 상태바꿔주는거 넣기
+    }
+
+    public override void OnSkillEffect()
+    {
+        Debug.Log("Skill Effects");
+    }
+    #endregion
 
     WaitForSeconds waitSecond = new WaitForSeconds(0.5f);
     public IEnumerator BeginStage()
@@ -89,7 +140,7 @@ public class Hero : Living
             weapon.SetAnimatorBool(animatorParam[(int)animatorEnum.IsRun], true);
 
             StageManager.instance.ScrollingBackround();
-            DroneManager.instance.MoveDrones(true);
+            DroneManager.Instance.MoveDrones(true);
         }
 
         else
@@ -105,7 +156,7 @@ public class Hero : Living
                 weapon.SetAnimatorBool(animatorParam[(int)animatorEnum.IsRun], false);
 
                 StageManager.instance.SummonMonster();
-                DroneManager.instance.MoveDrones(false);
+                DroneManager.Instance.MoveDrones(false);
             }
         }
     }
@@ -174,15 +225,6 @@ public class Hero : Living
         base.OnHit();
     }
 
-    protected override void AwakeSetUp()
-    {
-        base.AwakeSetUp();
-
-        stateCurrent = LivingState.Idle;
-        weapon = transform.GetChild(0).GetComponent<MountedWeapon>();
-        canAttack = true;
-    }
-
     protected override void StateCheck()
     {
         switch(stateCurrent)
@@ -225,6 +267,11 @@ public class Hero : Living
                 {
                     break;
                 }
+            case LivingState.Skill:
+                {
+                    if (canSkill) SetUpSkill();
+                    break;
+                }
         }
     }
 
@@ -248,13 +295,12 @@ public class Hero : Living
 
     private void Update()
     {
+        if (Input.GetKeyUp("space"))
+        {
+            stateCurrent = LivingState.Skill;
+        }
+
         StateCheck();
         AttackCooltime();
-    }
-
-    private void Awake()
-    {
-        hitPoint = 10000000.0f;
-        AwakeSetUp();
     }
 }

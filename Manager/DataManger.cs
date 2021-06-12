@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum DBType { Weapon, Drone, Arms, Scripts, Skill , End }
+
 public class DataManger : MonoBehaviour
 {
     #region 인스턴스
@@ -25,6 +27,8 @@ public class DataManger : MonoBehaviour
     public List<DroneStatusForDB> droneStatusDBList { get; set; }
     public Dictionary<int, DroneStatusForDB> droneStatusDictionary { get; set; }
     public Dictionary<string, string> scriptsDictionary { get; set; }
+    public Dictionary<int, ArmsStatusForDB> armsDBDic { get; set; }
+    public Dictionary<int, SkillStatusDB> skillDBDic { get; set; }
     #endregion
 
     private void LoadCSVData()
@@ -46,6 +50,12 @@ public class DataManger : MonoBehaviour
 
         CSVReader.GetScriptsDictionaryOnCSV(out Dictionary<string, string> dataDictionary, "NotificationScriptsData.csv");
         scriptsDictionary = dataDictionary;
+
+        CSVReader.GetArmsDBOnCSV(out Dictionary<int, ArmsStatusForDB> armsDic, "ArmsData.csv");
+        armsDBDic = armsDic;
+
+        CSVReader.GetSkillDBOnCSV(out Dictionary<int, SkillStatusDB> skillDic, "SkillData.csv");
+        skillDBDic = skillDic;
     }
 
     private void SetUpField()
@@ -56,6 +66,8 @@ public class DataManger : MonoBehaviour
         weaponEnchantTableList = new List<WeaponEnchantTable>();
         droneStatusDBList = new List<DroneStatusForDB>();
         scriptsDictionary = new Dictionary<string, string>();
+        armsDBDic = new Dictionary<int, ArmsStatusForDB>();
+        skillDBDic = new Dictionary<int, SkillStatusDB>();
     }
 
     private void Awake()

@@ -28,11 +28,11 @@ public class ArmsContentsMenu : ContentsMenu
     #endregion
 
     #region Events
-    public void PopUpArmsManagement(ArmsType armsType)
+    public void PopUpArmsManagement(ArmsType armsType, int slotIndex)
     {
         armsManagement.AddPopUpUI(true);
         armsManagement.ChangeArmsType(armsType);
-        armsManagement.ChangeArmsMenu();
+        armsManagement.ChangeArmsMenu(ref armsLobby.armsSlots[slotIndex]);
     }
 
     public void PopUpArmsMount()
