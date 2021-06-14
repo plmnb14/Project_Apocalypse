@@ -32,15 +32,18 @@ public class PopUpManager : MonoBehaviour
         AddPopUp(notificationCanvas);
     }
 
-    public void RemovePopUp()
+    public void RemovePopUp(int removeCount = 1)
     {
-        bool isOpenOldPopUp = popUpCur.Peek().isOpenOldPopUp;
-        popUpCur.Pop().RemoveEvents();
-
-        if (0 != popUpOld.Count && isOpenOldPopUp)
+        while(removeCount-- > 0)
         {
-            popUpCur.Push(popUpOld.Pop());
-            popUpCur.Peek().gameObject.SetActive(true);
+            bool isOpenOldPopUp = popUpCur.Peek().isOpenOldPopUp;
+            popUpCur.Pop().RemoveEvents();
+
+            if (0 != popUpOld.Count && isOpenOldPopUp)
+            {
+                popUpCur.Push(popUpOld.Pop());
+                popUpCur.Peek().gameObject.SetActive(true);
+            }
         }
     }
 

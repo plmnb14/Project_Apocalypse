@@ -4,21 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class SkillIcon : MonoBehaviour, IPointerClickHandler
+public class SkillIcon : SkillSlotBase, IPointerClickHandler
 {
     #region Enum
     private enum IconType { Skill, Mount, Lock, End }
     #endregion
 
     #region Private Fields
-    private bool isMounted;
-    private bool isUnlock;
-    private Image[] icons;
     private Text levelText;
-    #endregion
-
-    #region Property Fields
-    public Skill skill { get; set; }
     #endregion
 
     #region Click Events
@@ -39,9 +32,9 @@ public class SkillIcon : MonoBehaviour, IPointerClickHandler
         OnDefault();
     }
 
-    private void AwakeSetUp()
+    protected override void AwakeSetUp()
     {
-        isMounted = false;
+        base.AwakeSetUp();
         icons = new Image[(int)IconType.End];
         skill = GetComponent<Skill>();
     }
@@ -84,9 +77,10 @@ public class SkillIcon : MonoBehaviour, IPointerClickHandler
     #endregion
 
     #region Events
-    public void UnlockSkill()
+    public override void UnlockSkillSlot()
     {
-        isUnlock = true;
+        base.UnlockSkillSlot();
+
         levelText.gameObject.SetActive(true);
         icons[(int)IconType.Lock].gameObject.SetActive(false);
     }

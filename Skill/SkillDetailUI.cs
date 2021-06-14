@@ -7,7 +7,6 @@ public class SkillDetailUI : PopUpInnerUI
 {
     #region Private Fields
     private readonly int maxSkillTag = 4;
-    private SkillIcon curSkillIcon;
     private GameObject[] skillTags;
     private Image skillIconImg;
     private Text skillName;
@@ -15,6 +14,10 @@ public class SkillDetailUI : PopUpInnerUI
     private Text skillLevel;
     private Text skillExplain;
     private Text skillValueExplain;
+    #endregion
+
+    #region Property Fields
+    public SkillIcon curSkillIcon { get; set; }
     #endregion
 
     #region Awake Events

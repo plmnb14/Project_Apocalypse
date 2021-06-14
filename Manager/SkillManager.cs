@@ -5,8 +5,10 @@ using UnityEngine;
 public class SkillManager : Singleton<SkillManager>
 {
     #region Public Fields
-    [SerializeField]
-    public SkillMenuUI skillMenuUI { get; set; }
+    public readonly int maxSkillCount = 6;
+    public int curSkillCount = 2;
+    public SkillMenuUI skillMenuUI;
+    public PlayerSkillSlot playerSkillSlot;
     #endregion
 
     #region Property Fields
@@ -40,6 +42,40 @@ public class SkillManager : Singleton<SkillManager>
         var skillHatred = Resources.Load<SkillDB>("SkillDB/Skill_Hatred");
         skillHatred.explain = skillHatred.explain.Replace("\\n", "\n");
         skillDBDic.Add(skillHatred.skillID, skillHatred);
+    }
+    #endregion
+
+    #region Start Events
+    private void Start()
+    {
+        playerSkillSlot.UnlockSkillSlot();
+        //다음으로 저장된 플레이어 스킬 정보 불러오기
+    }
+    #endregion
+
+    #region Public Events
+    public void MountSkill()
+    {
+        skillMenuUI.MountSkill();
+    }
+
+    public void SetMountMode(bool isActive = true)
+    {
+        if(isActive)
+        {
+            skillMenuUI.SetMountMode();
+        }
+        else
+        {
+            PopUpManager.instance.RemovePopUp(2);
+        }
+
+        playerSkillSlot.SetMountMode(isActive);
+    }
+
+    public SkillIcon GetSelectedSkill()
+    {
+        return skillMenuUI.GetSelectedSkill();
     }
     #endregion
 }

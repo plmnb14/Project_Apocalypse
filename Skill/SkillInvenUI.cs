@@ -106,4 +106,16 @@ public class SkillInvenUI : PopUpInnerUI
         base.RemoveEvents();
     }
     #endregion
+
+    #region Events
+    public void MountSkill()
+    {
+        var skillIcon = selectSkillPopUp.curSkillIcon;
+    }
+
+    public SkillIcon GetSelectedSkill()
+    {
+        return selectSkillPopUp.curSkillIcon;
+    }
+    #endregion
 }

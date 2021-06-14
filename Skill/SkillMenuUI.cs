@@ -12,6 +12,7 @@ public class SkillMenuUI : ContentsMenu
     private readonly int maxSkillMenuCnt = 3;
     public SkillMenuEnum curSkillMenu;
     private PopUpInnerUI[] skillMenus;
+    private PopUpUI skillSelctUI;
     #endregion
 
     #region Awake Events
@@ -33,6 +34,8 @@ public class SkillMenuUI : ContentsMenu
         {
             skillMenus[i] = transform.GetChild(i).GetComponent<PopUpInnerUI>();
         }
+
+        skillSelctUI = transform.GetChild(3).GetComponent<PopUpUI>();
     }
     #endregion
 
@@ -72,6 +75,11 @@ public class SkillMenuUI : ContentsMenu
         ResetPopUpActive(false);
         skillMenus[(int)SkillMenuEnum.Lobby].AddPopUpUI();
     }
+
+    public void ResetCurMenu()
+    {
+        curSkillMenu = SkillMenuEnum.Lobby;
+    }
     #endregion
 
     #region Open Events
@@ -97,9 +105,21 @@ public class SkillMenuUI : ContentsMenu
     #endregion
 
     #region Events
-    public void ResetCurMenu()
+    public void MountSkill()
     {
-        curSkillMenu = SkillMenuEnum.Lobby;
+        var skillInven = skillMenus[(int)SkillMenuEnum.SkillInven] as SkillInvenUI;
+        skillInven.MountSkill();
+    }
+
+    public void SetMountMode()
+    {
+        skillSelctUI.AddPopUpUI();
+    }
+
+    public SkillIcon GetSelectedSkill()
+    {
+        var skillInven = skillMenus[(int)SkillMenuEnum.SkillInven] as SkillInvenUI;
+        return skillInven.GetSelectedSkill();
     }
     #endregion
 }
