@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class SkillSlotBase : MonoBehaviour
 {
     #region Protected Fields
-    protected bool isUnlocked;
     protected Image[] icons;
     #endregion
 
     #region Property Fields
+    public bool isUnlocked { get; set; }
     public bool isMounted { get; set; }
     public Skill skill { get; set; }
     #endregion

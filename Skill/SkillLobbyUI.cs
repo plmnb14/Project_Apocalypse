@@ -30,4 +30,39 @@ public class SkillLobbyUI : PopUpInnerUI
         }
     }
     #endregion
+
+    #region Start Events
+    private void Start()
+    {
+        LockSlot();
+    }
+
+    public void LockSlot()
+    {
+        int UnlockCnt = SkillManager.Instance.curSkillCount;
+        int maxCnt = SkillManager.Instance.maxSkillCount;
+        for (int i = 0; i < UnlockCnt; i++)
+        {
+            skillWithCoreUIs[i].LockSlot(false);
+        }
+
+        for (int i = UnlockCnt; i < maxCnt; i++)
+        {
+            skillWithCoreUIs[i].LockSlot();
+        }
+    }
+    #endregion
+
+    #region Events
+    public void ChangeSkillStatus(ref SkillIcon skillIcon)
+    {
+        int mountSlotIdx = skillIcon.mountSlotIndex;
+        skillWithCoreUIs[mountSlotIdx].ChangeSkillIcon(ref skillIcon);
+    }
+
+    public void DismountSkillImage(int slotIdx)
+    {
+        skillWithCoreUIs[slotIdx].DismountSkillImage();
+    }
+    #endregion
 }

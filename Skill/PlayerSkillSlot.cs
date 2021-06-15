@@ -62,5 +62,34 @@ public class PlayerSkillSlot : MonoBehaviour
     {
         skillSlotUI[skillIndex].DismountSkill();
     }
+
+    public void SetSkillOnSlot(int slotIndex)
+    {
+        var currrentSkill = SkillManager.Instance.GetSelectedSkill();
+        // ÀÌ¹Ì ÀåÂøµÇ ÀÖ´Ù¸é
+        if (skillSlotUI[slotIndex].isMounted)
+        {
+            // ±Ùµ¥ ³ªµµ ÀåÂøµÇÀÖ´Ù¸é
+            if (currrentSkill.isMounted)
+            {
+                ExchangeSkillSlot(skillSlotUI[slotIndex].mountingSkillIcon.mountSlotIndex, 
+                    currrentSkill.mountSlotIndex);
+            }
+        }
+
+        else
+        {
+            // ÀåÂøÀÌ ¾ÈµÇÀÖ°í
+            if (currrentSkill.isMounted)
+            {
+                //ÀåÂøÇÏ·Á´Â ¾Ö¸¸ ÀåÂøµÇ¾îÀÖÀ¸¸é ÀåÂøÃë¼Ò
+                SkillManager.Instance.DismountSkillImage(currrentSkill.mountSlotIndex);
+                DismountSkillSlot(currrentSkill.mountSlotIndex);
+            }
+
+            // ÈÄ ´Ù½Ã ÀåÂø
+            skillSlotUI[slotIndex].SetSkillOnManager();
+        }
+    }
     #endregion
 }

@@ -10,10 +10,11 @@ public class SkillWithCoreUI : MonoBehaviour
     #endregion
 
     #region Private Fields
-    private SkillSlotUI skillSlotUI;
+    private SkillImage skillImage;
     private GameObject coreSlotsUI;
     private Text skillName;
     private Text typeName;
+    private GameObject lockScreen;
     #endregion
 
     #region Awake Events;
@@ -30,20 +31,39 @@ public class SkillWithCoreUI : MonoBehaviour
 
     private void LoadChilds()
     {
-        skillSlotUI = transform.GetChild(1).GetComponent<SkillSlotUI>();
+        skillImage = transform.GetChild(1).GetComponent<SkillImage>();
         coreSlotsUI = transform.GetChild(2).gameObject;
         skillName = transform.GetChild(3).GetComponent<Text>();
         typeName = transform.GetChild(4).GetComponent<Text>();
+        lockScreen = transform.GetChild(6).gameObject;
 
     }
     #endregion
 
-    #region Public Events
+    #region Events
     public void PopUpSkillInven()
     {
         var skillMenuUI = SkillManager.Instance.skillMenuUI;
-        //skillMenuUI.SetSkillSlotIndex(skillSlotIndex);
         skillMenuUI.OpenSkillUI(SkillMenuUI.SkillMenuEnum.SkillInven, true);
+        skillMenuUI.openSkillSlotIdx = skillSlotIndex;
+    }
+
+    public void ChangeSkillIcon(ref SkillIcon skillIcon)
+    {
+        skillImage.skill = skillIcon.skill;
+        skillImage.ChangeImages();
+    }
+
+    public void DismountSkillImage()
+    {
+        skillImage.ChangeImages(false);
+    }
+
+    public void LockSlot(bool isLocked = true)
+    {
+        lockScreen.gameObject.SetActive(isLocked);
+        skillName.gameObject.SetActive(!isLocked);
+        typeName.gameObject.SetActive(!isLocked);
     }
     #endregion
 }

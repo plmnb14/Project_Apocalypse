@@ -8,6 +8,10 @@ public class SkillMenuUI : ContentsMenu
     public enum SkillMenuEnum { Lobby, SkillInven, CoreInven, End };
     #endregion
 
+    #region Property Fields
+    public int openSkillSlotIdx { get; set; }
+    #endregion
+
     #region Private Fields
     private readonly int maxSkillMenuCnt = 3;
     public SkillMenuEnum curSkillMenu;
@@ -127,6 +131,24 @@ public class SkillMenuUI : ContentsMenu
     {
         var skillInven = skillMenus[(int)SkillMenuEnum.SkillInven] as SkillInvenUI;
         return skillInven.GetSelectedSkill();
+    }
+
+    public void ChangeSkillStatus(ref SkillIcon skillIcon)
+    {
+        var skillLobby = skillMenus[(int)SkillMenuEnum.Lobby] as SkillLobbyUI;
+        skillLobby.ChangeSkillStatus(ref skillIcon);
+    }
+
+    public bool GetSkillInvenMode()
+    {
+        var skillInven = skillMenus[(int)SkillMenuEnum.SkillInven] as SkillInvenUI;
+        return skillInven.isSimpleMode;
+    }
+
+    public void DismountSkillImage(int slotIdx)
+    {
+        var skillLobby = skillMenus[(int)SkillMenuEnum.Lobby] as SkillLobbyUI;
+        skillLobby.DismountSkillImage(slotIdx);
     }
     #endregion
 }

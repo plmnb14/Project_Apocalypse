@@ -2,14 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ILoader<Key, Value>
-{
-    Dictionary<Key, Value> MakeDict();
-}
-
 public class DataManager : Singleton<DataManager>
 {
-    #region ÇÊµå
+    #region Data Fields
     public List<GachaChanceData> weaponGachaChanceList { get; set; }
     public List<WeaponStatsForDatabase> weaponStatForDataList { get; set; }
     public Dictionary<int, WeaponStatsForDatabase> weaponStatForDataDictionary { get; set; }

@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class SkillDetailUI : PopUpInnerUI
 {
+    #region String
+    private int maxSkillTier = 5;
+    private string[] tierString = { "1차", "2차", "3차", "4차", "각성", "미습득" };
+    #endregion
+
     #region Private Fields
     private readonly int maxSkillTag = 4;
     private GameObject[] skillTags;
@@ -60,6 +65,8 @@ public class SkillDetailUI : PopUpInnerUI
             curSkillIcon = skillIcon;
             ChangeArts();
             ChangeTag();
+            ChangeText();
+            ChangeTier();
         }
     }
 
@@ -77,6 +84,19 @@ public class SkillDetailUI : PopUpInnerUI
         skillTags[1].SetActive(skillDB.isProjectile ? true : false);
         skillTags[2].SetActive(skillDB.isElement ? true : false);
         skillTags[3].SetActive(skillDB.isAura ? true : false);
+    }
+
+    private void ChangeText()
+    {
+        SkillDB skillDB = curSkillIcon.skill.originSkillDB;
+        skillExplain.text = skillDB.DetailExplain;
+        skillValueExplain.text = skillDB.effectExplain;
+    }
+
+    private void ChangeTier()
+    {
+        SkillDB skillDB = curSkillIcon.skill.originSkillDB;
+        skillTier.text = tierString[skillDB.skillTier];
     }
     #endregion
 }

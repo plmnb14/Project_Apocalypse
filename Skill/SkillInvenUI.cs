@@ -8,6 +8,10 @@ public class SkillInvenUI : PopUpInnerUI
     private enum BarTypeEnum { Simple, Full, End };
     #endregion
 
+    #region Property Fields
+    public bool isSimpleMode { get; set; }
+    #endregion
+
     #region Private Fields
     //private BarTypeEnum barTypeEnum;
     private SkillActType skillActType;
@@ -25,7 +29,7 @@ public class SkillInvenUI : PopUpInnerUI
 
     private void AwakeSetUp()
     {
-        //barTypeEnum = BarTypeEnum.Simple;
+        isSimpleMode = false;
         skillActType = SkillActType.Active;
 
         typeBar = new GameObject[(int)BarTypeEnum.End];
@@ -76,8 +80,9 @@ public class SkillInvenUI : PopUpInnerUI
     #region Open Events
     public override void OpenSetUp(bool isSimple = false)
     {
+        isSimpleMode = isSimple;
         DeactivePopUp();
-        ActivePopUp(isSimple);
+        ActivePopUp(isSimpleMode);
     }
 
     public void SetSkillOnDetail(SkillIcon skillIcon)

@@ -13,6 +13,11 @@ public class SkillSlotUI : SkillSlotBase, IPointerClickHandler
     #region Click Events
     public void OnPointerClick(PointerEventData eventData)
     {
+        SetSkillOnManager();
+    }
+
+    public void SetSkillOnManager()
+    {
         SkillManager skillManager = SkillManager.Instance;
         MountSkill(skillManager.GetSelectedSkill());
         skillManager.SetMountMode(false);
@@ -109,9 +114,6 @@ public class SkillSlotUI : SkillSlotBase, IPointerClickHandler
 
     public void DismountSkill()
     {
-        Debug.Log(mountingSkillIcon);
-        Debug.Log(mountingSkillIcon.mountSlotIndex);
-
         isMounted = false;
         mountingSkillIcon.isMounted = false;
         mountingSkillIcon.mountSlotIndex = -1;
@@ -134,6 +136,7 @@ public class SkillSlotUI : SkillSlotBase, IPointerClickHandler
         mountingSkillIcon = skillIcon;
         skill = mountingSkillIcon.skill;
         ChangeImages();
+        SkillManager.Instance.ChangeSkillStatus(ref skillIcon);
     }
 
     #endregion

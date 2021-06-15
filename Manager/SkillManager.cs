@@ -74,7 +74,7 @@ public class SkillManager : Singleton<SkillManager>
     }
     #endregion
 
-    #region Public Events
+    #region Events
     public void MountSkill()
     {
         skillMenuUI.MountSkill();
@@ -82,16 +82,28 @@ public class SkillManager : Singleton<SkillManager>
 
     public void SetMountMode(bool isActive = true)
     {
-        if(isActive)
+        bool isSimple = skillMenuUI.GetSkillInvenMode();
+        if(isSimple && isActive == true)
         {
-            skillMenuUI.SetMountMode();
-        }
-        else
-        {
-            PopUpManager.instance.RemovePopUp(2);
+            int idx = skillMenuUI.openSkillSlotIdx;
+            playerSkillSlot.SetSkillOnSlot(idx);
+            PopUpManager.instance.RemovePopUp();
         }
 
-        playerSkillSlot.SetMountMode(isActive);
+        else
+        {
+            if (isActive)
+            {
+                skillMenuUI.SetMountMode();
+            }
+            else
+            {
+                int popUpCnt = isSimple ? 0 : 2;
+                PopUpManager.instance.RemovePopUp(popUpCnt);
+            }
+
+            playerSkillSlot.SetMountMode(isActive);
+        }
     }
 
     public SkillIcon GetSelectedSkill()
@@ -109,6 +121,11 @@ public class SkillManager : Singleton<SkillManager>
         playerSkillSlot.DismountSkillSlot(skillIndex);
     }
 
+    public void DismountSkillImage(int slotIdx)
+    {
+        skillMenuUI.DismountSkillImage(slotIdx);
+    }
+
     public void DismountSkillSlot()
     {
         var skillIcon = GetSelectedSkill();
@@ -122,6 +139,16 @@ public class SkillManager : Singleton<SkillManager>
         {
             playerSkillSlot.DismountSkillSlot(selectSkillSlotIdex);
         }
+    }
+
+    public void ChangeSkillStatus(ref SkillIcon skillIcon)
+    {
+        skillMenuUI.ChangeSkillStatus(ref skillIcon);
+    }
+
+    public void SetOpenSkillSlotIndex(int slotIndex)
+    {
+        skillMenuUI.openSkillSlotIdx = slotIndex;
     }
     #endregion
 }
