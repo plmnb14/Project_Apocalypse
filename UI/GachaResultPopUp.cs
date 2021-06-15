@@ -69,7 +69,7 @@ public class GachaResultPopUp : PopUpUI
     private void ResultIconChange()
     {
         int itemCode = gachaItemCode.Dequeue();
-        DataManger dataManager = DataManger.instance;
+        DataManager dataManager = DataManager.Instance;
         var itemData = dataManager.weaponStatForDataDictionary[itemCode];
 
         gachaResultItems[currentGachaCount].GetComponent<Image>().sprite = gachaFrameSprite[itemData.grade];

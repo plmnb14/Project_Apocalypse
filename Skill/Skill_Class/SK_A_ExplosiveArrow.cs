@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Skill_Hatred", menuName = "Skill/Hatred")]
-public class SkillHatred : SkillDB
+[CreateAssetMenu(fileName = "SK_A_ExplosiveArrow", menuName = "Skill/A_ExplosiveArrow")]
+public class SK_A_ExplosiveArrow : SkillDB
 {
-    #region Events
     public override void ActiveSkill(Living user, Living target = null, Transform usePosition = null)
     {
 
     }
-    #endregion
+
+    public void OnAction()
+    {
+
+    }
 }

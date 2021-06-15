@@ -10,6 +10,11 @@ public class SkillIcon : SkillSlotBase, IPointerClickHandler
     private enum IconType { Skill, Mount, Lock, End }
     #endregion
 
+    #region Property Fields
+    public int mountSlotIndex { get; set; }
+    public int skillTreeIndex { get; set; }
+    #endregion
+
     #region Private Fields
     private Text levelText;
     #endregion
@@ -37,6 +42,8 @@ public class SkillIcon : SkillSlotBase, IPointerClickHandler
         base.AwakeSetUp();
         icons = new Image[(int)IconType.End];
         skill = GetComponent<Skill>();
+        mountSlotIndex = -1;
+        skillTreeIndex = -1;
     }
 
     private void LoadChilds()
@@ -57,25 +64,6 @@ public class SkillIcon : SkillSlotBase, IPointerClickHandler
     }
     #endregion
 
-    #region Start Events
-    private void Start()
-    {
-        StartSetUp();
-    }
-
-    private void StartSetUp()
-    {
-        skill.LoadSkillDB();
-        ChangeSkillArts();
-    }
-
-    public void ChangeSkillArts()
-    {
-        icons[(int)IconType.Skill].sprite = skill.originSkillDB.skillIcon;
-        levelText.text = string.Format("lv.{0}", skill.skillStatusSave.level);
-    }
-    #endregion
-
     #region Events
     public override void UnlockSkillSlot()
     {
@@ -83,6 +71,12 @@ public class SkillIcon : SkillSlotBase, IPointerClickHandler
 
         levelText.gameObject.SetActive(true);
         icons[(int)IconType.Lock].gameObject.SetActive(false);
+    }
+
+    public void ChangeSkillArts()
+    {
+        icons[(int)IconType.Skill].sprite = skill.originSkillDB.skillIcon;
+        levelText.text = string.Format("lv.{0}", skill.skillStatusSave.level);
     }
     #endregion
 }

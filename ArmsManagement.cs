@@ -65,8 +65,8 @@ public class ArmsManagement : PopUpUI
 
     private void Start()
     {
-        currentArmsName.text = DataManger.instance.armsDBDic[2001].itemName;
-        currentArmsExplain.text = DataManger.instance.armsDBDic[2001].explain;
+        currentArmsName.text = DataManager.Instance.armsDBDic[2001].itemName;
+        currentArmsExplain.text = DataManager.Instance.armsDBDic[2001].explain;
     }
 
     private void Awake()

@@ -109,7 +109,7 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
 
     public void SetStatsFromDataBase()
     {
-        DataManger dataManager = DataManger.instance;
+        DataManager dataManager = DataManager.Instance;
         equipmentName.text = dataManager.weaponStatForDataList[equipIndex].weaponName;
         statForSave.itemCode = statForLocal.itemCode = dataManager.weaponStatForDataList[equipIndex].itemCode;
 
@@ -150,25 +150,25 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
     #region Local Stats Set
     private void SetReinforceCost()
     {
-        statForLocal.reinforceCost = DataManger.instance.weaponStatForDataDictionary[statForSave.itemCode].reinforceCostOrigin * statForSave.reinforcelevel;
+        statForLocal.reinforceCost = DataManager.Instance.weaponStatForDataDictionary[statForSave.itemCode].reinforceCostOrigin * statForSave.reinforcelevel;
     }
     private void SetDamageFixed()
     {
-        statForLocal.damageFixed = DataManger.instance.weaponStatForDataDictionary[statForSave.itemCode].damageFixedOrigin * statForSave.reinforcelevel;
+        statForLocal.damageFixed = DataManager.Instance.weaponStatForDataDictionary[statForSave.itemCode].damageFixedOrigin * statForSave.reinforcelevel;
     }
 
     private void SetDamagePercent()
     {
-        statForLocal.damagePercent = DataManger.instance.weaponStatForDataDictionary[statForSave.itemCode].damagePercentOrigin * statForSave.reinforcelevel;
+        statForLocal.damagePercent = DataManager.Instance.weaponStatForDataDictionary[statForSave.itemCode].damagePercentOrigin * statForSave.reinforcelevel;
     }
     private void SetCriticalChance()
     {
-        statForLocal.criticalChance = DataManger.instance.weaponStatForDataDictionary[statForSave.itemCode].criticalChanceOrigin * statForSave.reinforcelevel;
+        statForLocal.criticalChance = DataManager.Instance.weaponStatForDataDictionary[statForSave.itemCode].criticalChanceOrigin * statForSave.reinforcelevel;
     }
 
     private void SetCriticalDamage()
     {
-        statForLocal.criticalDamage = DataManger.instance.weaponStatForDataDictionary[statForSave.itemCode].criticalDamageOrigin * statForSave.reinforcelevel;
+        statForLocal.criticalDamage = DataManager.Instance.weaponStatForDataDictionary[statForSave.itemCode].criticalDamageOrigin * statForSave.reinforcelevel;
     }
 
     private void SetHeldStat(int statIndex)
@@ -177,17 +177,17 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
         {
             case 0:
                 {
-                    statForLocal.heldStatusValue_0 = DataManger.instance.weaponStatForDataDictionary[statForSave.itemCode].heldStatusValueOrigin_0 * statForSave.reinforcelevel;
+                    statForLocal.heldStatusValue_0 = DataManager.Instance.weaponStatForDataDictionary[statForSave.itemCode].heldStatusValueOrigin_0 * statForSave.reinforcelevel;
                     break;
                 }
             case 1:
                 {
-                    statForLocal.heldStatusValue_1 = DataManger.instance.weaponStatForDataDictionary[statForSave.itemCode].heldStatusValueOrigin_1 * statForSave.reinforcelevel;
+                    statForLocal.heldStatusValue_1 = DataManager.Instance.weaponStatForDataDictionary[statForSave.itemCode].heldStatusValueOrigin_1 * statForSave.reinforcelevel;
                     break;
                 }
             case 2:
                 {
-                    statForLocal.heldStatusValue_2 = DataManger.instance.weaponStatForDataDictionary[statForSave.itemCode].heldStatusValueOrigin_2 * statForSave.reinforcelevel;
+                    statForLocal.heldStatusValue_2 = DataManager.Instance.weaponStatForDataDictionary[statForSave.itemCode].heldStatusValueOrigin_2 * statForSave.reinforcelevel;
                     break;
                 }
         }
@@ -277,7 +277,7 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
 
         else
         {
-            heldType = DataManger.instance.weaponStatForDataList[equipIndex].heldStatusType_0;
+            heldType = DataManager.Instance.weaponStatForDataList[equipIndex].heldStatusType_0;
             FindHeldStatType(heldType, statForLocal.heldStatusValue_0, isDecrease);
         }
 
@@ -285,7 +285,7 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
 
         else
         {
-            heldType = DataManger.instance.weaponStatForDataList[equipIndex].heldStatusType_1;
+            heldType = DataManager.Instance.weaponStatForDataList[equipIndex].heldStatusType_1;
             FindHeldStatType(heldType, statForLocal.heldStatusValue_1, isDecrease);
         }
 
@@ -293,7 +293,7 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
 
         else
         {
-            heldType = DataManger.instance.weaponStatForDataList[equipIndex].heldStatusType_2;
+            heldType = DataManager.Instance.weaponStatForDataList[equipIndex].heldStatusType_2;
             FindHeldStatType(heldType, statForLocal.heldStatusValue_1, isDecrease);
         }
     }
@@ -409,7 +409,7 @@ public class Weapon : MonoBehaviour, IPointerClickHandler
         {
             statForSave.reinforcelevel += value;
             statForLocal.reinforceCost =
-                DataManger.instance.weaponStatForDataList[equipIndex].reinforceCostOrigin * statForSave.reinforcelevel;
+                DataManager.Instance.weaponStatForDataList[equipIndex].reinforceCostOrigin * statForSave.reinforcelevel;
         }
 
         levelStringBuilder.Remove(0, levelStringBuilder.Length);

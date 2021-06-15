@@ -41,12 +41,12 @@ public class WeaponEnchant : MonoBehaviour
     {
         int randomNumber = Random.Range(0, 100000000);
         int grade = 0;
-        int count = DataManger.instance.weaponEnchantTableList.Count;
+        int count = DataManager.Instance.weaponEnchantTableList.Count;
         for (int i = 0; i < count; i++)
         {
-            if (randomNumber <= DataManger.instance.weaponEnchantTableList[i].accumulateChance)
+            if (randomNumber <= DataManager.Instance.weaponEnchantTableList[i].accumulateChance)
             {
-                grade = DataManger.instance.weaponEnchantTableList[i].grade;
+                grade = DataManager.Instance.weaponEnchantTableList[i].grade;
                 break;
             }
         }
@@ -55,12 +55,12 @@ public class WeaponEnchant : MonoBehaviour
 
     private static float PeekStat(int grade, EnchantStat randomStat) => randomStat switch
     {
-        EnchantStat.DamageFixed => DataManger.instance.weaponEnchantTableList[grade].damageFixed,
-        EnchantStat.DamagePercent => DataManger.instance.weaponEnchantTableList[grade].damagePercent,
-        EnchantStat.CriticalChance => DataManger.instance.weaponEnchantTableList[grade].criticalChance,
-        EnchantStat.CriticalDamage => DataManger.instance.weaponEnchantTableList[grade].criticalDamage,
-        EnchantStat.HitPoint => DataManger.instance.weaponEnchantTableList[grade].hitPoint,
-        EnchantStat.Armor => DataManger.instance.weaponEnchantTableList[grade].armor,
+        EnchantStat.DamageFixed => DataManager.Instance.weaponEnchantTableList[grade].damageFixed,
+        EnchantStat.DamagePercent => DataManager.Instance.weaponEnchantTableList[grade].damagePercent,
+        EnchantStat.CriticalChance => DataManager.Instance.weaponEnchantTableList[grade].criticalChance,
+        EnchantStat.CriticalDamage => DataManager.Instance.weaponEnchantTableList[grade].criticalDamage,
+        EnchantStat.HitPoint => DataManager.Instance.weaponEnchantTableList[grade].hitPoint,
+        EnchantStat.Armor => DataManager.Instance.weaponEnchantTableList[grade].armor,
         _ => 0.0f
     };
 }

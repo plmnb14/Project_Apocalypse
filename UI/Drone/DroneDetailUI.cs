@@ -77,7 +77,7 @@ public class DroneDetailUI : PopUpUI
         int currentTier =
             targetDrone.droneStatusForSave.tier > 10 ? 10 : targetDrone.droneStatusForSave.tier;
 
-        DataManger dataManager = DataManger.instance;
+        DataManager dataManager = DataManager.Instance;
         float addDamage = dataManager.droneStatusDBList[targetDrone.cardIndex].growthDamagePercent * currentTier
             + dataManager.droneStatusDBList[targetDrone.cardIndex].damagePercent;
         float addAttackSpeed = dataManager.droneStatusDBList[targetDrone.cardIndex].growthAttackSpeed * currentTier

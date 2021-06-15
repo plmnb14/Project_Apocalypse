@@ -27,13 +27,6 @@ public class Skill : MonoBehaviour
     }
     #endregion
 
-    #region Events
-    public void LoadSkillDB()
-    {
-        originSkillDB = SkillManager.Instance.skillDBDic[defaultSkillID];
-    }
-    #endregion
-
     #region LevelUp Events
     public void LevelUp(int addLevel = 1)
     {

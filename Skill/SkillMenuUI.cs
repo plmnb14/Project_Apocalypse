@@ -33,6 +33,7 @@ public class SkillMenuUI : ContentsMenu
         for(int i = 0; i < maxSkillMenuCnt; i++)
         {
             skillMenus[i] = transform.GetChild(i).GetComponent<PopUpInnerUI>();
+            skillMenus[i].gameObject.SetActive(true);
         }
 
         skillSelctUI = transform.GetChild(3).GetComponent<PopUpUI>();
@@ -50,7 +51,6 @@ public class SkillMenuUI : ContentsMenu
     {
         for(int i = 0; i < maxSkillMenuCnt; i++)
         {
-            skillMenus[i].gameObject.SetActive(true);
             skillMenus[i].OpenSetUp();
             skillMenus[i].gameObject.SetActive(false);
         }
@@ -59,6 +59,13 @@ public class SkillMenuUI : ContentsMenu
     private void OpenDefaultPopUp()
     {
         skillMenus[(int)curSkillMenu].AddPopUpUI();
+    }
+
+    public void SetSkillDBOnIcon()
+    {
+        var skillInven = skillMenus[(int)SkillMenuEnum.SkillInven] as SkillInvenUI;
+        skillInven.SetSkillDBOnIcon();
+
     }
     #endregion
 

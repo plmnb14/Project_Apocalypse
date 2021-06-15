@@ -85,7 +85,7 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
     #region Event
     public void UpdateStatus()
     {
-        DataManger dataManager = DataManger.instance;
+        DataManager dataManager = DataManager.Instance;
         float finalDamage = dataManager.droneStatusDBList[cardIndex].damagePercent + 
             dataManager.droneStatusDBList[cardIndex].growthDamagePercent * droneStatusForSave.tier;
         float finalAttackSpeed = dataManager.droneStatusDBList[cardIndex].attackSpeed + 
@@ -108,7 +108,7 @@ public class DroneCard : MonoBehaviour, IPointerClickHandler
 
     public void SetStatsFromDataBase()
     {
-        DataManger dataManager = DataManger.instance;
+        DataManager dataManager = DataManager.Instance;
         droneStatusForSave.uniqueNumber = dataManager.droneStatusDBList[cardIndex].uniqueNumber;
         droneStatusForLocal.damagePercent = dataManager.droneStatusDBList[cardIndex].damagePercent;
         droneStatusForLocal.attackSpeed = dataManager.droneStatusDBList[cardIndex].attackSpeed;

@@ -227,28 +227,46 @@ public class CSVReader : MonoBehaviour
         dataDic = statusDic;
     }
 
-    #region 바이너리 CSV
-    //public static List<EquipmentGachaData> GetEquipmentGachaListOnCSVFile(string fileName)
-    //{
-    //    string filePath = "Assets/Resources/Database/" + fileName;
+    public static void GetSkillDBOnCSV(out List<SkillDBLoad> dataList, string fileName)
+    {
+        string filePath = "Assets/Resources/Database/" + fileName;
 
-    //    List<EquipmentGachaData> gachaList = new List<EquipmentGachaData>();
-    //    byte[] bytes = File.ReadAllBytes(filePath);
-    //    int rowSize = sizeof(int) * 3 + sizeof(float) * 1;
-    //    Debug.Log(bytes.Length);
-    //    for(int offset = 0; offset < bytes.Length; offset += rowSize)
-    //    {
-    //        EquipmentGachaData gachaData = new EquipmentGachaData
-    //        {
-    //            gachaChance = BitConverter.ToSingle(bytes, offset + 0),
-    //            inhenceGachaChance = BitConverter.ToInt32(bytes, offset + 4),
-    //            accumulateGachaChance = BitConverter.ToInt32(bytes, offset + 8),
-    //            itemCode = BitConverter.ToInt32(bytes, offset + 12)
-    //        };
-    //        gachaList.Add(gachaData);
-    //    }
+        dataList = new List<SkillDBLoad>();
+        var datas = File.ReadAllLines(filePath);
+        int dataLength = datas.Length;
+        for (int i = 1; i < dataLength; i++)
+        {
+            var parts = datas[i].Split(',');
+            SkillDBLoad skillDB = new SkillDBLoad
+            {
+                skillActType = (SkillActType)int.Parse(parts[0]),
+                skillDBName = parts[1]
+            };
+            dataList.Add(skillDB);
+        }
+    }
+        #region 바이너리 CSV
+        //public static List<EquipmentGachaData> GetEquipmentGachaListOnCSVFile(string fileName)
+        //{
+        //    string filePath = "Assets/Resources/Database/" + fileName;
 
-    //    return gachaList;
-    //}
-    #endregion
-}
+        //    List<EquipmentGachaData> gachaList = new List<EquipmentGachaData>();
+        //    byte[] bytes = File.ReadAllBytes(filePath);
+        //    int rowSize = sizeof(int) * 3 + sizeof(float) * 1;
+        //    Debug.Log(bytes.Length);
+        //    for(int offset = 0; offset < bytes.Length; offset += rowSize)
+        //    {
+        //        EquipmentGachaData gachaData = new EquipmentGachaData
+        //        {
+        //            gachaChance = BitConverter.ToSingle(bytes, offset + 0),
+        //            inhenceGachaChance = BitConverter.ToInt32(bytes, offset + 4),
+        //            accumulateGachaChance = BitConverter.ToInt32(bytes, offset + 8),
+        //            itemCode = BitConverter.ToInt32(bytes, offset + 12)
+        //        };
+        //        gachaList.Add(gachaData);
+        //    }
+
+        //    return gachaList;
+        //}
+        #endregion
+    }

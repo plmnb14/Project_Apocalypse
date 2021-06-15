@@ -12,7 +12,7 @@ public class NotificationPopUp : PopUpUI
     #region Events
     public void SetScripts(string scriptsCode)
     {
-        textScripts.text = DataManger.instance.scriptsDictionary[scriptsCode];
+        textScripts.text = DataManager.Instance.scriptsDictionary[scriptsCode];
     }
     #endregion
 

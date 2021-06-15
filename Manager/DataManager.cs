@@ -2,23 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum DBType { Weapon, Drone, Arms, Scripts, Skill , End }
-
-public class DataManger : MonoBehaviour
+public interface ILoader<Key, Value>
 {
-    #region 인스턴스
-    static public DataManger instance
-    {
-        get
-        {
-            if (m_instance == null) m_instance = FindObjectOfType<DataManger>();
+    Dictionary<Key, Value> MakeDict();
+}
 
-            return m_instance;
-        }
-    }
-    private static DataManger m_instance;
-    #endregion
-
+public class DataManager : Singleton<DataManager>
+{
     #region 필드
     public List<GachaChanceData> weaponGachaChanceList { get; set; }
     public List<WeaponStatsForDatabase> weaponStatForDataList { get; set; }
@@ -72,7 +62,7 @@ public class DataManger : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != this) Destroy(gameObject);
+        if (Instance != this) Destroy(gameObject);
         DontDestroyOnLoad(this);
 
         SetUpField();

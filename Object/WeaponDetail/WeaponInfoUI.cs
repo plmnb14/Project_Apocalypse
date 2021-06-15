@@ -186,7 +186,7 @@ public class WeaponInfoUI : PopUpUI
             equipStatusNext[0].gameObject.SetActive(true);
             equipStatusName[0].gameObject.SetActive(true);
             int itemCode = targetEquipment.statForSave.itemCode;
-            float finalValue = DataManger.instance.weaponStatForDataDictionary[itemCode].damagePercentOrigin + targetEquipment.statForLocal.damagePercent;
+            float finalValue = DataManager.Instance.weaponStatForDataDictionary[itemCode].damagePercentOrigin + targetEquipment.statForLocal.damagePercent;
             equipStatusNext[0].text = finalValue.ToString();
             equipStatusCur[0].text = targetEquipment.statForLocal.damagePercent.ToString();
         }
@@ -205,7 +205,7 @@ public class WeaponInfoUI : PopUpUI
             equipStatusNext[1].gameObject.SetActive(true);
             equipStatusName[1].gameObject.SetActive(true);
             int itemCode = targetEquipment.statForSave.itemCode;
-            float finalValue = DataManger.instance.weaponStatForDataDictionary[itemCode].damageFixedOrigin + targetEquipment.statForLocal.damageFixed;
+            float finalValue = DataManager.Instance.weaponStatForDataDictionary[itemCode].damageFixedOrigin + targetEquipment.statForLocal.damageFixed;
             equipStatusNext[1].text = finalValue.ToString();
             equipStatusCur[1].text = targetEquipment.statForLocal.damageFixed.ToString();
         }
@@ -224,7 +224,7 @@ public class WeaponInfoUI : PopUpUI
             equipStatusNext[2].gameObject.SetActive(true);
             equipStatusName[2].gameObject.SetActive(true);
             int itemCode = targetEquipment.statForSave.itemCode;
-            float finalValue = DataManger.instance.weaponStatForDataDictionary[itemCode].criticalChanceOrigin + targetEquipment.statForLocal.criticalChance;
+            float finalValue = DataManager.Instance.weaponStatForDataDictionary[itemCode].criticalChanceOrigin + targetEquipment.statForLocal.criticalChance;
             equipStatusNext[2].text = finalValue.ToString();
             equipStatusCur[2].text = targetEquipment.statForLocal.criticalChance.ToString();
         }
@@ -243,7 +243,7 @@ public class WeaponInfoUI : PopUpUI
             equipStatusNext[3].gameObject.SetActive(true);
             equipStatusName[3].gameObject.SetActive(true);
             int itemCode = targetEquipment.statForSave.itemCode;
-            float finalValue = DataManger.instance.weaponStatForDataDictionary[itemCode].criticalDamageOrigin + targetEquipment.statForLocal.criticalDamage;
+            float finalValue = DataManager.Instance.weaponStatForDataDictionary[itemCode].criticalDamageOrigin + targetEquipment.statForLocal.criticalDamage;
             equipStatusNext[3].text = finalValue.ToString();
             equipStatusCur[3].text = targetEquipment.statForLocal.criticalDamage.ToString();
         }
@@ -265,7 +265,7 @@ public class WeaponInfoUI : PopUpUI
             heldStatusName[0].gameObject.SetActive(true);
             heldArrow[0].gameObject.SetActive(true);
             int itemCode = targetEquipment.statForSave.itemCode;
-            float finalValue = DataManger.instance.weaponStatForDataDictionary[itemCode].heldStatusValueOrigin_0 + targetEquipment.statForLocal.heldStatusValue_0;
+            float finalValue = DataManager.Instance.weaponStatForDataDictionary[itemCode].heldStatusValueOrigin_0 + targetEquipment.statForLocal.heldStatusValue_0;
             heldStatusNext[0].text = finalValue.ToString();
             heldStatusCur[0].text = targetEquipment.statForLocal.heldStatusValue_0.ToString();
         }
@@ -285,7 +285,7 @@ public class WeaponInfoUI : PopUpUI
             heldStatusName[1].gameObject.SetActive(true);
             heldArrow[1].gameObject.SetActive(true);
             int itemCode = targetEquipment.statForSave.itemCode;
-            float finalValue = DataManger.instance.weaponStatForDataDictionary[itemCode].heldStatusValueOrigin_1 + targetEquipment.statForLocal.heldStatusValue_1;
+            float finalValue = DataManager.Instance.weaponStatForDataDictionary[itemCode].heldStatusValueOrigin_1 + targetEquipment.statForLocal.heldStatusValue_1;
             heldStatusNext[1].text = finalValue.ToString();
             heldStatusCur[1].text = targetEquipment.statForLocal.heldStatusValue_1.ToString();
         }
@@ -305,7 +305,7 @@ public class WeaponInfoUI : PopUpUI
             heldStatusNext[2].gameObject.SetActive(true);
             heldStatusName[2].gameObject.SetActive(true);
             int itemCode = targetEquipment.statForSave.itemCode;
-            float finalValue = DataManger.instance.weaponStatForDataDictionary[itemCode].heldStatusValueOrigin_2 + targetEquipment.statForLocal.heldStatusValue_2;
+            float finalValue = DataManager.Instance.weaponStatForDataDictionary[itemCode].heldStatusValueOrigin_2 + targetEquipment.statForLocal.heldStatusValue_2;
             heldStatusNext[2].text = finalValue.ToString();
             heldStatusCur[2].text = targetEquipment.statForLocal.heldStatusValue_2.ToString();
         }

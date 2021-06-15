@@ -43,12 +43,12 @@ public class Gacha : MonoBehaviour, IPointerClickHandler
     {
         int randomNumber = Random.Range(0, 100000000);
 
-        int count = DataManger.instance.weaponGachaChanceList.Count;
+        int count = DataManager.Instance.weaponGachaChanceList.Count;
         for(int i = 0; i < count; i++)
         {
-            if(randomNumber <= DataManger.instance.weaponGachaChanceList[i].accumulateChance)
+            if(randomNumber <= DataManager.Instance.weaponGachaChanceList[i].accumulateChance)
             {
-                gachaItemCode.Enqueue(DataManger.instance.weaponGachaChanceList[i].itemCode);
+                gachaItemCode.Enqueue(DataManager.Instance.weaponGachaChanceList[i].itemCode);
                 break;
             }
         }

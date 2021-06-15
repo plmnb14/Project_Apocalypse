@@ -6,14 +6,13 @@ public class SkillInvenUI : PopUpInnerUI
 {
     #region Enum
     private enum BarTypeEnum { Simple, Full, End };
-    public enum SkillTypeEnum { Active, Passive, Buff, End};
     #endregion
 
     #region Private Fields
-    private BarTypeEnum barTypeEnum;
-    private SkillTypeEnum skillTypeEnum;
+    //private BarTypeEnum barTypeEnum;
+    private SkillActType skillActType;
     private GameObject[] typeBar;
-    private GameObject[] skillView;
+    private SkillTree[] skillTrees;
     private SkillDetailUI selectSkillPopUp;
     #endregion
 
@@ -26,11 +25,11 @@ public class SkillInvenUI : PopUpInnerUI
 
     private void AwakeSetUp()
     {
-        barTypeEnum = BarTypeEnum.Simple;
-        skillTypeEnum = SkillTypeEnum.Active;
+        //barTypeEnum = BarTypeEnum.Simple;
+        skillActType = SkillActType.Active;
 
         typeBar = new GameObject[(int)BarTypeEnum.End];
-        skillView = new GameObject[(int)SkillTypeEnum.End];
+        skillTrees = new SkillTree[(int)SkillActType.End];
     }
 
     private void LoadChilds()
@@ -40,9 +39,10 @@ public class SkillInvenUI : PopUpInnerUI
             typeBar[i] = transform.GetChild(i + 1).gameObject;
         }
 
-        for (int i = 0; i < (int)SkillTypeEnum.End; i++)
+        for (int i = 0; i < (int)SkillActType.End; i++)
         {
-            skillView[i] = transform.GetChild(i + 3).gameObject;
+            skillTrees[i] = transform.GetChild(i + 3).GetComponent<SkillTree>();
+            skillTrees[i].gameObject.SetActive(true);
         }
 
         selectSkillPopUp = transform.GetChild(6).GetComponent<SkillDetailUI>();
@@ -57,9 +57,9 @@ public class SkillInvenUI : PopUpInnerUI
             typeBar[i].SetActive(false);
         }
 
-        for (int i = 0; i < (int)SkillTypeEnum.End; i++)
+        for (int i = 0; i < (int)SkillActType.End; i++)
         {
-            skillView[i].SetActive(false);
+            skillTrees[i].gameObject.SetActive(false);
         }
 
         selectSkillPopUp.gameObject.SetActive(false);
@@ -69,7 +69,7 @@ public class SkillInvenUI : PopUpInnerUI
     {
         BarTypeEnum openType = isSimple ? BarTypeEnum.Simple : BarTypeEnum.Full;
         typeBar[(int)openType].SetActive(true);
-        skillView[(int)SkillTypeEnum.Active].SetActive(true);
+        skillTrees[(int)SkillActType.Active].gameObject.SetActive(true);
     }
     #endregion
 
@@ -90,12 +90,12 @@ public class SkillInvenUI : PopUpInnerUI
         selectSkillPopUp.AddPopUpUI();
     }
 
-    public void ChangeSkillType(SkillTypeEnum skillType)
+    public void ChangeSkillType(SkillActType skillType)
     {
-        if (skillTypeEnum == skillType) return;
-        skillView[(int)skillTypeEnum].SetActive(false);
-        skillTypeEnum = skillType;
-        skillView[(int)skillTypeEnum].SetActive(true);
+        if (skillActType == skillType) return;
+        skillTrees[(int)skillActType].gameObject.SetActive(false);
+        skillActType = skillType;
+        skillTrees[(int)skillActType].gameObject.SetActive(true);
     }
     #endregion
 
@@ -116,6 +116,15 @@ public class SkillInvenUI : PopUpInnerUI
     public SkillIcon GetSelectedSkill()
     {
         return selectSkillPopUp.curSkillIcon;
+    }
+
+    public void SetSkillDBOnIcon()
+    {
+        for(int i = 0; i < (int)SkillActType.End; i++)
+        {
+            skillTrees[i].SetSkillDBOnIcon(i);
+            skillTrees[i].gameObject.SetActive(false);
+        }
     }
     #endregion
 }

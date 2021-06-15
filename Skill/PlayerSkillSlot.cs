@@ -49,5 +49,18 @@ public class PlayerSkillSlot : MonoBehaviour
             skillSlotUI[i].SetMountMode(isActive);
         }
     }
+
+    public void ExchangeSkillSlot(int slotA, int slotB)
+    {
+        var slotASkillIcon = skillSlotUI[slotA].mountingSkillIcon;
+        var slotBSkillIcon = skillSlotUI[slotB].mountingSkillIcon;
+        skillSlotUI[slotA].ExchangeMountSkill(slotBSkillIcon);
+        skillSlotUI[slotB].ExchangeMountSkill(slotASkillIcon);
+    }
+
+    public void DismountSkillSlot(int skillIndex)
+    {
+        skillSlotUI[skillIndex].DismountSkill();
+    }
     #endregion
 }

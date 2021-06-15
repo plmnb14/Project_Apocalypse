@@ -40,7 +40,7 @@ public class Hero : Living
     #region Start Events
     private void Start()
     {
-        playerSkill[0] = SkillManager.Instance.skillDBDic[1001];
+        playerSkill[0] = SkillManager.Instance.skillDBDic[0][1001];
         //playerSkillStatus[0].CopySkillDB(ref playerSkill[0]);
     }
     #endregion

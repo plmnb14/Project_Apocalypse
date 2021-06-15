@@ -7,7 +7,7 @@ public class SkillTypeChangeButton : MonoBehaviour, IPointerClickHandler
 {
     #region Public Fields
     public SkillInvenUI skillInvenUI;
-    public SkillInvenUI.SkillTypeEnum skillType;
+    public SkillActType skillType;
     #endregion
 
     #region Click Events
